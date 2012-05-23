@@ -28,7 +28,7 @@ class BookInstance(models.Model):
     renewal = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return book.name
+        return '%s(%d)' % (self.book.name, self.id)
 
 
 class User(models.Model):
@@ -47,12 +47,13 @@ class User(models.Model):
     name = models.CharField(max_length=20)
     email = models.EmailField(max_length=50)
     password = models.CharField(max_length=20)
-    utype = models.CharField(max_length=2, choices=UTYPE_CHOICES)
-    level = models.CharField(max_length=2, choices=LEVEL_CHOICES)
+    utype = models.CharField(max_length=2, choices=UTYPE_CHOICES, default='N')
+    level = models.CharField(null=True, max_length=2,
+                             choices=LEVEL_CHOICES, default='U')
     debt = models.IntegerField(default=0)
     
     def __unicode__(self):
-        return user.name
+        return self.name
 
 
 class Record(models.Model):
@@ -60,13 +61,19 @@ class Record(models.Model):
         (u'B', u'Borrow'),
         (u'R', u'Return'),
     )
-    book = models.ForeignKey(BookInstance)
+    booki = models.ForeignKey(BookInstance)
     user = models.ForeignKey(User)
-    time = models.DateTimeField(auto_now=True)
     action = models.CharField(max_length=2, choices=ACTION_CHOICES)
+    time = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return '%s %s' % (self.user.name, self.booki)
 
 
 class Borrow(models.Model):
     user = models.ForeignKey(User)
     record = models.ForeignKey(Record)
+
+    def __unicode__(self):
+        return self.record.__unicode__()
 
