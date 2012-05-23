@@ -5,11 +5,11 @@ from django.db import models
 class Book(models.Model):
     isbn = models.BigIntegerField();
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=30)
-    retrieval = models.CharField(max_length=30)
-    publisher = models.CharField(max_length=100)
-    image = models.FileField(upload_to='image/%Y/%m/%d')
-    authors = models.CharField(max_length=100)
+    category = models.CharField(blank=True, max_length=30)
+    retrieval = models.CharField(blank=True, max_length=30)
+    publisher = models.CharField(blank=True, max_length=100)
+    image = models.FileField(null=True, upload_to='image/%Y/%m/%d')
+    authors = models.CharField(blank=True, max_length=100)
     abstract = models.TextField(blank=True, max_length=500)
 
     def __unicode__(self):
@@ -23,8 +23,9 @@ class BookInstance(models.Model):
         (u'D', u'Discard'),
     )
     book = models.ForeignKey(Book)
-    state = models.CharField(max_length=10, choices=STATE_CHOICES)
-    renewal = models.BooleanField()
+    state = models.CharField(max_length=10, choices=STATE_CHOICES,
+                             default='U')
+    renewal = models.BooleanField(default=False)
 
     def __unicode__(self):
         return book.name
@@ -48,7 +49,7 @@ class User(models.Model):
     password = models.CharField(max_length=20)
     utype = models.CharField(max_length=2, choices=UTYPE_CHOICES)
     level = models.CharField(max_length=2, choices=LEVEL_CHOICES)
-    debt = models.IntegerField()
+    debt = models.IntegerField(default=0)
     
     def __unicode__(self):
         return user.name
@@ -59,7 +60,7 @@ class Record(models.Model):
         (u'B', u'Borrow'),
         (u'R', u'Return'),
     )
-    book = models.ForeignKey(Book)
+    book = models.ForeignKey(BookInstance)
     user = models.ForeignKey(User)
     time = models.DateTimeField(auto_now=True)
     action = models.CharField(max_length=2, choices=ACTION_CHOICES)
