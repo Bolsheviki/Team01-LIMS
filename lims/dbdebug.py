@@ -21,6 +21,8 @@ def check_test():
     r = Record.objects.filter(user__name='dhuang')
     b = Borrow.objects.filter(user__name='dhuang')
     b = Borrow.objects.all()
+    u = User.objects.filter(name='dhuang')
+    print u
     print r
     print b
 

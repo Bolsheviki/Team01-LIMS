@@ -1,5 +1,5 @@
 from django.db import models
-
+import django.contrib.auth.models
 
 # Create your models here.
 class Book(models.Model):
@@ -77,3 +77,17 @@ class Borrow(models.Model):
     def __unicode__(self):
         return self.record.__unicode__()
 
+
+class UserProfile(models.Model):
+    LEVEL_CHOICES = (
+        (u'U', u'undergraduate'),
+        (u'G', u'graduate'),
+        (u'S', u'staff'),
+    )
+    user = models.ForeignKey(django.contrib.auth.models.User, unique = True)
+    level = models.CharField(null=True, max_length=2,
+                             choices=LEVEL_CHOICES, default='U')
+    debt = models.IntegerField(default = 0)
+
+    def __unicode__(self):
+        return '%s %s %s' % (self.user, self.level, self.debt)
