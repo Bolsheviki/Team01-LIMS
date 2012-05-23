@@ -8,10 +8,9 @@ class Book(models.Model):
     category = models.CharField(max_length=30)
     retrieval = models.CharField(max_length=30)
     publisher = models.CharField(max_length=100)
+    image = models.FileField(upload_to='image/%Y/%m/%d')
+    authors = models.CharField(max_length=100)
     abstract = models.TextField(blank=True, max_length=500)
-    image = models.ImageField(upload_to=None)
-    
-    authors = models.ManyToManyField(Author)
 
     def __unicode__(self):
         return self.name
@@ -27,11 +26,14 @@ class BookInstance(models.Model):
     state = models.CharField(max_length=10, choices=STATE_CHOICES)
     renewal = models.BooleanField()
 
+    def __unicode__(self):
+        return book.name
+
 
 class User(models.Model):
     UTYPE_CHOICES = (
         (u'N', u'Normal User'),
-        (u'C', u'Cpunter Administrator'),
+        (u'C', u'Counter Administrator'),
         (u'U', u'User Administrator'),
         (u'B', u'Book Administrator'),
     )
@@ -44,25 +46,26 @@ class User(models.Model):
     name = models.CharField(max_length=20)
     email = models.EmailField(max_length=50)
     password = models.CharField(max_length=20)
-    utype = models.CharField(choices=UTYPE_CHOICES)
-    level = models.CharField(choices=LEVEL_CHOICES)
+    utype = models.CharField(max_length=2, choices=UTYPE_CHOICES)
+    level = models.CharField(max_length=2, choices=LEVEL_CHOICES)
     debt = models.IntegerField()
+    
+    def __unicode__(self):
+        return user.name
 
 
-class Recored(models.Model):
+class Record(models.Model):
+    ACTION_CHOICES = (
+        (u'B', u'Borrow'),
+        (u'R', u'Return'),
+    )
     book = models.ForeignKey(Book)
     user = models.ForeignKey(User)
     time = models.DateTimeField(auto_now=True)
+    action = models.CharField(max_length=2, choices=ACTION_CHOICES)
 
 
-class Author(models.Model):
-    ROLE_CHOICES = (
-        (u'W', u'Writer'),
-        (u'T', u'Translator'),
-    )
-    name = models.CharField(max_length=30)
-    role = models.CharField(max_length=2, choices=ROLE_CHOICES)
-    
-    def __unicode__(self):
-        return u'%s %s' % (self.name, self.role)
+class Borrow(models.Model):
+    user = models.ForeignKey(User)
+    record = models.ForeignKey(Record)
 
