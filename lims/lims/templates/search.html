@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title>Search</title>
+</head>
+<body>
+    {% if errors %}
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+	
+    <form action='/search/' method='get'>
+		<select name='scope' id='scope'>   
+			<option value='Title'>Title</option>
+			<option value='Author'>Author</option>
+			<option value='Subject'>Subject</option>
+			<option value='ISBN'>ISBN</option>
+		</select>  
+        <input type='text' name='query'>
+        <input type='submit' value='Search'>
+    </form>
+	{% if books %}
+		<p>Found {{ books|length }} book{{ books|pluralize }}.</p>
+		<ul>
+			{% for book in books %}
+			<li>{{ book }}</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>No books matched your search criteria.</p>
+	{% endif %}
+</body>
+</html>
+
