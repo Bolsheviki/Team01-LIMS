@@ -18,4 +18,6 @@ urlpatterns = patterns('',
 
     url(r'^login/$', 'lims.views.login'),
     url(r'^loggedin/$', 'lims.views.loggedin'),
+    url(r'^logout/$', 'lims.views.logout'),
+    url(r'^user_passes_test/$', 'lims.views.need_normal_user_logged_in'),
 )
