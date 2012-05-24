@@ -2,29 +2,56 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from records.models import Book
 from django.contrib import auth
+from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required, user_passes_test
+
+Per_Page = 1
+
+def get_books(scope, query):
+    if scope == 'Title':
+        books = Book.objects.filter(name__icontains=query)
+    elif scope == 'Author':
+        books = Book.objects.filter(authors__icontains=query)
+    elif scope == 'ISBN':
+        books = Book.objects.filter(isbn=query)
+    return books
+
+
+def search_base(request):
+    return render_to_response('search-base.html')
 
 
 def search(request):
     errors = []
-    if 'query' in request.GET and 'scope' in request.GET:
-        query = request.GET['query']
-        scope = request.GET['scope']
-        if not query:
-            errors.append('Enter a search term.')
-        elif not scope:
-            errors.append('Select a search scope.')
-        elif scope == 'Title':
-            books = Book.objects.filter(name__icontains=query)
-        elif scope == 'Author':
-            books = Book.objects.filter(authors__icontains=query)
-        elif scope == 'Subject':
-            books = Book.objects.filter(authors__icontains=query)
-        elif scope == 'ISBN':
-            books = Book.objects.filter(isbn__icontains=query)
-        else:
-            errors.append('Unregonized search scope.')
-    return render_to_response('search.html', locals())
+    
+    p = request.GET.get('page', '1')
+    if not p.isdigit():
+        p = 1
+    else:
+        p = int(p)
+
+    if 'query' in request.POST and 'scope' in request.POST:
+        query = request.POST['query']
+        scope = request.POST['scope']
+        request.session['query'] = query
+        request.session['scope'] = scope
+    elif 'query' in request.session and 'scope' in request.session: 
+        query = request.session['query']
+        scope = request.session['scope']
+    else:
+        return HttpResponseRedirect('/search-base/')
+
+    book_list = get_books(scope, query)
+
+    return list_detail.object_list(
+        request,
+        paginate_by = Per_Page,
+        page = p,
+        queryset = book_list,
+        template_name = 'search.html',
+        template_object_name = 'book',
+    )
+
 
 def login(request):
     if request.method == 'POST':
