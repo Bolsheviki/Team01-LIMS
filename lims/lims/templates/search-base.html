@@ -1,5 +1,10 @@
 <html>
 <head>
+	<style type='text/css'>
+		.scope .query {
+			float: left;
+		}
+	</style>
     <title>Search</title>
 </head>
 <body>
@@ -12,13 +17,14 @@
     {% endif %}
 	
     <form action='/search/' method='post'>
-		<select name='scope' id='scope'>   
-			<option value='Title'>Title</option>
-			<option value='Author'>Author</option>
-			<option value='Subject'>Subject</option>
-			<option value='ISBN'>ISBN</option>
-		</select>  
-        <input type='text' name='query'>
+		<span class='scope'>
+            {{ form.scope.errors }}
+            {{ form.scope }}
+		</span>
+		<span class='query'>
+            {{ form.query.errors }}
+            {{ form.query }}
+		</span>
         <input type='submit' value='Search'>
     </form>
 </body>

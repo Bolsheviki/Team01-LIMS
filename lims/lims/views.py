@@ -4,21 +4,43 @@ from records.models import Book
 from django.contrib import auth
 from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django import forms
+
+
+QUERY_SCOPE_CHOICES = (
+    ('T', 'Title'),
+    ('A', 'Author'),
+    ('I', 'ISBN'),
+)
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField()
+    scope = forms.ChoiceField(widget=forms.Select, choices=QUERY_SCOPE_CHOICES)
+
 
 Per_Page = 1
 
 def get_books(scope, query):
-    if scope == 'Title':
+
+    
+    if scope == 'T':
         books = Book.objects.filter(name__icontains=query)
-    elif scope == 'Author':
+    elif scope == 'A':
         books = Book.objects.filter(authors__icontains=query)
-    elif scope == 'ISBN':
+    elif scope == 'I':
         books = Book.objects.filter(isbn=query)
+    else:
+        books = Book.objects.filter(name__icontains='')
     return books
 
 
+
 def search_base(request):
-    return render_to_response('search-base.html')
+    form = SearchForm(
+        initial={'scope': 'T'}
+    )
+    return render_to_response('search-base.html', locals())
 
 
 def search(request):
@@ -30,18 +52,21 @@ def search(request):
     else:
         p = int(p)
 
-    if 'query' in request.POST and 'scope' in request.POST:
-        query = request.POST['query']
-        scope = request.POST['scope']
-        request.session['query'] = query
-        request.session['scope'] = scope
-    elif 'query' in request.session and 'scope' in request.session: 
-        query = request.session['query']
-        scope = request.session['scope']
+    form = SearchForm(request.POST)
+    if form.is_valid():
+        q = form.cleaned_data
+        request.session['search-form'] = form
+    elif 'search-form' in request.session:
+        form = request.session['search-form']
+        if form.is_valid():
+            q = form.cleaned_data
+        else:
+            return HttpResponseRedirect('/search-base/')
     else:
         return HttpResponseRedirect('/search-base/')
-
-    book_list = get_books(scope, query)
+        
+    book_list = get_books(q['scope'], q['query'])
+    basic_info = { 'form': form }
 
     return list_detail.object_list(
         request,
@@ -50,6 +75,7 @@ def search(request):
         queryset = book_list,
         template_name = 'search.html',
         template_object_name = 'book',
+        extra_context = basic_info,
     )
 
 
