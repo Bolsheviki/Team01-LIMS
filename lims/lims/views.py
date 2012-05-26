@@ -76,15 +76,12 @@ def loggedin(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/login/')
+	
+def is_in_group(user, groupname):
+    return user.groups.filter(name = groupname).count() > 0
 
 def is_normal_user_logged_in(user):
-    if not user.is_authenticated():
-        return False
-    groups = user.groups.all()
-    for i in range(len(groups)):
-        if groups[i].name == 'NormalUser':
-            return True
-    return False
+    return user.is_authenticated() and is_in_group(user, 'NormalUser')
 
 @user_passes_test(is_normal_user_logged_in, login_url = '/login')
 def need_normal_user_logged_in(request):
