@@ -1,5 +1,5 @@
 from django.db import models
-import django.contrib.auth.models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Book(models.Model):
@@ -30,32 +30,6 @@ class BookInstance(models.Model):
     def __unicode__(self):
         return '%s(%d)' % (self.book.name, self.id)
 
-
-class User(models.Model):
-    UTYPE_CHOICES = (
-        (u'N', u'Normal User'),
-        (u'C', u'Counter Administrator'),
-        (u'U', u'User Administrator'),
-        (u'B', u'Book Administrator'),
-    )
-    LEVEL_CHOICES = (
-        (u'U', u'undergraduate'),
-        (u'G', u'graduate'),
-        (u'S', u'staff'),
-    )
-    uid = models.CharField(max_length=20)
-    name = models.CharField(max_length=20)
-    email = models.EmailField(max_length=50)
-    password = models.CharField(max_length=20)
-    utype = models.CharField(max_length=2, choices=UTYPE_CHOICES, default='N')
-    level = models.CharField(null=True, max_length=2,
-                             choices=LEVEL_CHOICES, default='U')
-    debt = models.IntegerField(default=0)
-    
-    def __unicode__(self):
-        return self.name
-
-
 class Record(models.Model):
     ACTION_CHOICES = (
         (u'B', u'Borrow'),
@@ -67,7 +41,7 @@ class Record(models.Model):
     time = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return '%s %s' % (self.user.name, self.booki)
+        return '%s %s' % (self.user.username, self.booki)
 
 
 class Borrow(models.Model):
@@ -84,7 +58,7 @@ class UserProfile(models.Model):
         (u'G', u'graduate'),
         (u'S', u'staff'),
     )
-    user = models.ForeignKey(django.contrib.auth.models.User, unique = True)
+    user = models.ForeignKey(User, unique = True)
     level = models.CharField(null=True, max_length=2,
                              choices=LEVEL_CHOICES, default='U')
     debt = models.IntegerField(default = 0)

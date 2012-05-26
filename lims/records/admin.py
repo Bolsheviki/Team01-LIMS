@@ -1,6 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 from records.models import *
-import django.contrib.auth.models
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
@@ -12,9 +12,8 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(Book)
 admin.site.register(BookInstance)
-admin.site.register(User)
 admin.site.register(Record)
 admin.site.register(Borrow)
-admin.site.unregister(django.contrib.auth.models.User)
-admin.site.register(django.contrib.auth.models.User, UserAdmin)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 
