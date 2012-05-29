@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Book(models.Model):
-    isbn = models.BigIntegerField();
+    isbn = models.BigIntegerField(unique=True);
     name = models.CharField(max_length=100)
-    category = models.CharField(blank=True, max_length=30)
-    retrieval = models.CharField(blank=True, max_length=30)
+    category = models.CharField(unique=True, blank=True, max_length=30)
+    retrieval = models.CharField(unique=True, blank=True, max_length=30)
     publisher = models.CharField(blank=True, max_length=100)
     image = models.FileField(null=True, upload_to='image/%Y/%m/%d')
     authors = models.CharField(blank=True, max_length=100)
@@ -14,6 +14,21 @@ class Book(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class UserProfile(models.Model):
+    LEVEL_CHOICES = (
+        (u'U', u'undergraduate'),
+        (u'G', u'graduate'),
+        (u'S', u'staff'),
+    )
+    user = models.ForeignKey(User, unique = True)
+    level = models.CharField(null=True, max_length=2,
+                             choices=LEVEL_CHOICES, default='U')
+    debt = models.IntegerField(default = 0)
+
+    def __unicode__(self):
+        return '%s %s %s' % (self.user, self.level, self.debt)
 
 
 class BookInstance(models.Model):
@@ -30,38 +45,25 @@ class BookInstance(models.Model):
     def __unicode__(self):
         return '%s(%d)' % (self.book.name, self.id)
 
+
 class Record(models.Model):
     ACTION_CHOICES = (
         (u'B', u'Borrow'),
         (u'R', u'Return'),
     )
     booki = models.ForeignKey(BookInstance)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(UserProfile)
     action = models.CharField(max_length=2, choices=ACTION_CHOICES)
     time = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return '%s %s' % (self.user.username, self.booki)
+        return '%s %s' % (self.user.user.username, self.booki)
 
 
 class Borrow(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(UserProfile)
     record = models.ForeignKey(Record)
 
     def __unicode__(self):
         return self.record.__unicode__()
 
-
-class UserProfile(models.Model):
-    LEVEL_CHOICES = (
-        (u'U', u'undergraduate'),
-        (u'G', u'graduate'),
-        (u'S', u'staff'),
-    )
-    user = models.ForeignKey(User, unique = True)
-    level = models.CharField(null=True, max_length=2,
-                             choices=LEVEL_CHOICES, default='U')
-    debt = models.IntegerField(default = 0)
-
-    def __unicode__(self):
-        return '%s %s %s' % (self.user, self.level, self.debt)

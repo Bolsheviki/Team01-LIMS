@@ -1,40 +1,12 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from records.models import Book
 from django.contrib import auth
 from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django import forms
-
-
-QUERY_SCOPE_CHOICES = (
-    ('T', 'Title'),
-    ('A', 'Author'),
-    ('I', 'ISBN'),
-)
-
-
-class SearchForm(forms.Form):
-    query = forms.CharField()
-    scope = forms.ChoiceField(widget=forms.Select, choices=QUERY_SCOPE_CHOICES)
-
+from forms import SearchForm
+import util
 
 Per_Page = 1
-
-def get_books(scope, query):
-
-    
-    if scope == 'T':
-        books = Book.objects.filter(name__icontains=query)
-    elif scope == 'A':
-        books = Book.objects.filter(authors__icontains=query)
-    elif scope == 'I':
-        books = Book.objects.filter(isbn=query)
-    else:
-        books = Book.objects.filter(name__icontains='')
-    return books
-
-
 
 def search_base(request):
     form = SearchForm(
@@ -65,7 +37,7 @@ def search(request):
     else:
         return HttpResponseRedirect('/search-base/')
         
-    book_list = get_books(q['scope'], q['query'])
+    book_list = util.get_books(q['scope'], q['query'])
     basic_info = { 'form': form }
 
     return list_detail.object_list(
