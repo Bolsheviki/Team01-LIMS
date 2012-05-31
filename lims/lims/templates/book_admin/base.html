@@ -1,1 +1,11 @@
 {% extends "base.html" %}
+{% block title %}Book Admin.{% endblock %}
+{% block head %}<h1>This Book Admin.</h1>{% endblock %}
+{% block body %}
+	<ul>
+		<li><a href='../search'>Search</a></li>
+		<li><a href='../add'>Add</a></li>
+		<li><a href='../audit'>Audit</a></li>
+	</ul>
+	{% block content %}{% endblock %}
+{% endblock %}

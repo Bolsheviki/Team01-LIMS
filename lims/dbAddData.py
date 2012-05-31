@@ -41,7 +41,7 @@ def check_test():
     print r
     print b
 
-create_test()
+# create_test()
 check_test()
 
 
