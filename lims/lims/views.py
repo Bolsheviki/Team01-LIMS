@@ -33,9 +33,9 @@ def search_in_template(request, template_name):
         if form.is_valid():
             q = form.cleaned_data
         else:
-            return HttpResponseRedirect('/search-base/')
+            return HttpResponseRedirect(template_name)
     else:
-        return HttpResponseRedirect('/search-base/')
+        return HttpResponseRedirect(template_name)
 
     print p, q['scope'], q['query']
     book_list = util.getBooks(q['scope'], q['query'])

@@ -13,6 +13,7 @@ urlpatterns = patterns('book_admin.views',
 
     url(r'^$', 'search'),
     url(r'^search/$', 'search'),
+    url(r'^search/(?P<page>page=\d+)/$', 'search'),
     url(r'^add/$', 'add'),
     url(r'^audit/$', 'audit'),
     url(r'^remove/$', 'audit'),

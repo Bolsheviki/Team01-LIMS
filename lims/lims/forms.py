@@ -9,5 +9,5 @@ QUERY_SCOPE_CHOICES = (
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField()
+    query = forms.CharField(required=False)
     scope = forms.ChoiceField(widget=forms.Select, choices=QUERY_SCOPE_CHOICES)
