@@ -1,6 +1,6 @@
-from records.models import Book
+from db.models import Book
 
-def get_books(scope, query):
+def getBooks(scope, query):
     if scope == 'T':
         books = Book.objects.filter(name__icontains=query)
     elif scope == 'A':

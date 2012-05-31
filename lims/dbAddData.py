@@ -1,4 +1,4 @@
-from records.models import Book, BookInstance, Record, Borrow, UserProfile
+from db.models import Book, BookInstance, Record, Borrow, UserProfile
 from django.contrib.auth.models import User
 from django.db.models import Q
 

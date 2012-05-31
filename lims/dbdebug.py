@@ -1,4 +1,4 @@
-from records.models import Book, BookInstance, Record, Borrow
+from db.models import Book, BookInstance, Record, Borrow
 from django.contrib.auth.models import User
 
 def create_test():

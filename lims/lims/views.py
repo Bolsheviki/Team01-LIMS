@@ -3,8 +3,8 @@ from django.shortcuts import render_to_response
 from django.contrib import auth
 from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required, user_passes_test
-from forms import SearchForm
-import util
+from lims.forms import SearchForm
+from lims import util
 
 Per_Page = 1
 
@@ -37,7 +37,7 @@ def search(request):
     else:
         return HttpResponseRedirect('/search-base/')
         
-    book_list = util.get_books(q['scope'], q['query'])
+    book_list = util.getBooks(q['scope'], q['query'])
     basic_info = { 'form': form }
 
     return list_detail.object_list(

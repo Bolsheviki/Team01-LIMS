@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from records.models import UserProfile
+from db.models import UserProfile
 
 def create_test():
     user = User.objects.create_user(username = 'Zossin', password = 'Zossin')
