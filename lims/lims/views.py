@@ -15,6 +15,43 @@ def search_base(request):
     return render_to_response('search-base.html', locals())
 
 
+def search_in_template(request, template_name):
+    errors = []
+    
+    p = request.GET.get('page', '1')
+    if not p.isdigit():
+        p = 1
+    else:
+        p = int(p)
+
+    form = SearchForm(request.POST)
+    if form.is_valid():
+        q = form.cleaned_data
+        request.session['search-form'] = form
+    elif 'search-form' in request.session:
+        form = request.session['search-form']
+        if form.is_valid():
+            q = form.cleaned_data
+        else:
+            return HttpResponseRedirect('/search-base/')
+    else:
+        return HttpResponseRedirect('/search-base/')
+
+    print p, q['scope'], q['query']
+    book_list = util.getBooks(q['scope'], q['query'])
+    basic_info = { 'form': form }
+
+    return list_detail.object_list(
+        request,
+        paginate_by = Per_Page,
+        page = p,
+        queryset = book_list,
+        template_name = template_name,
+        template_object_name = 'book',
+        extra_context = basic_info,
+    )
+
+
 def search(request):
     errors = []
     

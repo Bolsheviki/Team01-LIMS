@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Book(models.Model):
-    isbn = models.BigIntegerField(unique=True);
+    isbn = models.CharField(max_length=30, unique=True);
     name = models.CharField(max_length=100)
     category = models.CharField(unique=True, blank=True, max_length=30)
     retrieval = models.CharField(unique=True, blank=True, max_length=30)

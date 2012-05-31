@@ -10,8 +10,8 @@ def create_test():
 #    UserProfile.objects().all().delete()
 #    User.objects().exclude(username='root').delete()
 
-    cccpA = Book.objects.create(isbn=1, name='cccp A', category=1, retrieval=1)
-    cccpB = Book.objects.create(isbn=2, name='cccp B', category=2, retrieval=2)
+    cccpA = Book.objects.create(isbn='1', name='cccp A', category=1, retrieval=1)
+    cccpB = Book.objects.create(isbn='2', name='cccp B', category=2, retrieval=2)
     cccpi = BookInstance.objects.create(book=cccpA)
     cccpj = BookInstance.objects.create(book=cccpA)
     cccpk = BookInstance.objects.create(book=cccpB)
@@ -41,7 +41,7 @@ def check_test():
     print r
     print b
 
-# create_test()
+create_test()
 check_test()
 
 

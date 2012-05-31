@@ -1,44 +1,33 @@
-<html>
-<head>
-	<style type='text/css'>
-		.scope .query {
-			float: left;
-		}
-	</style>
-    <title>Search</title>
-</head>
-<body>
-    {% if errors %}
-        <ul>
-            {% for error in errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-	
-    <form action='/search/' method='post'>
-		<span class='scope'>
-            {{ form.scope.errors }}
-            {{ form.scope }}
-		</span>
-		<span class='query'>
-            {{ form.query.errors }}
-            {{ form.query }}
-		</span>
-        <input type='submit' value='Search'>
-    </form>
-	
-	{% if book_list %}
-		<p>Found {{ book_list|length }} book{{ book_list|pluralize }}.</p>
-		<ul>
-			{% for book in book_list %}
-			<li>{{ book }}</li>
-			{% endfor %}
-		</ul>
-		{% include 'pagenation.html' %}
-	{% else %}
-		<p>No books matched your search criteria.</p>
-	{% endif %}
-</body>
-</html>
+
+{% if errors %}
+    <ul>
+        {% for error in errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<form action='' method='post'>
+	<span class='scope'>
+        {{ form.scope.errors }}
+        {{ form.scope }}
+	</span>
+	<span class='query'>
+        {{ form.query.errors }}
+        {{ form.query }}
+	</span>
+    <input type='submit' value='Search'>
+</form>
+
+{% if book_list %}
+	<p>Found {{ book_list|length }} book{{ book_list|pluralize }}.</p>
+	<ul>
+		{% for book in book_list %}
+		<li>{{ book }}</li>
+		{% endfor %}
+	</ul>
+	{% include 'pagenation.html' %}
+{% else %}
+	<p>No books matched your search criteria.</p>
+{% endif %}
 
