@@ -20,11 +20,13 @@ def xml_to_string(filename='user.xml'):
 
 
 def infoBook(isbn):
-    res = urllib2.urlopen(isbnURL + isbn + '?apikey=' + apikey)
+    book = {}
+    try:
+        res = urllib2.urlopen(isbnURL + isbn + '?apikey=' + apikey)
+    except:
+        return book
     xmldoc = minidom.parse(res)
     entry = xmldoc.documentElement
-    
-    book = {}
     
     nodes_summary = get_xmlnode(entry, 'summary')
     if nodes_summary:
@@ -43,8 +45,6 @@ def infoBook(isbn):
     
 
 
-print infoBook('9787111298854')['title']
-print infoBook('9787111298854')['author']
-print infoBook('9787111298854')['translator']
-print infoBook('9787111298854')['summary']
+print infoBook('97871112988543').get('title', 'error')
+
 

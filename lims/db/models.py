@@ -4,16 +4,15 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Book(models.Model):
     isbn = models.CharField(max_length=30, unique=True);
-    name = models.CharField(max_length=100)
-    category = models.CharField(unique=True, blank=True, max_length=30)
-    retrieval = models.CharField(unique=True, blank=True, max_length=30)
-    publisher = models.CharField(blank=True, max_length=100)
-    image = models.FileField(null=True, upload_to='image/%Y/%m/%d')
+    title = models.CharField(max_length=100)
     authors = models.CharField(blank=True, max_length=100)
-    abstract = models.TextField(blank=True, max_length=500)
+    translators = models.CharField(blank=True, max_length=100)
+    publisher = models.CharField(blank=True, max_length=100)
+#    category = models.CharField(unique=True, blank=True, max_length=30)
+#    retrieval = models.CharField(unique=True, blank=True, max_length=30)
 
     def __unicode__(self):
-        return self.name
+        return self.title
 
 
 class UserProfile(models.Model):

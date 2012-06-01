@@ -1,14 +1,16 @@
 from django import forms
+from lims import util
+import re
 
 
 
-class AddForm(forms.Form):
-    isbn = forms.CharField()
-    name = forms.CharField(required=False)
-    category = forms.CharField(required=False)
-    retrieval = forms.CharField(required=False)
-    publisher = forms.CharField(required=False)
-    authors = forms.CharField(required=False)
-    abstract = forms.CharField(required=False)
+def validate_book_isbn(isbn):
+    book = util.info_book(isbn)
+    if not book:
+        raise forms.ValidationError(u'ISBN error')
+
+
+class AddBookForm(forms.Form):
+    isbn = forms.CharField(validators=[validate_book_isbn])
 
     

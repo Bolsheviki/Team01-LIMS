@@ -18,28 +18,27 @@ def search_base(request):
 def search_in_template(request, template_name):
     errors = []
     
+    if 'scope' not in request.GET or 'query' not in request.GET:
+        form = SearchForm()
+        return render_to_response(template_name, locals())
+    
+    scope = request.GET.get('scope', 'T')
+    query = request.GET.get('query', '')
+    
+    form = SearchForm(request.GET)
+    
     p = request.GET.get('page', '1')
     if not p.isdigit():
         p = 1
     else:
         p = int(p)
 
-    form = SearchForm(request.POST)
-    if form.is_valid():
-        q = form.cleaned_data
-        request.session['search-form'] = form
-    elif 'search-form' in request.session:
-        form = request.session['search-form']
-        if form.is_valid():
-            q = form.cleaned_data
-        else:
-            return HttpResponseRedirect(template_name)
-    else:
-        return HttpResponseRedirect(template_name)
+    if not form.is_valid():
+        return render_to_response(template_name, locals())
 
-    print p, q['scope'], q['query']
-    book_list = util.getBooks(q['scope'], q['query'])
-    basic_info = { 'form': form }
+    q = form.cleaned_data
+    book_list = util.get_books(scope, query)
+    basic_info = { 'form': form, 'scope': scope, 'query': query }
 
     return list_detail.object_list(
         request,
@@ -53,39 +52,7 @@ def search_in_template(request, template_name):
 
 
 def search(request):
-    errors = []
-    
-    p = request.GET.get('page', '1')
-    if not p.isdigit():
-        p = 1
-    else:
-        p = int(p)
-
-    form = SearchForm(request.POST)
-    if form.is_valid():
-        q = form.cleaned_data
-        request.session['search-form'] = form
-    elif 'search-form' in request.session:
-        form = request.session['search-form']
-        if form.is_valid():
-            q = form.cleaned_data
-        else:
-            return HttpResponseRedirect('/search-base/')
-    else:
-        return HttpResponseRedirect('/search-base/')
-        
-    book_list = util.getBooks(q['scope'], q['query'])
-    basic_info = { 'form': form }
-
-    return list_detail.object_list(
-        request,
-        paginate_by = Per_Page,
-        page = p,
-        queryset = book_list,
-        template_name = 'search.html',
-        template_object_name = 'book',
-        extra_context = basic_info,
-    )
+    return search_in_template(request, 'search.html')
 
 
 def login(request):

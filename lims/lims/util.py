@@ -1,6 +1,7 @@
 from db.models import Book
 import urllib2
 from xml.dom import minidom
+from django.db.models import Q
 
 
 apikey = '002bdcc12fb16e8a008396438f144b9e'
@@ -17,13 +18,15 @@ def get_xmlnode(node,name):
     return node.getElementsByTagName(name) if node else []
 
 
-def infoBook(isbn):
-    res = urllib2.urlopen(isbnURL + isbn + '?apikey=' + apikey)
+def info_book(isbn):
+    book = {}
+    try:
+        res = urllib2.urlopen(isbnURL + isbn + '?apikey=' + apikey)
+    except:
+        return book
     xmldoc = minidom.parse(res)
     entry = xmldoc.documentElement
-    
-    book = {}
-    
+        
     nodes_summary = get_xmlnode(entry, 'summary')
     if nodes_summary:
         book['summary'] = get_nodevalue(nodes_summary[0])
@@ -40,11 +43,11 @@ def infoBook(isbn):
     return book
 
 
-def getBooks(scope, query):
+def get_books(scope, query):
     if scope == 'T':
-        books = Book.objects.filter(name__icontains=query)
+        books = Book.objects.filter(title__icontains=query)
     elif scope == 'A':
-        books = Book.objects.filter(authors__icontains=query)
+        books = Book.objects.filter(Q(authors__icontains=query)|Q(translators__icontains=query))
     elif scope == 'I':
         books = Book.objects.filter(isbn=query)
     else:
