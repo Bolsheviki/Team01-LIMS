@@ -19,7 +19,6 @@ def validate_book_id(id):
     try:
         book = BookInstance.objects.get(Q(id=id)&Q(removed=False))
     except:
-        print 'Hello'
         raise forms.ValidationError(u'Book ID error')
     
 class RemoveBookForm(forms.Form):

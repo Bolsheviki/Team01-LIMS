@@ -1,7 +1,7 @@
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from lims.views import search_in_template
+from lims.views import search_in_template, info_book_in_template
 from book_admin.forms import AddBookForm, RemoveBookForm
 from book_admin import util
 from db.models import BookInstance
@@ -12,7 +12,7 @@ def test(request):
     
 
 def search(request):
-    return search_in_template(request, 'book_admin/search.html');
+    return search_in_template(request, 'book_admin/search.html', 'book-admin');
 
 
 def remove(request):
@@ -41,3 +41,8 @@ def add(request):
 def audit(request):
     return render_to_response('book_admin/audit.html', locals());
 
+    
+def info_book(request, isbn):
+    return info_book_in_template(request, isbn, 'book_admin/book.html')
+        
+        

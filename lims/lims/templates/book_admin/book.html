@@ -1,4 +1,5 @@
 {% extends "book_admin/base.html" %}
-{% block title %}Add{% endblock %}
+{% block title %}{{ book.title }}{% endblock %}
 {% block content %}
+    {% include 'book.html' %}
 {% endblock %}

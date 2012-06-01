@@ -15,7 +15,7 @@
 	<p>Found {{ book_list|length }} book{{ book_list|pluralize }}.</p>
 	<ul>
 		{% for book in book_list %}
-		<li>{{ book }}</li>
+		<li><a href='/{{ app }}/book/{{ book.isbn }}/'>{{ book }}</a></li>
 		{% endfor %}
 	</ul>
 	{% include 'pagenation.html' %}

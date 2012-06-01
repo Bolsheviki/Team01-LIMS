@@ -1,0 +1,47 @@
+{% if book %}
+    <h2>{{ book.title }}</h2>
+    <p><b>isbn:</b> {{ isbn }}</p>
+
+    {% if 'image' in book.keys %}
+        <img src='{{ book.image }}'/>
+    {% endif %}
+    
+    {% if 'aka' in book.keys %}
+        <p><b>foreign name:</b> {{ book.aka }}</p>
+    {% endif %}
+    
+    {% if 'author' in book.keys %}
+        <p><b>authors:</b> {{ book.author }}</p>
+    {% endif %}
+
+    {% if 'translator' in book.keys %}
+        <p><b>translators:</b> {{ book.translator }}</p>
+    {% endif %}
+
+    {% if 'publisher' in book.keys %}
+        <p><b>publisher:</b> {{ book.publisher }}</p>
+    {% endif %}
+
+    {% if 'remained' in book.keys %}
+        <p><b>remained to be borrowed:</b> {{ book.remained }}</p>
+    {% endif %}
+    
+    {% if 'pages' in book.keys %}
+        <p><b>pages:</b> {{ book.pages }}</p>
+    {% endif %}
+    
+    {% if 'price' in book.keys %}
+        <p><b>price:</b> {{ book.price }}</p>
+    {% endif %}
+    
+    {% if 'summary' in book.keys %}
+        <p><b>summary:</b> {{ book.summary }}</p>
+    {% endif %}
+
+    {% if 'author_intro' in book.keys %}
+        <p><b>author-intro:</b> {{ book.author_intro }}</p>
+    {% endif %}
+{% else %}
+    <h2 style='color: red'>No such book whose isbn is {{ isbn }}</h2>
+{% endif %}
+

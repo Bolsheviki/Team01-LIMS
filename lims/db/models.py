@@ -42,7 +42,7 @@ class BookInstance(models.Model):
     renewal = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return '%s(%d)' % (self.book.title, self.id)
+        return '%s(%d)%s' % (self.book.title, self.id, '--removed' if self.removed else '')
 
 
 class Record(models.Model):

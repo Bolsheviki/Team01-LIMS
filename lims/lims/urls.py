@@ -9,9 +9,6 @@ urlpatterns = patterns('',
     # url(r'^$', 'Team01_LIMS_site.views.home', name='home'),
     # url(r'^Team01_LIMS_site/', include('Team01_LIMS_site.foo.urls')),
 
-    url(r'^search/', 'lims.views.search'),
-    url(r'^search-base/', 'lims.views.search_base'),
-#    url(r'^search/P<item_id>\d+/', 'lims.views.search'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

@@ -1,4 +1,4 @@
-from db.models import Book
+from db.models import Book, BookInstance, Borrow, Record
 import urllib2
 from xml.dom import minidom
 from django.db.models import Q
@@ -44,13 +44,26 @@ def info_book(isbn):
 
 
 def get_books(scope, query):
-    if scope == 'T':
-        books = Book.objects.filter(title__icontains=query)
-    elif scope == 'A':
+    if scope == 'A':
         books = Book.objects.filter(Q(authors__icontains=query)|Q(translators__icontains=query))
     elif scope == 'I':
         books = Book.objects.filter(isbn=query)
-    else:
-        books = Book.objects.filter(name__icontains='')
+    else: # 'T'
+        books = Book.objects.filter(title__icontains=query)
     return books
+
+    
+def get_book_info(isbn):
+    book_info = info_book(isbn)
+    books = BookInstance.objects.filter(Q(book__isbn=isbn)&Q(removed=False))
+    records = Record.objects.filter(booki=books)
+    print records
+    borrow = records.filter(id__range=Borrow.objects.values_list('record', flat=True))
+    print borrow
+    remained = books.exclude(id__range=borrow.values_list('booki', flat=True))
+    book_info['remained'] = remained.count()
+    if 'author-intro' in book_info.keys():
+        book_info['author_intro'] = book_info['author-intro']
+        del book_info['author-intro']
+    return book_info
 

@@ -8,15 +8,8 @@ from lims import util
 
 Per_Page = 1
 
-def search_base(request):
-    form = SearchForm(
-        initial={'scope': 'T'}
-    )
-    return render_to_response('search-base.html', locals())
 
-
-def search_in_template(request, template_name):
-    errors = []
+def search_in_template(request, template_name, app):
     
     if 'scope' not in request.GET or 'query' not in request.GET:
         form = SearchForm()
@@ -38,7 +31,7 @@ def search_in_template(request, template_name):
 
     q = form.cleaned_data
     book_list = util.get_books(scope, query)
-    basic_info = { 'form': form, 'scope': scope, 'query': query }
+    basic_info = { 'form': form, 'scope': scope, 'query': query, 'app': app }
 
     return list_detail.object_list(
         request,
@@ -50,9 +43,10 @@ def search_in_template(request, template_name):
         extra_context = basic_info,
     )
 
-
-def search(request):
-    return search_in_template(request, 'search.html')
+    
+def info_book_in_template(request, isbn, template_name):
+    book = util.get_book_info(isbn)
+    return render_to_response(template_name, locals());
 
 
 def login(request):
