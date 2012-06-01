@@ -37,12 +37,12 @@ class BookInstance(models.Model):
         (u'D', u'Discard'),
     )
     book = models.ForeignKey(Book)
-    state = models.CharField(max_length=10, choices=STATE_CHOICES,
-                             default='U')
+    state = models.CharField(max_length=10, choices=STATE_CHOICES, default='U')
+    removed = models.BooleanField(default=False)
     renewal = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return '%s(%d)' % (self.book.name, self.id)
+        return '%s(%d)' % (self.book.title, self.id)
 
 
 class Record(models.Model):
