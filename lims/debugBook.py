@@ -1,7 +1,5 @@
-from db.models import Book
 import urllib2
 from xml.dom import minidom
-
 
 apikey = '002bdcc12fb16e8a008396438f144b9e'
 isbnURL = 'http://api.douban.com/book/subject/isbn/'
@@ -15,6 +13,10 @@ def get_nodevalue(node, index = 0):
 
 def get_xmlnode(node,name):
     return node.getElementsByTagName(name) if node else []
+
+def xml_to_string(filename='user.xml'):
+    doc = minidom.parse(filename)
+    return doc.toxml('UTF-8')
 
 
 def infoBook(isbn):
@@ -38,16 +40,11 @@ def infoBook(isbn):
     for node in nodes_attribute:
         book[get_attrvalue(node, 'name')] = get_nodevalue(node)
     return book
+    
 
 
-def getBooks(scope, query):
-    if scope == 'T':
-        books = Book.objects.filter(name__icontains=query)
-    elif scope == 'A':
-        books = Book.objects.filter(authors__icontains=query)
-    elif scope == 'I':
-        books = Book.objects.filter(isbn=query)
-    else:
-        books = Book.objects.filter(name__icontains='')
-    return books
+print infoBook('9787111298854')['title']
+print infoBook('9787111298854')['author']
+print infoBook('9787111298854')['translator']
+print infoBook('9787111298854')['summary']
 
