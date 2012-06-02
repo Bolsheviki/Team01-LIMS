@@ -72,7 +72,7 @@ def loggedin(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/login/')
-	
+
 def is_in_group(user, groupname):
     return user.groups.filter(name = groupname).count() > 0
 
