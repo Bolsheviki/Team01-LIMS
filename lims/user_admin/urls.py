@@ -14,5 +14,5 @@ urlpatterns = patterns('user_admin.views',
     url(r'^search/$', 'search'),
 ##    url(r'^add/$', 'add'),
 ##    url(r'^remove/$', 'remove'),
-##    url(r'^user/(?P<username>\w+)/$', 'info_user'),
+    url(r'^user/(?P<username>\w+)/$', 'info_user'),
 )

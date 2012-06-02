@@ -3,8 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import list_detail
 from django.shortcuts import render_to_response
 from lims.views import login_in_template, logout_in_template
-from user_admin.forms import SearchForm
+from user_admin.forms import SearchForm, UserInfoForm
 from user_admin import util
+from lims.util import is_in_group
+from django.contrib.auth.models import User
     
 def login(request):
     return login_in_template(request, 'UserAdmin', 'user_admin/login.html', '/user-admin')
@@ -46,3 +48,32 @@ def search(request):
         template_object_name = 'user',
         extra_context = { 'form': form, 'scope': scope, 'query': query, 'show_result':True },
     )
+
+def info_user(request, username):
+    try:
+        user = User.objects.get(username=username)
+        is_normal_user = in_in_group(user, 'NormalUser')
+        profile = user.get_profile()
+
+        if request.method == 'POST':
+            form = UserInfoForm(request.POST)
+            if form.is_valid():
+                post = request.POST
+                user.username = post['username']
+                user.email = post['email']
+                user.first_name = post['first_name']
+                user.last_name = post['last_name']
+                if 'level' in post:
+                    user.level = post['level']
+                if 'debt' in post:
+                    user.debt = post['debt']
+                user.save()
+                is_set = True
+
+        user_dict = {'username':user.username, 'email':user.email, 'first_name':user.first_name, 'last_name':user.last_name,
+                     'level':profile.level, 'debt':profile.debt }
+        form = UserInfoForm(user_dict)
+        return render_to_response('user_admin/info_user.html', locals())
+    
+    except User.DoesNotExist:
+        return render_to_response('user_admin/info_user.html')

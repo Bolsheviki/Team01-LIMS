@@ -71,14 +71,6 @@ def login_in_template(request, group_name, template_name, redirect_url):
         form = LoginForm()
         return render_to_response(template_name, { 'form' : form })
 
-#@login_required(login_url = '/login/')
-#def loggedin(request):
-#    return render_to_response('loggedin.html', {'user':request.user})
-
 def logout_in_template(request, redirect_url):
     auth.logout(request)
     return HttpResponseRedirect(redirect_url)
-
-#@user_passes_test(is_normal_user_logged_in, login_url = '/login')
-#def need_normal_user_logged_in(request):
-#    return render_to_response('user_passes_test.html')
