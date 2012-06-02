@@ -3,7 +3,6 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.views.generic import list_detail
-from django.contrib.auth.decorators import login_required, user_passes_test
 from lims.forms import SearchForm, LoginForm
 from lims import util
 
