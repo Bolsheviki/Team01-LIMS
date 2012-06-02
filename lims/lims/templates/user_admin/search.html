@@ -1,0 +1,37 @@
+{% extends "user_admin/base.html" %}
+{% block title %}Search Users{% endblock %}
+{% block body %}
+
+<form action='' method='get'>
+	<span class='scope'>
+        {{ form.scope.errors }}
+        {{ form.scope }}
+	</span>
+	<span class='query'>
+        {{ form.query.errors }}
+        {{ form.query }}
+	</span>
+    <input type='submit' value='Search'>
+</form>
+
+{% if show_result %}
+	{% if user_list %}
+		<p>Found {{ user_list|length }} user{{ user_list|pluralize }}.</p>
+		<table>
+			<th>Username</th><th>Email</th>
+			{% for user in user_list %}
+			<tr>
+				<td><a href='/user-admin/user/{{ user.username }}'>{{ user.username }}</a></td>
+				<td>{{ user.email }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+		
+		{% include 'pagenation.html' %}
+		
+	{% else %}
+		<p>No users matched your search criteria.</p>
+	{% endif %}
+{% endif %}
+
+{% endblock %}

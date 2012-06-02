@@ -14,13 +14,13 @@ class Book(models.Model):
     def __unicode__(self):
         return self.title
 
+LEVEL_CHOICES = (
+    (u'U', u'undergraduate'),
+    (u'G', u'graduate'),
+    (u'S', u'staff'),
+)
 
 class UserProfile(models.Model):
-    LEVEL_CHOICES = (
-        (u'U', u'undergraduate'),
-        (u'G', u'graduate'),
-        (u'S', u'staff'),
-    )
     user = models.ForeignKey(User, unique = True)
     level = models.CharField(null=True, max_length=2,
                              choices=LEVEL_CHOICES, default='U')

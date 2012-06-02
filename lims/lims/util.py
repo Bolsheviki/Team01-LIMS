@@ -73,3 +73,20 @@ def is_in_group(user, group_name):
 
 def is_normal_user_logged_in(user):
     return user.is_authenticated() and is_in_group(user, 'NormalUser')
+
+def is_book_admin_logged_in(user):
+    return user.is_authenticated() and is_in_group(user, 'BookAdmin')
+
+def is_counter_admin_logged_in(user):
+    return user.is_authenticated() and is_in_group(user, 'CounterAdmin')
+
+def is_user_admin_logged_in(user):
+    return user.is_authenticated() and is_in_group(user, 'UserAdmin')
+
+#@login_required(login_url = '/login/')
+#def loggedin(request):
+#    return render_to_response('loggedin.html', {'user':request.user})
+
+#@user_passes_test(is_normal_user_logged_in, login_url = '/login')
+#def need_normal_user_logged_in(request):
+#    return render_to_response('user_passes_test.html')

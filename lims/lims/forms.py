@@ -9,7 +9,6 @@ QUERY_SCOPE_CHOICES = (
     ('I', 'ISBN'),
 )
 
-
 class SearchForm(forms.Form):
     query = forms.CharField(required=False)
     scope = forms.ChoiceField(widget=forms.Select, choices=QUERY_SCOPE_CHOICES)
