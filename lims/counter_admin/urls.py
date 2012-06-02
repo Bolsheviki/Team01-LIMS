@@ -9,4 +9,7 @@ urlpatterns = patterns('counter_admin.views',
     # url(r'^$', 'Team01_LIMS_site.views.home', name='home'),
     # url(r'^Team01_LIMS_site/', include('Team01_LIMS_site.foo.urls')),
     url(r'^$', 'test'),
+	url(r'^borrow/$', 'borrow'),
+	url(r'^return/$', 'return_'),
+	url(r'^clear/$', 'clear'),
 )
