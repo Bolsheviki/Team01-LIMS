@@ -1,19 +1,8 @@
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-	{% if error %}
-		<p class="error">Sorry, that's not a valid username or password</p>
-	{% endif %}
+<p> {{ errors }} </p>
 
-	<form action="" method="post">
-		<label for="username">User name:</label>
-		<input type="text" name="username" value="" id="username">
-		<label for="password">Password:</label>
-		<input type="password" name="password" value="" id="password">
-		<input type="submit" value="login" />
-	</form>
-</body>
-</html>
-
+<form action='' method='post'>
+	<table>
+		{{ form.as_table }}
+	</table>
+    <input type='submit' value='Login'>
+</form>

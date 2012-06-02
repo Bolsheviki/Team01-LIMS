@@ -20,9 +20,5 @@ urlpatterns = patterns('',
     url(r'^counter-admin/', include('counter_admin.urls')),
     url(r'^book-admin/', include('book_admin.urls')),
     url(r'^user-admin/', include('user_admin.urls')),
-                       
-    url(r'^login/$', 'lims.views.login'),
-    url(r'^loggedin/$', 'lims.views.loggedin'),
-    url(r'^logout/$', 'lims.views.logout'),
-    url(r'^user_passes_test/$', 'lims.views.need_normal_user_logged_in'),
+                    
 )
