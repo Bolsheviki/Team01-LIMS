@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+{% if tlist %}
+	<p>Found {{ tlist|length }} book{{ tlist|pluralize }}.</p>
+	<ul>
+		{% for record in tlist %}
+		<li>{{ record.name }}</li>
+		<li>{{ record.time }}</li>
+		<li>{{ record.state }}</li>
+		{% endfor %}
+	</ul>
+	{% include 'pagenation.html' %}
+{% else %}
+	<p>No books matched your search criteria.</p>
+{% endif %}
+
+{% endblock %}

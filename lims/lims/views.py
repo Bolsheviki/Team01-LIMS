@@ -65,7 +65,7 @@ def login(request):
             return HttpResponseRedirect(redirect)
         else:
             return render_to_response('login.html', {'error':True})
-    return render_to_response('login.html')
+    return render_to_response('login.html', {'error':True})
 
 @login_required(login_url = '/login/')
 def loggedin(request):

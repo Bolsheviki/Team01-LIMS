@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+{% if tlist %}
+	<p>Found {{ tlist|length }} book{{ tlist|pluralize }}.</p>
+	<ul>
+		{% for record in tlist %}
+		<li>{{ record.isbn }}</li>
+		<li>{{ record.name }}</li>
+		<li>{{ record.time }}</li>
+		<li>{{ record.renewal }}</li>
+			{% if not record.renewal %}
+				<form action='../renewal/' method='post'>
+				<input type='hidden' name='isbn' value='{{record.isbn}}'>
+				<input type='submit' value='renewal'>
+				</form>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	{% include 'pagenation.html' %}
+{% else %}
+	<p>No books matched your search criteria.</p>
+{% endif %}
+
+{% endblock %}
