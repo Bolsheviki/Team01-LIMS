@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
+# from django.contrib import admin
+# admin.autodiscover()
 
 
 
@@ -12,6 +12,8 @@ urlpatterns = patterns('book_admin.views',
     # url(r'^Team01_LIMS_site/', include('Team01_LIMS_site.foo.urls')),
 
     url(r'^$', 'search'),
+	url(r'^login/$', 'login'),
+	url(r'^logout/$', 'logout'),
     url(r'^search/$', 'search'),
     url(r'^add/$', 'add'),
     url(r'^remove/$', 'remove'),

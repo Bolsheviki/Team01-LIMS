@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Book Admin.{% endblock %}
-{% block head %}<h1>This Book Admin.</h1>{% endblock %}
-{% block body %}
+{% block head %}
+	<h1>This Book Admin.</h1>
 	<ul>
 		<li><a href='/book-admin/search'>Search</a></li>
 		<li><a href='/book-admin/add'>Add</a></li>
 		<li><a href='/book-admin/remove'>Remove</a></li>
 		<li><a href='/book-admin/audit'>Audit</a></li>
 	</ul>
-	{% block content %}{% endblock %}
+    {% block login %}
+         {% include 'loggedin.html' %}
+    {% endblock %}
 {% endblock %}
