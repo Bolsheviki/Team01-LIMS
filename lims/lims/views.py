@@ -10,9 +10,11 @@ Per_Page = 1
 
 
 def search_in_template(request, template_name, app):
+    user = request.user
     
     if 'scope' not in request.GET or 'query' not in request.GET:
         form = SearchForm()
+        is_begin = True
         return render_to_response(template_name, locals())
     
     scope = request.GET.get('scope', 'T')
@@ -31,7 +33,7 @@ def search_in_template(request, template_name, app):
 
     q = form.cleaned_data
     book_list = util.get_books(scope, query)
-    basic_info = { 'form': form, 'scope': scope, 'query': query, 'app': app }
+    basic_info = { 'form': form, 'scope': scope, 'query': query, 'app': app, 'user': user }
 
     return list_detail.object_list(
         request,
@@ -65,11 +67,12 @@ def login_in_template(request, group_name, template_name, redirect_url):
                 redirect = redirect_url
             return HttpResponseRedirect(redirect)
         else:
-            return render_to_response(template_name, {'form' : form })
+            return render_to_response(template_name, { 'form': form })
     else:
         form = LoginForm()
-        return render_to_response(template_name, { 'form' : form })
+        return render_to_response(template_name, { 'form': form })
 
+		
 def logout_in_template(request, redirect_url):
     auth.logout(request)
     return HttpResponseRedirect(redirect_url)
