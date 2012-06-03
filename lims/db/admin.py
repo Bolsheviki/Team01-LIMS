@@ -14,6 +14,7 @@ admin.site.register(Book)
 admin.site.register(BookInstance)
 admin.site.register(Record)
 admin.site.register(Borrow)
+admin.site.register(UserProfile)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 

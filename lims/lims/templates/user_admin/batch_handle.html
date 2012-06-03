@@ -1,0 +1,15 @@
+{% if is_finished %}
+	<p>Batch users handling has been finished!</p>
+	{% if has_error %}
+		<p>But some error has happened during this time.</p>
+	{% endif %}
+{% endif %}
+<form action='' method='post'>
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type='submit' value='Submit'>
+</form>
+{% if todo_list %}
+	<p>The number of user{{ todo_list|pluralize }} to handle is totally {{ todo_list|length }}, which will range from {{ todo_list|first }} to {{ todo_list|last }}.</p>
+{% endif %}

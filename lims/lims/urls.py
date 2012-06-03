@@ -9,9 +9,6 @@ urlpatterns = patterns('',
     # url(r'^$', 'Team01_LIMS_site.views.home', name='home'),
     # url(r'^Team01_LIMS_site/', include('Team01_LIMS_site.foo.urls')),
 
-    url(r'^search/', 'lims.views.search'),
-    url(r'^search-base/', 'lims.views.search_base'),
-#    url(r'^search/P<item_id>\d+/', 'lims.views.search'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
@@ -20,6 +17,7 @@ urlpatterns = patterns('',
     
     url(r'^$', include('normal_user.urls')),
     url(r'^normal-user/', include('normal_user.urls')),
+<<<<<<< HEAD
     url(r'^counter-admin/$', include('counter_admin.urls')),
     url(r'^book-admin/$', include('book_admin.urls')),
     url(r'^user-admin/$', include('user_admin.urls')),
@@ -28,4 +26,10 @@ urlpatterns = patterns('',
     url(r'^loggedin/$', 'lims.views.loggedin'),
     url(r'^logout/$', 'lims.views.logout'),
     url(r'^user_passes_test/$', 'lims.views.need_normal_user_logged_in'),
+=======
+    url(r'^counter-admin/', include('counter_admin.urls')),
+    url(r'^book-admin/', include('book_admin.urls')),
+    url(r'^user-admin/', include('user_admin.urls')),
+                    
+>>>>>>> f56d96a42d067d3312366ea5167f4723bc841356
 )

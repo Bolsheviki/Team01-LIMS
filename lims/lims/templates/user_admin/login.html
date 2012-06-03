@@ -1,13 +1,9 @@
-{% extends "base.html" %}
-{% block head %}
-<h1>This User Admin.</h1>
-<ul>
-	<li><a href='/user-admin/search'>Search Users</a></li>
-	<li><a href='/user-admin/add'>Add Users</a></li>
-	<li><a href='/user-admin/remove'>Remove Users</a></li>
-</ul>
+{% extends "user_admin/base.html" %}
+{% block title %}
+User Admin Login
+{% endblock %}
 {% block login_info %}
-{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated and login_check %}
   <p align='right'>
   Welcome, {{ request.user.username }}. Thanks for logging in. 
   <a href='/user-admin/settings'>Settings</a>
@@ -17,7 +13,6 @@
   <p align='right'>Please log in.</p>
 {% endif %}
 {% endblock %}
-{% endblock %}
 {% block body %}
-
+{% include "login.html" %}
 {% endblock %}

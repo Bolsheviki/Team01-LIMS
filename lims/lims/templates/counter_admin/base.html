@@ -1,1 +1,14 @@
 {% extends "base.html" %}
+{% block title %}Counter Admin.{% endblock %}
+{% block head %}
+	<h1>Counter Admin.</h1>
+	<ul>
+		<li><a href='/counter-admin/borrow'>Borrow</a></li>
+		<li><a href='/counter-admin/return'>Return</a></li>
+		<li><a href='/counter-admin/clear'>Clear</a></li>
+	</ul>
+	{% block login %}
+		<span>{{ user.username }}, Welcome to LIMS!</span>
+		<a href='/counter-admin/logout/'>Log out</a>
+    {% endblock %}
+{% endblock %}

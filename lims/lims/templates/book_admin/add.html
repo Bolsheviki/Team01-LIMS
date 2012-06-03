@@ -1,0 +1,15 @@
+{% extends "book_admin/base.html" %}
+{% block title %}Add{% endblock %}
+{% block body %}
+	{% if bookId > 0 %}
+		<p style='color:red'>You have add a book whose id is {{ bookId }}</p>
+	{% endif %}
+	<form action='' method='get'>
+		<span class='isbn'>
+			{{ form.isbn.errors }}
+			{{ form.isbn }}
+		</span>
+		<input type='submit' value='Add'>
+	</form>
+
+{% endblock %}

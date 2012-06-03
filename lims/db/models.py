@@ -3,25 +3,24 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Book(models.Model):
-    isbn = models.BigIntegerField(unique=True);
-    name = models.CharField(max_length=100)
-    category = models.CharField(unique=True, blank=True, max_length=30)
-    retrieval = models.CharField(unique=True, blank=True, max_length=30)
-    publisher = models.CharField(blank=True, max_length=100)
-    image = models.FileField(null=True, upload_to='image/%Y/%m/%d')
+    isbn = models.CharField(max_length=30, unique=True);
+    title = models.CharField(max_length=100)
     authors = models.CharField(blank=True, max_length=100)
-    abstract = models.TextField(blank=True, max_length=500)
+    translators = models.CharField(blank=True, max_length=100)
+    publisher = models.CharField(blank=True, max_length=100)
+#    category = models.CharField(unique=True, blank=True, max_length=30)
+#    retrieval = models.CharField(unique=True, blank=True, max_length=30)
 
     def __unicode__(self):
-        return self.name
+        return self.title
 
+LEVEL_CHOICES = (
+    (u'U', u'undergraduate'),
+    (u'G', u'graduate'),
+    (u'S', u'staff'),
+)
 
 class UserProfile(models.Model):
-    LEVEL_CHOICES = (
-        (u'U', u'undergraduate'),
-        (u'G', u'graduate'),
-        (u'S', u'staff'),
-    )
     user = models.ForeignKey(User, unique = True)
     level = models.CharField(null=True, max_length=2,
                              choices=LEVEL_CHOICES, default='U')
@@ -38,12 +37,12 @@ class BookInstance(models.Model):
         (u'D', u'Discard'),
     )
     book = models.ForeignKey(Book)
-    state = models.CharField(max_length=10, choices=STATE_CHOICES,
-                             default='U')
+    state = models.CharField(max_length=10, choices=STATE_CHOICES, default='U')
+    removed = models.BooleanField(default=False)
     renewal = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return '%s(%d)' % (self.book.name, self.id)
+        return '%s(%d)%s' % (self.book.title, self.id, '--removed' if self.removed else '')
 
 
 class Record(models.Model):
@@ -61,7 +60,6 @@ class Record(models.Model):
 
 
 class Borrow(models.Model):
-    user = models.ForeignKey(UserProfile)
     record = models.ForeignKey(Record)
 
     def __unicode__(self):
