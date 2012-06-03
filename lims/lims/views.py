@@ -1,9 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.views.generic import list_detail
-from lims.forms import SearchForm, LoginForm
+from lims.forms import SearchForm, LoginForm, SettingsForm
 from lims import util
 
 Per_Page = 1
@@ -67,12 +68,36 @@ def login_in_template(request, group_name, template_name, redirect_url):
                 redirect = redirect_url
             return HttpResponseRedirect(redirect)
         else:
-            return render_to_response(template_name, { 'form': form })
+            return render_to_response(template_name, {'form' : form }, context_instance=RequestContext(request))
     else:
         form = LoginForm()
-        return render_to_response(template_name, { 'form': form })
+        return render_to_response(template_name, { 'form' : form }, context_instance=RequestContext(request))
 
 		
 def logout_in_template(request, redirect_url):
     auth.logout(request)
     return HttpResponseRedirect(redirect_url)
+
+def settings_in_template(request, template_name):
+    if request.method == 'POST':
+        form = SettingsForm(request.POST)
+
+        if form.is_valid():
+            if request.POST.get('need_reset_password', False):
+                request.user.set_password(request.POST['password_first'])
+            request.user.email = request.POST['email']
+            request.user.first_name = request.POST['first_name']
+            request.user.last_name = request.POST['last_name']
+            request.user.save()
+            is_set = True
+
+    else:
+        dict = {}
+        dict['password_first'] = ''
+        dict['password_confirm'] = ''
+        dict['email'] = request.user.email
+        dict['first_name'] = request.user.first_name
+        dict['last_name'] = request.user.last_name
+        form = SettingsForm(dict)
+
+    return render_to_response(template_name, locals(), context_instance=RequestContext(request))
