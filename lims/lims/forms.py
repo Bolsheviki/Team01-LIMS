@@ -14,16 +14,13 @@ class SearchForm(forms.Form):
     scope = forms.ChoiceField(widget=forms.Select, choices=QUERY_SCOPE_CHOICES)
 
 class LoginForm(forms.Form):
+    group_name = forms.CharField(widget=forms.HiddenInput)
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
-    group_name = forms.CharField(widget=forms.HiddenInput)
 
-    def clean(self):
-        cleaned_data = super(LoginForm, self).clean()
-        username = cleaned_data.get('username')
-        password = cleaned_data.get('password')
-        group_name = cleaned_data.get('group_name')
-
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        group_name = self.cleaned_data.get('group_name')
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -31,9 +28,29 @@ class LoginForm(forms.Form):
 
         if not util.is_in_group(user, group_name):
             raise forms.ValidationError('User not belong to group %s!' % (group_name))
-        
+        return username
+    
+    def clean_password(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+     
         user = auth.authenticate(username = username, password = password)
         if user is None or not user.is_active:
             raise forms.ValidationError('Password not matched!')
+        return password
 
-        return cleaned_data
+class SettingsForm(forms.Form):
+    need_reset_password = forms.BooleanField(initial=False, required=False)
+    password_first = forms.CharField(widget=forms.PasswordInput, required=False)
+    password_confirm = forms.CharField(widget=forms.PasswordInput, required=False)
+    email = forms.EmailField(required=False)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+
+    def clean_password_confirm(self):
+        pw_first = self.cleaned_data['password_first']
+        pw_confirm = self.cleaned_data['password_confirm']
+        need_reset_pw = self.cleaned_data.get('need_reset_password', False)
+        if need_reset_pw and pw_first != pw_confirm:
+            raise forms.ValidationError('Two inputs of password are not the same!')
+        return pw_confirm

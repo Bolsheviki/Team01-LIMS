@@ -2,7 +2,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import list_detail
 from django.shortcuts import render_to_response
-from lims.views import login_in_template, logout_in_template
+from django.template import RequestContext
+from lims.views import login_in_template, logout_in_template, settings_in_template
 from user_admin.forms import SearchForm, UserInfoForm
 from user_admin import util
 from lims.util import is_in_group, is_user_admin_logged_in
@@ -52,16 +53,20 @@ def search(request):
     )
 
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
+def settings(request):
+    return settings_in_template(request, 'user_admin/settings.html')
+
+@user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def info_user(request, username):
     try:
         user = User.objects.get(username=username)
         is_normal_user = is_in_group(user, 'NormalUser')
-        profile = user.get_profile()
+        if is_normal_user:
+            profile = user.get_profile()
 
         if request.method == 'POST':
             form = UserInfoForm(request.POST)
             if form.is_valid():
-                post = request.POST
                 user.email = request.POST['email']
                 user.first_name = request.POST['first_name']
                 user.last_name = request.POST['last_name']
@@ -69,7 +74,8 @@ def info_user(request, username):
                     profile.level = request.POST['level']
                 if 'debt' in request.POST:
                     profile.debt = request.POST['debt']
-                profile.save()
+                if is_normal_user:
+                    profile.save()
                 user.save()
                 is_set = True
         else:
@@ -78,7 +84,7 @@ def info_user(request, username):
             form = UserInfoForm(user_dict)
 
 
-        return render_to_response('user_admin/info_user.html', locals())
+        return render_to_response('user_admin/info_user.html', locals(), context_instance=RequestContext(request))
     
     except User.DoesNotExist:
-        return render_to_response('user_admin/info_user.html')
+        return render_to_response('user_admin/info_user.html', context_instance=RequestContext(request))

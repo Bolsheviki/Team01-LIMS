@@ -1,0 +1,15 @@
+{% if is_set %}
+	<p>Settings has been changed successfully!</p>
+{% endif %}
+
+<form action='' method='post'>
+	<table>
+	<tr><th><label for="id_need_reset_password">Need Reset Password:</label></th><td>{{ form.need_reset_password }}</td><td>{{ form.need_reset_password.errors }}</td></tr>
+	<tr><th><label for="id_password_first">New Password:</label></th><td>{{ form.password_first }}</td><td>{{ form.password_first.errors }}</td></tr>
+	<tr><th><label for="id_password_confirm">Password Confirm:</label></th><td>{{ form.password_confirm }}</td><td>{{ form.password_confirm.errors }}</td></tr>
+	<tr><th><label for="id_email">Email:</label></th><td>{{ form.email }}</td><td>{{ form.email.errors }}</td></tr>
+	<tr><th><label for="id_first_name">First Name:</label></th><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}</td></tr>
+	<tr><th><label for="id_last_name">Last Name:</label></th><td>{{ form.last_name }}</td><td>{{ form.last_name.errors }}</td></tr>
+	</table>
+	<input type='submit' value='Submit'>
+</form>

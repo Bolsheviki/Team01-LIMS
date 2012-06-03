@@ -12,7 +12,7 @@ class SearchForm(forms.Form):
     scope = forms.ChoiceField(widget=forms.Select, choices=QUERY_SCOPE_CHOICES)
 
 class UserInfoForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(required=False)
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
     level = forms.ChoiceField(required=False, widget=forms.Select, choices=models.LEVEL_CHOICES)
