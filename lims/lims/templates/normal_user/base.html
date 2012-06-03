@@ -1,1 +1,16 @@
 {% extends "base.html" %}
+
+{% block body %}
+
+{% if user %}
+<p> user : {{user.username}} </p>
+{% else %}
+<p> not user </p>
+{% endif %}
+
+<p><a href="../../search/">search book</a></p>
+<p><a href="../information/">show user message</a></p>
+<p><a href="../borrow/">show borrow book</a></p>
+<p><a href="../allbook/">show borrowed book</a></p>
+
+{% endblock %}
