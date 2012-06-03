@@ -19,7 +19,7 @@ def clear(request):
     return render_to_response('counter_admin/clear.html', locals());
 	
 def login(request):
-	return login_in_template(request, 'CounterAdmin', 'counter_admin/login.html', '/counter-admin/')
+	return login_in_template(request, 'CounterAdmin', 'counter_admin/login.html', '/counter-admin/', is_counter_admin_logged_in)
 	
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/')
 def logout(request):

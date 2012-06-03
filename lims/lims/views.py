@@ -53,7 +53,8 @@ def info_book_in_template(request, isbn, template_name):
     return render_to_response(template_name, locals());
 
 
-def login_in_template(request, group_name, template_name, redirect_url):
+def login_in_template(request, group_name, template_name, redirect_url, login_check_method):
+    login_check = login_check_method(request.user)
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
@@ -69,10 +70,10 @@ def login_in_template(request, group_name, template_name, redirect_url):
                 redirect = redirect_url
             return HttpResponseRedirect(redirect)
         else:
-            return render_to_response(template_name, {'form' : form }, context_instance=RequestContext(request))
+            return render_to_response(template_name, {'form' : form, 'login_check':login_check }, context_instance=RequestContext(request))
     else:
         form = LoginForm()
-        return render_to_response(template_name, { 'form' : form }, context_instance=RequestContext(request))
+        return render_to_response(template_name, { 'form' : form, 'login_check':login_check }, context_instance=RequestContext(request))
 
 		
 def logout_in_template(request, redirect_url):

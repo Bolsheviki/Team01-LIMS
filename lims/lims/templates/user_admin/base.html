@@ -6,6 +6,7 @@
 	<li><a href='/user-admin/add'>Add Users</a></li>
 	<li><a href='/user-admin/remove'>Remove Users</a></li>
 </ul>
+{% block login_info %}
 {% if request.user.is_authenticated %}
   <p align='right'>
   Welcome, {{ request.user.username }}. Thanks for logging in. 
@@ -15,6 +16,7 @@
 {% else %}
   <p align='right'>Please log in.</p>
 {% endif %}
+{% endblock %}
 {% endblock %}
 {% block body %}
 

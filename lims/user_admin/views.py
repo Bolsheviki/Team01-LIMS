@@ -12,7 +12,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import user_passes_test
     
 def login(request):
-    return login_in_template(request, 'UserAdmin', 'user_admin/login.html', '/user-admin')
+    return login_in_template(request, 'UserAdmin', 'user_admin/login.html', '/user-admin', is_user_admin_logged_in)
 
 def logout(request):
     return logout_in_template(request, '/user-admin/login')

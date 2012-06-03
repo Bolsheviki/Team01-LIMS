@@ -15,7 +15,7 @@ def base(request):
 
 
 def login(request):
-	return login_in_template(request, 'BookAdmin', 'book_admin/login.html', '/book-admin/')
+	return login_in_template(request, 'BookAdmin', 'book_admin/login.html', '/book-admin/', is_book_admin_logged_in)
 
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
