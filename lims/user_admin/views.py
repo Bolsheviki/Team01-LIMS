@@ -67,22 +67,26 @@ def info_user(request, username):
         if request.method == 'POST':
             form = UserInfoForm(request.POST)
             if form.is_valid():
+                if request.POST.get('need_reset_password', False):
+                    user.set_password(request.POST['password_first'])
                 user.email = request.POST['email']
                 user.first_name = request.POST['first_name']
                 user.last_name = request.POST['last_name']
-                if 'level' in request.POST:
-                    profile.level = request.POST['level']
-                if 'debt' in request.POST:
-                    profile.debt = request.POST['debt']
+                    
                 if is_normal_user:
+                    profile.level = request.POST['level']
+                    profile.debt = request.POST['debt']
                     profile.save()
                 user.save()
                 is_set = True
         else:
-            user_dict = { 'email':user.email, 'first_name':user.first_name, 'last_name':user.last_name,
-                          'level':profile.level, 'debt':profile.debt }
+            user_dict = { 'email':user.email, 'first_name':user.first_name, 'last_name':user.last_name }
+            user_dict['password_first'] = ''
+            user_dict['password_last'] = ''
+            if is_normal_user:
+                user_dict['level'] = profile.level
+                user_dict['debt'] = profile.debt 
             form = UserInfoForm(user_dict)
-
 
         return render_to_response('user_admin/info_user.html', locals(), context_instance=RequestContext(request))
     

@@ -19,8 +19,12 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean_username(self):
-        username = self.cleaned_data.get('username')
-        group_name = self.cleaned_data.get('group_name')
+        username = self.cleaned_data['username']
+        try:
+            group_name = self.cleaned_data['group_name']
+        except:
+            return username
+        
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -31,9 +35,12 @@ class LoginForm(forms.Form):
         return username
     
     def clean_password(self):
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-     
+        password = self.cleaned_data['password']
+        try:
+            username = self.cleaned_data['username']
+        except:
+            return password
+        
         user = auth.authenticate(username = username, password = password)
         if user is None or not user.is_active:
             raise forms.ValidationError('Password not matched!')
@@ -47,10 +54,21 @@ class SettingsForm(forms.Form):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
 
-    def clean_password_confirm(self):
+    def clean_password_first(self):
         pw_first = self.cleaned_data['password_first']
-        pw_confirm = self.cleaned_data['password_confirm']
         need_reset_pw = self.cleaned_data.get('need_reset_password', False)
+        if need_reset_pw and pw_first == '':
+            raise forms.ValidationError('Password should not be empty!')
+        return pw_first
+
+    def clean_password_confirm(self):
+        pw_confirm = self.cleaned_data['password_confirm']
+        try:
+            pw_first = self.cleaned_data['password_first']
+            need_reset_pw = self.cleaned_data.get('need_reset_password', False)
+        except:
+            return pw_confirm
+
         if need_reset_pw and pw_first != pw_confirm:
             raise forms.ValidationError('Two inputs of password are not the same!')
         return pw_confirm
