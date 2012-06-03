@@ -4,10 +4,11 @@ from django.views.generic import list_detail
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from lims.views import login_in_template, logout_in_template, settings_in_template
-from user_admin.forms import SearchForm, UserInfoForm
+from user_admin.forms import SearchForm, UserInfoForm, BatchUserForm
 from user_admin import util
+from db.models import UserProfile
 from lims.util import is_in_group, is_user_admin_logged_in
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import user_passes_test
     
 def login(request):
@@ -75,7 +76,7 @@ def info_user(request, username):
                     
                 if is_normal_user:
                     profile.level = request.POST['level']
-                    profile.debt = request.POST['debt']
+                    profile.debt = int(request.POST['debt'])
                     profile.save()
                 user.save()
                 is_set = True
@@ -92,3 +93,38 @@ def info_user(request, username):
     
     except User.DoesNotExist:
         return render_to_response('user_admin/info_user.html', context_instance=RequestContext(request))
+
+def batch_user_handle(request, template_name, handle_func):
+    if request.method == 'POST':
+        form = BatchUserForm(request.POST)
+        if form.is_valid():
+            todo_list = []
+            batch_username = request.POST['batch_username']
+            from_index = int(request.POST['from_index'])
+            to_index = int(request.POST['to_index'])
+            wildcard_length = int(request.POST['wildcard_length'])
+            level = request.POST['level']
+            group_name = request.POST['group']
+            for index in range(from_index, to_index + 1):
+                todo_list.append(batch_username.replace(r'(*)', str(index).zfill(wildcard_length)))
+                
+            just_list_usernames = request.POST.get('just_list_usernames', False)
+            if just_list_usernames:
+                return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+            else:
+                has_error = handle_func(todo_list, group_name, level)
+                is_finished = True
+                return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+        else:
+            return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+    else:
+        form = BatchUserForm()
+        return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+
+@user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
+def add(request):
+    return batch_user_handle(request, 'user_admin/add.html', util.add_users)
+
+@user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
+def remove(request):
+    return batch_user_handle(request, 'user_admin/remove.html', util.remove_users)

@@ -65,10 +65,10 @@ class SettingsForm(forms.Form):
         pw_confirm = self.cleaned_data['password_confirm']
         try:
             pw_first = self.cleaned_data['password_first']
-            need_reset_pw = self.cleaned_data.get('need_reset_password', False)
         except:
             return pw_confirm
 
+        need_reset_pw = self.cleaned_data.get('need_reset_password', False)
         if need_reset_pw and pw_first != pw_confirm:
             raise forms.ValidationError('Two inputs of password are not the same!')
         return pw_confirm
