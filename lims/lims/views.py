@@ -48,6 +48,7 @@ def search_in_template(request, template_name, app):
 
     
 def info_book_in_template(request, isbn, template_name):
+    user = request.user
     book = util.get_book_info(isbn)
     return render_to_response(template_name, locals());
 

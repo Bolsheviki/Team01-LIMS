@@ -60,7 +60,6 @@ class Record(models.Model):
 
 
 class Borrow(models.Model):
-    user = models.ForeignKey(UserProfile)
     record = models.ForeignKey(Record)
 
     def __unicode__(self):
