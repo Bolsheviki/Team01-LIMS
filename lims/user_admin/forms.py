@@ -30,7 +30,7 @@ class BatchUserForm(forms.Form):
     wildcard_length = forms.IntegerField()
     group = forms.ChoiceField(widget=forms.Select, choices=USER_ADMIN_GROUP_CHOICES)
     level = forms.ChoiceField(widget=forms.Select, choices=models.LEVEL_CHOICES)
-    list_before_execute = forms.BooleanField(required=False, initial=True)
+    just_list_usernames = forms.BooleanField(required=False, initial=True)
 
     def clean_batch_username(self):
         batch_username = self.cleaned_data['batch_username']

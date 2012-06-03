@@ -108,8 +108,8 @@ def batch_user_handle(request, template_name, handle_func):
             for index in range(from_index, to_index + 1):
                 todo_list.append(batch_username.replace(r'(*)', str(index).zfill(wildcard_length)))
                 
-            list_before_execute = request.POST.get('list_before_execute', False)
-            if list_before_execute:
+            just_list_usernames = request.POST.get('just_list_usernames', False)
+            if just_list_usernames:
                 return render_to_response(template_name, locals(), context_instance=RequestContext(request))
             else:
                 has_error = handle_func(todo_list, group_name, level)
