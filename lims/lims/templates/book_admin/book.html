@@ -3,4 +3,21 @@
 {% block nav1 %}id="current"{% endblock %}
 {% block content %}
     {% include 'book.html' %}
+    <table>
+        <tr>
+            <th>Book ID</th>
+            <th>Action</th>
+            <th>User</th>
+            <th>time</th>
+        </tr>
+        {% for record in record_list %}
+            <tr>
+                <td>{{ record.booki.id }}</td>
+                <td>{% if record.action == 'B' %}Borrow{% elif record.action == 'R' %}Return{% endif %}</td>
+                <td>{{ record.user.user.username }}</td>
+                <td>{{ record.time }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% include 'pagenation.html' %}
 {% endblock %}

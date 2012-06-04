@@ -8,7 +8,7 @@ urlpatterns = patterns('normal_user.views',
     # Examples:
     # url(r'^$', 'Team01_LIMS_site.views.home', name='home'),
     # url(r'^Team01_LIMS_site/', include('Team01_LIMS_site.foo.urls')),
-    #url(r'^test/$', 'normal_user.views.login'),
+    
     url(r'^login/$', 'login'),
     url(r'^logout/$', 'logout'),
     url(r'^search/$', 'search'),
@@ -18,6 +18,5 @@ urlpatterns = patterns('normal_user.views',
 #    url(r'^borrow/$', 'borrowbook'),
     url(r'^renewal/$', 'renewal'),
     url(r'^book/(?P<isbn>\d+)/$', 'info_book'),
-    url(r'^test/$', 'test'),
     url(r'^$', 'search'),
 )
