@@ -10,6 +10,7 @@ from book_admin.forms import AddBookForm, RemoveBookForm
 from book_admin import util
 from lims.util import is_book_admin_logged_in, get_borrows_each_month, get_top_borrows_in_month
 from db.models import BookInstance, Book, Borrow
+from django.db.models import Q
 
 
 def base(request):
@@ -42,7 +43,7 @@ def remove(request):
         if form.is_valid():
             q = form.cleaned_data
             bookId = q['bookId']
-            BookInstance.objects.filter(id=bookId).update(removed=True)
+            BookInstance.objects.filter(id=bookId).update(state='R')
     else:
         form = RemoveBookForm()
     return render_to_response('book_admin/remove.html', locals(), context_instance=RequestContext(request));
@@ -71,8 +72,8 @@ def audit(request):
         top['book'] = book
         seq += 1
         top['seq'] = seq
-    total_books = BookInstance.objects.filter(removed=False).count()
-    total_borrowing_now = Borrow.objects.all().count()
+    total_books = BookInstance.objects.exclude(Q(state='R')).count()
+    total_borrowing_now = BookInstance.objects.filter(Q(state='B')).count()
     total_avaliable_now = total_books - total_borrowing_now
     borrow_statis = get_borrows_each_month()
     max = 0.5

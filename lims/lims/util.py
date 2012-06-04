@@ -60,11 +60,8 @@ def get_books(scope, query):
     
 def get_book_info(isbn):
     book_info = info_book(isbn)
-    books = BookInstance.objects.filter(Q(book__isbn=isbn)&Q(removed=False))
-    borrows = Borrow.objects.filter(
-                Q(record__booki__book__isbn=isbn)&
-                Q(record__booki__removed=False))
-    book_info['remained'] = books.count() - borrows.count()
+    remained = BookInstance.objects.filter(Q(book__isbn=isbn)&Q(state='U'))
+    book_info['remained'] = remained.count()
     if 'author-intro' in book_info.keys():
         book_info['author_intro'] = book_info['author-intro']
         del book_info['author-intro']
