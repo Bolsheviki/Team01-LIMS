@@ -34,17 +34,11 @@ def add_users(todo_list, group_name, level):
 
 def remove_users(todo_list, group_name, level):
     group = get_group(group_name)
-    has_error = False
 
     if group_name == 'NormalUser':
         users = Profile.objects.filter(level=level).user_set
     else:
         users = group.user_set
 
-    for username in todo_list:
-        try:
-            users.filter(username=username).delete()
-        except:
-            has_error = True
-
-    return has_error
+    users.filter(username__in=todo_list).delete()
+    return True
