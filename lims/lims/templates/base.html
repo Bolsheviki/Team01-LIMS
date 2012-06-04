@@ -23,11 +23,9 @@
 		<nav>
 		{% block nav %}{% endblock %}
 	    </nav>
-		{% block head %}
 		<div class="subscribe">
-            <span>Subscribe:</span> <a href="#">Email</a> | <a href="#">RSS</a>
-        </div>
-		{% endblock %}
+        {% include 'loggedin.html' %}
+		</div>
 	<!-- /header -->
 </header></div>
 <div class="refix"></div>
@@ -36,6 +34,10 @@
 	<h2>欢迎使用图书馆管理系统</h2>
 </div>
 {% block body %}
+<div id="content-wrap-home">
+{% block content %}
+{% endblock %}
+</div>
 {% endblock %}
 <!-- extra
 ============================================================================== -->
