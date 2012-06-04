@@ -1,7 +1,9 @@
+# -*- coding: cp936 -*-
 from django import forms
 from db import models
 from lims.forms import SettingsForm
 import string
+from django.contrib.auth.models import User
 
 USER_ADMIN_GROUP_CHOICES = (
     ('N', 'NormalUser'),
@@ -19,7 +21,7 @@ class UserInfoForm(SettingsForm):
 
     def clean_debt(self):
         debt = self.cleaned_data['debt']
-        if debt < 0:
+        if int(debt) < 0:
             raise forms.ValidationError('Debt should not be negative!')
         return debt
 
@@ -72,4 +74,43 @@ class BatchUserForm(forms.Form):
             raise forms.ValidationError('Wildcard length is not big enough!')
         return wildcard_length
 
+class AddUserForm(forms.Form):
+    username = forms.CharField()
+    password_first = forms.CharField(widget=forms.PasswordInput)
+    password_confirm = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(required=False)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    group = forms.ChoiceField(widget=forms.Select, choices=USER_ADMIN_GROUP_CHOICES)
+    level = forms.ChoiceField(required=False, widget=forms.Select, choices=models.LEVEL_CHOICES)
+    debt = forms.IntegerField(initial='0')
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).count() > 0:
+            raise forms.ValidationError(u'用户名已存在！')
+        return username
+
+    def clean_password_first(self):
+        pw_first = self.cleaned_data['password_first']
+        need_reset_pw = self.cleaned_data.get('need_reset_password', False)
+        if need_reset_pw and pw_first == '':
+            raise forms.ValidationError('Password should not be empty!')
+        return pw_first
+
+    def clean_password_confirm(self):
+        pw_confirm = self.cleaned_data['password_confirm']
+        try:
+            pw_first = self.cleaned_data['password_first']
+        except:
+            return pw_confirm
+
+        if pw_first != pw_confirm:
+            raise forms.ValidationError('Two inputs of password are not the same!')
+        return pw_confirm
     
+    def clean_debt(self):
+        debt = self.cleaned_data['debt']
+        if int(debt) < 0:
+            raise forms.ValidationError('Debt should not be negative!')
+        return debt

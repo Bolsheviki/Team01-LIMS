@@ -1,0 +1,18 @@
+﻿{% extends "user_admin/base.html" %}
+{% block nav5 %}id="current"{% endblock %}
+{% block title %}
+添加一个用户
+{% endblock %}
+{% block content %}
+	{% if new_user %}
+		<p>成功添加用户{{ new_user.username }}！</p>
+	{% endif %}
+
+	<form action='' method='post'>
+		<table>
+			{{ form.as_table }}
+		</table>
+		<input type='submit' value='添加'>
+	</form>
+
+{% endblock %}
