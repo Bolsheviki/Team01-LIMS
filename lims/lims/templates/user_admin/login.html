@@ -2,17 +2,7 @@
 {% block title %}
 User Admin Login
 {% endblock %}
-{% block login_info %}
-{% if request.user.is_authenticated and login_check %}
-  <p align='right'>
-  Welcome, {{ request.user.username }}. Thanks for logging in. 
-  <a href='/user-admin/settings'>Settings</a>
-  <a href='/user-admin/logout'>Logout</a>
-  </p>
-{% else %}
-  <p align='right'>Please log in.</p>
-{% endif %}
-{% endblock %}
-{% block body %}
+{% block nav1 %}id="current"{% endblock %}
+{% block content %}
 {% include "login.html" %}
 {% endblock %}
