@@ -89,33 +89,33 @@ def return_(request):
 			
            # new_user = Borrow.objects.filter(record__booki=bookId)        
 			
-            try:
-                new_book = BookInstance.objects.get(id=bookId)
-            except BookInstance.DoesNotExist:
-			    bookId = -1
-			    return render_to_response('counter_admin/return.html', locals())
+            # try:
+                # new_book = BookInstance.objects.get(id=bookId)
+            # except BookInstance.DoesNotExist:
+			    # bookId = -1
+			    # return render_to_response('counter_admin/return.html', locals())
 				
-            try:
-                new_book = BookInstance.objects.get(Q(id=bookId)&Q(state='U') )
-            except BookInstance.DoesNotExist:
-			    bookId = -2
-			    return render_to_response('counter_admin/return.html', locals())
+            # try:
+                # new_book = BookInstance.objects.get(Q(id=bookId)&Q(state='B') )
+            # except BookInstance.DoesNotExist:
+			    # bookId = -2
+			    # return render_to_response('counter_admin/return.html', locals())
 					
-            try:
-                new_book = BookInstance.objects.get(Q(id=bookId)&Q(removed=False) )
-            except BookInstance.DoesNotExist:
-			    bookId = -3
-			    return render_to_response('counter_admin/return.html', locals())
+            # try:
+                # new_book = BookInstance.objects.get(Q(id=bookId)&Q(removed=False) )
+            # except BookInstance.DoesNotExist:
+			    # bookId = -3
+			    # return render_to_response('counter_admin/return.html', locals())
 				
+
+			
+            # try:
+                # new_user = Borrow.objects.get(record__booki__id=bookId).record.user
+            # except Borrow.DoesNotExist:
+			    # bookId = 0
+			    # return render_to_response('counter_admin/return.html', locals())
+			
             BookInstance.objects.filter(id=bookId).update(state='U')
-			
-            try:
-                new_user = Borrow.objects.get(record__booki__id=bookId).record.user
-            except Borrow.DoesNotExist:
-			    bookId = 0
-			    return render_to_response('counter_admin/return.html', locals())
-			
-			
             new_user = Borrow.objects.get(record__booki__id=bookId).record.user
             record = Record.objects.create(
 				booki = new_book,
@@ -138,11 +138,11 @@ def clear(request):
             q = form.cleaned_data
             query = q['query']
             
-            try:
-                new_user = UserProfile.objects.get( Q(user__username=query) )
-            except UserProfile.DoesNotExist:
-			    has_error = True
-			    return render_to_response('counter_admin/clear.html', locals())
+            # try:
+                # new_user = UserProfile.objects.get( Q(user__username=query) )
+            # except UserProfile.DoesNotExist:
+			    # has_error = True
+			    # return render_to_response('counter_admin/clear.html', locals())
 				
             UserProfile.objects.filter(user__username=query).update(debt=0) 
             clear_correct = True
