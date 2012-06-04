@@ -69,10 +69,19 @@ def login_in_template(request, group_name, template_name, redirect_url, login_ch
                 redirect = redirect_url
             return HttpResponseRedirect(redirect)
         else:
+#<<<<<<< HEAD
+            return render_to_response('login.html', {'error':True})
+    return render_to_response('login.html', {'error':True})
+
+@login_required(login_url = '/login/')
+def loggedin(request):
+    return render_to_response('loggedin.html', {'user':request.user})
+#=======
             return render_to_response(template_name, {'form' : form, 'login_check':login_check }, context_instance=RequestContext(request))
     else:
         form = LoginForm()
         return render_to_response(template_name, { 'form' : form, 'login_check':login_check }, context_instance=RequestContext(request))
+#>>>>>>> f56d96a42d067d3312366ea5167f4723bc841356
 
 		
 def logout_in_template(request, redirect_url):
