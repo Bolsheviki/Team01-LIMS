@@ -52,7 +52,7 @@ def info_book_in_template(request, isbn, template_name):
     return render_to_response(template_name, locals(), context_instance=RequestContext(request));
 
 
-def login_in_template(request, group_name, template_name, redirect_url, login_check_method):
+def login_in_template(request, group_name, template_name, redirect_url, login_check_method, app=''):
     login_check = login_check_method(request.user)
     if request.method == 'POST':
         username = request.POST.get('username', '')
