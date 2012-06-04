@@ -25,7 +25,6 @@ def add_users(todo_list, group_name, level):
         try:
             new_user = User.objects.create_user(username=username, password=username)
             new_user.groups.add(group)
-            new_user.save()
             UserProfile.objects.create(user=new_user, level=level, debt='0')
         except:
             has_error = True
@@ -34,17 +33,13 @@ def add_users(todo_list, group_name, level):
 
 def remove_users(todo_list, group_name, level):
     group = get_group(group_name)
-    has_error = False
 
     if group_name == 'NormalUser':
         users = Profile.objects.filter(level=level).user_set
     else:
         users = group.user_set
-
-    for username in todo_list:
-        try:
-            users.filter(username=username).delete()
-        except:
-            has_error = True
-
-    return has_error
+    try:
+        users.filter(username__in=todo_list).delete()
+        return False
+    except:
+        return True
