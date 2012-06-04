@@ -14,4 +14,5 @@ urlpatterns = patterns('counter_admin.views',
 	url(r'^clear/$', 'clear'),
 	url(r'^login/$', 'login'),
 	url(r'^logout/$', 'logout'),
+	url(r'^settings$', 'settings'),
 )

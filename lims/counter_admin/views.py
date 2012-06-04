@@ -2,7 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
-from lims.views import login_in_template, search_in_template, logout_in_template
+from lims.views import login_in_template, search_in_template, logout_in_template,  settings_in_template
 from lims.util import is_counter_admin_logged_in
 from counter_admin.forms import DebtClearForm, BookBorrowForm, BookReturnForm
 from django.contrib.auth.models import User, Group
@@ -17,6 +17,10 @@ from django.db.models import Q
 
 def base(request):
     return render_to_response('counter_admin/base.html', { 'app': 'counter-admin' })
+	
+@user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login')
+def settings(request):
+    return settings_in_template(request, 'counter_admin/settings.html')
 
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/')    
 def borrow(request):
@@ -28,9 +32,17 @@ def borrow(request):
             bookId = q['bookId']
             query = q['query']
             BookInstance.objects.filter(id=bookId).update(state='B')
-			
-            new_user = UserProfile.objects.get(user__username=query)
-            new_book = BookInstance.objects.get(id=bookId)
+            try:
+                new_user = UserProfile.objects.get(user__username=query)
+            except UserProfile.DoesNotExist:
+			    bookId = -1
+			    return render_to_response('counter_admin/borrow.html', locals())
+            
+            try:
+                new_book = BookInstance.objects.get(id=bookId)
+            except BookInstance.DoesNotExist:
+			    bookId = -2
+			    return render_to_response('counter_admin/borrow.html', locals())
 			
             record = Record.objects.create(
 				booki = new_book,
@@ -39,7 +51,7 @@ def borrow(request):
 				time = 1,
 			)
 			
-            instance = Borrow.objects.create(record = record)
+            #instance = Borrow.objects.create(record = record)
 			
     else:
         form = BookBorrowForm()
@@ -60,14 +72,16 @@ def return_(request):
             new_user = Borrow.objects.get(record__booki__id=bookId).record.user
 			#values('record').values('user')
            
-           # new_user = UserProfile.objects.get(user__username=new_borrow__record__user__username)
-            new_user = UserProfile.objects.get(user__username='dhuang')
+            #new_user = UserProfile.objects.get(user__username=new_borrow__record__user__username)
+            #new_user = UserProfile.objects.get(user__username='dhuang')
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
 				action = 'R',
 				time = "",
             )
+			# Borrow.objects.get(record__booki__id=bookId).delete()
+			
     else:
         form = BookReturnForm()
     return render_to_response('counter_admin/return.html', locals());
@@ -80,9 +94,8 @@ def clear(request):
         if form.is_valid():
             q = form.cleaned_data
             query = q['query']
-            # #query = request.GET['query']
-            UserProfile.objects.filter(user__username=query).update(debt=0)
-            #BookInstance.objects.filter(id=query).update(removed=True)
+            new_user = UserProfile.objects.filter(user__username=query)
+            new_user.update(debt=0)
     else:
 		form =  DebtClearForm()
     #UserProfile.objects.filter(user=1).update(debt=0)
