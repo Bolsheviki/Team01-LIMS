@@ -33,7 +33,19 @@ class BookBorrowForm(forms.Form):
         debt = new_user.debt
         if debt > 0:
             raise forms.ValidationError('Debt should be cleared!')
-
+			
+        try:
+            count = Borrow.objects.filter(record__user__user__username=query).count()
+        except Borrow.DoesNotExist:
+		    count = 0
+		
+        if new_user.level == 'U' and count > 5:		
+		    raise forms.ValidationError('You cannot borrow more')
+        if new_user.level == 'G' and count > 7:		
+		    raise forms.ValidationError('You cannot borrow more')
+        if new_user.level == 'S' and count > 9:		
+		    raise forms.ValidationError('You cannot borrow more')
+				
         return query
 		
     def clean_bookId(self):
