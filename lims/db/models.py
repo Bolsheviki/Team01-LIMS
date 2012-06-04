@@ -56,7 +56,7 @@ class Record(models.Model):
     time = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return '%s %s' % (self.user.user.username, self.booki)
+        return '%s %s %s' % (self.user.user.username, self.booki, self.time)
 
 
 class Borrow(models.Model):

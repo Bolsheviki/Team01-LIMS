@@ -1,3 +1,10 @@
 
-<span>{{ user.username }}, Welcome to LIMS!</span>
-<a href='/book-admin/logout/'>Log out</a>
+{% if request.user.is_authenticated %}
+  <p align='right'>
+  Welcome, {{ request.user.username }}. Thanks for logging in. 
+  <a href='/book-admin/settings'>Settings</a>
+  <a href='/book-admin/logout'>Logout</a>
+  </p>
+{% else %}
+  <p align='right'>Please log in.</p>
+{% endif %}

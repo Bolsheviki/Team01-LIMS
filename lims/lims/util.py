@@ -64,7 +64,7 @@ def get_book_info(isbn):
         book_info['author_intro'] = book_info['author-intro']
         del book_info['author-intro']
     return book_info
-
+	
 
 def is_in_group(user, group_name):
     return user.groups.filter(name = group_name).count() > 0
