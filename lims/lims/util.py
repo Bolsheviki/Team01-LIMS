@@ -142,7 +142,6 @@ def get_borrows_each_month(isbn = 0):
                         db_record.booki_id = db_bookinstance.id and 
                         db_record.action = 'B' and 
                         db_record.time >= %s and db_record.time < %s
-                group by db_book.isbn
             ''', [ times[i], times[i + 1] ])
         else:
             cursor.execute('''
