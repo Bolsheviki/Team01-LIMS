@@ -9,7 +9,7 @@ urlpatterns = patterns('user_admin.views',
     # Examples:
     # url(r'^$', 'Team01_LIMS_site.views.home', name='home'),
     # url(r'^Team01_LIMS_site/', include('Team01_LIMS_site.foo.urls')),
-    url(r'^$', direct_to_template, { 'template': 'user_admin/index.html', 'extra_context': {'app' : 'book-admin'}, }),
+    url(r'^$', direct_to_template, { 'template': 'user_admin/index.html', 'extra_context': {'app' : 'user-admin'}, }),
     url(r'^login$', 'login'),
     url(r'^logout$', 'logout'),
     url(r'^search$', 'search'),
