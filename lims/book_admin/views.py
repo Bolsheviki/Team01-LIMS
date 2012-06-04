@@ -9,7 +9,7 @@ from lims.views import search_in_template, info_book_in_template, \
 from book_admin.forms import AddBookForm, RemoveBookForm
 from book_admin import util
 from lims.util import is_book_admin_logged_in, get_borrows_each_month, get_top_borrows_in_month
-from db.models import BookInstance, Book, Borrow
+from db.models import BookInstance, Book, Borrow, Record
 from django.db.models import Q
 
 
@@ -94,7 +94,8 @@ def audit(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def info_book(request, isbn):
-    return info_book_in_template(request, isbn, 'book_admin/book.html', 'book-admin')
+    records = Record.objects.filter(booki__book__isbn=isbn).order_by('-time')
+    return info_book_in_template(request, isbn, records, 'book_admin/book.html', 'book-admin')
 	
 	
 	

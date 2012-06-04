@@ -9,9 +9,6 @@ from lims.views import settings_in_template, search_in_template, info_book_in_te
 from lims.util import is_normal_user_logged_in
 from django.views.generic import list_detail
 
-def test(request):
-    return render_to_response('normal_user/test.html', locals());
-
 
 def base(request):
     return render_to_response('normal_user/base.html', { 'app': 'normal-user' })
@@ -38,7 +35,7 @@ def logout(request):
 @user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
 def info_book(request, isbn):
     user = request.user
-    return info_book_in_template(request, isbn, 'normal_user/book.html')
+    return info_book_in_template(request, isbn, [], 'normal_user/book.html')
 
 
 @user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
