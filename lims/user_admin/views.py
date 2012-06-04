@@ -11,16 +11,21 @@ from lims.util import is_in_group, is_user_admin_logged_in
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import user_passes_test
     
+    
 def login(request):
-    return login_in_template(request, 'UserAdmin', 'user_admin/login.html', '/user-admin', is_user_admin_logged_in)
+    return login_in_template(request, 'UserAdmin', 'user_admin/login.html', '/user-admin', is_user_admin_logged_in, 'user-admin')
 
+    
 def logout(request):
     return logout_in_template(request, '/user-admin/login')
 
+    
 Per_Page = 1
+
 
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def search(request):
+    app = 'user-admin'
     template_name = 'user_admin/search.html'
     
     if 'scope' not in request.GET or 'query' not in request.GET:
@@ -41,8 +46,10 @@ def search(request):
     if not form.is_valid():
         return render_to_response(template_name, locals())
 
-    q = form.cleaned_data
     user_list = util.get_users(scope, query)
+    basic_info = { 'form': form, 'scope': scope, 'query': query, \
+                    'show_result': True, 'app': app }
+                    
     return list_detail.object_list(
         request,
         paginate_by = Per_Page,
@@ -50,15 +57,18 @@ def search(request):
         queryset = user_list,
         template_name = template_name,
         template_object_name = 'user',
-        extra_context = { 'form': form, 'scope': scope, 'query': query, 'show_result':True },
+        extra_context = basic_info,
     )
 
+    
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def settings(request):
-    return settings_in_template(request, 'user_admin/settings.html')
+    return settings_in_template(request, 'user_admin/settings.html', 'user-admin')
 
+    
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def info_user(request, username):
+    app = 'user-admin'
     try:
         user = User.objects.get(username=username)
         is_normal_user = is_in_group(user, 'NormalUser')
@@ -92,9 +102,11 @@ def info_user(request, username):
         return render_to_response('user_admin/info_user.html', locals(), context_instance=RequestContext(request))
     
     except User.DoesNotExist:
-        return render_to_response('user_admin/info_user.html', context_instance=RequestContext(request))
+        return render_to_response('user_admin/info_user.html', locals(), context_instance=RequestContext(request))
 
+        
 def batch_user_handle(request, template_name, handle_func):
+    app = 'user-admin'
     if request.method == 'POST':
         form = BatchUserForm(request.POST)
         if form.is_valid():
@@ -121,13 +133,16 @@ def batch_user_handle(request, template_name, handle_func):
         form = BatchUserForm()
         return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
+        
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def add(request):
     return batch_user_handle(request, 'user_admin/add.html', util.add_users)
 
+    
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def remove(request):
     return batch_user_handle(request, 'user_admin/remove.html', util.remove_users)
+<<<<<<< HEAD
 
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def rm_user(request, username):
@@ -138,3 +153,7 @@ def rm_user(request, username):
     except User.DoesNotExist:
         pass
     return render_to_response('user_admin/rm_user.html', locals(), context_instance=RequestContext(request))
+=======
+    
+    
+>>>>>>> 0d7bcafa88dae764100d1c180e1083865856a369

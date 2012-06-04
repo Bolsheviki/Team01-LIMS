@@ -12,7 +12,7 @@ urlpatterns = patterns('book_admin.views',
     # url(r'^$', 'Team01_LIMS_site.views.home', name='home'),
     # url(r'^Team01_LIMS_site/', include('Team01_LIMS_site.foo.urls')),
 
-    url(r'^$', direct_to_template,{'template': 'book_admin/index.html',}),
+    url(r'^$', direct_to_template, { 'template': 'book_admin/index.html', 'extra_context': {'app' : 'book-admin'}, }),
 	url(r'^login/$', 'login'),
 	url(r'^logout/$', 'logout'),
 	url(r'^settings/$', 'settings'),

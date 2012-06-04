@@ -1,23 +1,10 @@
 {% extends "base.html" %}
 {% block nav %}
-<ul>
-	<li {% block nav1 %}{% endblock %}><a href="/user-admin/">首页</a><span></span></li>
-	<li {% block nav2 %}{% endblock %}><a href='/user-admin/search'>Search Users</a></li>
-	<li {% block nav3 %}{% endblock %}><a href='/user-admin/add'>Add Users</a></li>
-	<li {% block nav4 %}{% endblock %}><a href='/user-admin/remove'>Remove Users</a></li>
-</ul>
-{% endblock %}
-{% block head %}
-{% block login_info %}
-	<div class="subscribe">
-	{% include 'loggedin.html' %}
-	</div>
-{% endblock %}
+	<ul>
+		<li {% block nav1 %}{% endblock %}><a href="/user-admin/">首页</a><span></span></li>
+		<li {% block nav2 %}{% endblock %}><a href='/user-admin/search'>Search Users</a></li>
+		<li {% block nav3 %}{% endblock %}><a href='/user-admin/add'>Add Users</a></li>
+		<li {% block nav4 %}{% endblock %}><a href='/user-admin/remove'>Remove Users</a></li>
+	</ul>
 {% endblock %}
 
-{% block body %}
-<div id="content-wrap-home">
-{% block content %}
-{% endblock %}
-</div>
-{% endblock %}
