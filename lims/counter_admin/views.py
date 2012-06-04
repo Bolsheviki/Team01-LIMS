@@ -32,8 +32,9 @@ def borrow(request):
             bookId = q['bookId']
             query = q['query']
             BookInstance.objects.filter(id=bookId).update(state='B')
+			
             try:
-                new_user = UserProfile.objects.get(user__username=query)
+                new_user = UserProfile.objects.get( Q(user__username=query) )
             except UserProfile.DoesNotExist:
 			    bookId = -1
 			    return render_to_response('counter_admin/borrow.html', locals())
@@ -43,15 +44,27 @@ def borrow(request):
             except BookInstance.DoesNotExist:
 			    bookId = -2
 			    return render_to_response('counter_admin/borrow.html', locals())
+				
+            try:
+                new_user = UserProfile.objects.get( Q(debt='0')&Q(user__username=query) )
+            except UserProfile.DoesNotExist:
+			    bookId = -3
+			    return render_to_response('counter_admin/borrow.html', locals())
+				
+            try:
+                new_book = BookInstance.objects.get(Q(id=bookId)&Q(state='U') )
+            except BookInstance.DoesNotExist:
+			    bookId = -4
+			    return render_to_response('counter_admin/borrow.html', locals())
 			
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
 				action = 'B',
-				time = 1,
+				time = '',
 			)
 			
-            #instance = Borrow.objects.create(record = record)
+            instance = Borrow.objects.create(record = record)
 			
     else:
         form = BookBorrowForm()
@@ -68,19 +81,16 @@ def return_(request):
             BookInstance.objects.filter(id=bookId).update(state='U')
 			
            # new_user = Borrow.objects.filter(record__booki=bookId)
+		    
             new_book = BookInstance.objects.get(id=bookId)
             new_user = Borrow.objects.get(record__booki__id=bookId).record.user
-			#values('record').values('user')
-           
-            #new_user = UserProfile.objects.get(user__username=new_borrow__record__user__username)
-            #new_user = UserProfile.objects.get(user__username='dhuang')
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
 				action = 'R',
 				time = "",
             )
-			# Borrow.objects.get(record__booki__id=bookId).delete()
+            Borrow.objects.get(record__booki__id=bookId).delete()
 			
     else:
         form = BookReturnForm()
@@ -94,8 +104,8 @@ def clear(request):
         if form.is_valid():
             q = form.cleaned_data
             query = q['query']
-            new_user = UserProfile.objects.filter(user__username=query)
-            new_user.update(debt=0)
+            UserProfile.objects.filter(user__username=query).update(debt=0)
+
     else:
 		form =  DebtClearForm()
     #UserProfile.objects.filter(user=1).update(debt=0)
