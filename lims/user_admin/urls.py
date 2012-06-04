@@ -17,4 +17,5 @@ urlpatterns = patterns('user_admin.views',
     url(r'^add/$', 'add'),
     url(r'^remove/$', 'remove'),
     url(r'^user/(?P<username>\w+)/$', 'info_user'),
+    url(r'^rm-user/(?P<username>\w+)/$', 'rm_user'),
 )

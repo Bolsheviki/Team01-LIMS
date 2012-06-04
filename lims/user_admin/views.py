@@ -128,3 +128,13 @@ def add(request):
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def remove(request):
     return batch_user_handle(request, 'user_admin/remove.html', util.remove_users)
+
+@user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
+def rm_user(request, username):
+    try:
+        user = User.objects.get(username=username)
+        user.delete()
+        done = True
+    except User.DoesNotExist:
+        pass
+    return render_to_response('user_admin/rm_user.html', locals(), context_instance=RequestContext(request))

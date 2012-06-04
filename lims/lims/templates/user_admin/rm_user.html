@@ -1,0 +1,12 @@
+﻿{% extends "user_admin/base.html" %}
+{% block title %}
+删除用户
+{% endblock %}
+{% block nav1 %}id="current"{% endblock %}
+{% block content %}
+{% if done %}
+	<p>成功删除用户{{ username }}！</p>
+{% else %}
+	<p>用户不存在！</p>
+{% endif %}
+{% endblock %}
