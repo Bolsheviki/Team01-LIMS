@@ -44,4 +44,4 @@
 {% else %}
     <h2 style='color: red'>No such book whose isbn is {{ isbn }}</h2>
 {% endif %}
-
+<img src='http://chart.apis.google.com/chart?cht=lc&chs=500x150&chd=t:{% for s in borrow_statis %}{{ s.borrow_times }}{% if not forloop.last %},{% endif %}{% endfor %}&chxt=x,y&chxl=0:|{% for s in borrow_statis %}{{ s.month }}|{% endfor %}1:{% for d in divide %}|{{ d }}{% endfor %}'/>

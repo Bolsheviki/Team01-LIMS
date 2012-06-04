@@ -1,7 +1,7 @@
 {% extends "user_admin/base.html" %}
 {% block title %}Search Users{% endblock %}
-{% block body %}
-
+{% block nav2 %}id="current"{% endblock %}
+{% block content %}
 <form action='' method='get'>
 	<span class='scope'>
         {{ form.scope.errors }}
@@ -49,5 +49,4 @@
 		<p>No users matched your search criteria.</p>
 	{% endif %}
 {% endif %}
-
 {% endblock %}

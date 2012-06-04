@@ -47,8 +47,22 @@ def search_in_template(request, template_name, app):
     )
 
     
-def info_book_in_template(request, isbn, template_name):
+def info_book_in_template(request, isbn, template_name, app=''):
     book = util.get_book_info(isbn)
+    borrow_statis = util.get_borrows_each_month(isbn)
+    max = 0.5
+    for statis in borrow_statis:
+        if max < statis['borrow_times']:
+            max = statis['borrow_times']
+    step = int(round((max / 5 + 0.5)))
+    max = step * 5
+    for statis in borrow_statis:
+        statis['borrow_times'] = statis['borrow_times'] * 100.0 / max
+    divide = []
+    i = 0
+    while i <= max:
+        divide.append(i)
+        i += step
     return render_to_response(template_name, locals(), context_instance=RequestContext(request));
 
 
@@ -79,7 +93,8 @@ def logout_in_template(request, redirect_url):
     auth.logout(request)
     return HttpResponseRedirect(redirect_url)
 
-def settings_in_template(request, template_name):
+    
+def settings_in_template(request, template_name, app=''):
     if request.method == 'POST':
         form = SettingsForm(request.POST)
 
@@ -91,7 +106,6 @@ def settings_in_template(request, template_name):
             request.user.last_name = request.POST['last_name']
             request.user.save()
             is_set = True
-
     else:
         dict = {}
         dict['password_first'] = ''

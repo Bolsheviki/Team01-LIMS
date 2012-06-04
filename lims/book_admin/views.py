@@ -8,8 +8,9 @@ from lims.views import search_in_template, info_book_in_template, \
 						settings_in_template
 from book_admin.forms import AddBookForm, RemoveBookForm
 from book_admin import util
-from lims.util import is_book_admin_logged_in
+from lims.util import is_book_admin_logged_in, get_borrows_each_month, get_top_borrows_in_month
 from db.models import BookInstance, Book, Borrow
+from django.db.models import Q
 
 
 def base(request):
@@ -21,7 +22,7 @@ def login(request):
 
 	
 def settings(request):
-	return settings_in_template(request, 'book_admin/settings.html')
+	return settings_in_template(request, 'book_admin/settings.html', 'book-admin')
 
 	
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
@@ -36,12 +37,13 @@ def search(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def remove(request):
+    app = 'book-admin'
     if 'bookId' in request.GET:
         form = RemoveBookForm(request.GET)
         if form.is_valid():
             q = form.cleaned_data
             bookId = q['bookId']
-            BookInstance.objects.filter(id=bookId).update(removed=True)
+            BookInstance.objects.filter(id=bookId).update(state='R')
     else:
         form = RemoveBookForm()
     return render_to_response('book_admin/remove.html', locals(), context_instance=RequestContext(request));
@@ -49,6 +51,7 @@ def remove(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def add(request):
+    app = 'book-admin'
     if 'isbn' in request.GET:
         form = AddBookForm(request.GET)
         if form.is_valid():
@@ -61,27 +64,29 @@ def add(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def audit(request):
-    top_borrows = util.get_top_borrows_in_month()
+    app = 'book-admin'
+    top_borrows = get_top_borrows_in_month()
     seq = 0
     for top in top_borrows:
         book = Book.objects.get(isbn=top['isbn'])
         top['book'] = book
         seq += 1
         top['seq'] = seq
-    total_books = BookInstance.objects.filter(removed=False).count()
-    total_borrowing_now = Borrow.objects.all().count()
+    total_books = BookInstance.objects.exclude(Q(state='R')).count()
+    total_borrowing_now = BookInstance.objects.filter(Q(state='B')).count()
     total_avaliable_now = total_books - total_borrowing_now
-    borrow_statis = util.get_borrows_each_month()
+    borrow_statis = get_borrows_each_month()
     max = 0.5
     for statis in borrow_statis:
         if max < statis['borrow_times']:
             max = statis['borrow_times']
+    step = int(round((max / 5 + 0.5)))
+    max = step * 5
     for statis in borrow_statis:
         statis['borrow_times'] = statis['borrow_times'] * 100.0 / max
     divide = []
     i = 0
-    step = int((max + 0.5) / 5 + 0.5)
-    while i <= int(max + 0.5):
+    while i <= max:
         divide.append(i)
         i += step
     return render_to_response('book_admin/audit.html', locals(), context_instance=RequestContext(request));
@@ -89,7 +94,7 @@ def audit(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def info_book(request, isbn):
-    return info_book_in_template(request, isbn, 'book_admin/book.html')
+    return info_book_in_template(request, isbn, 'book_admin/book.html', 'book-admin')
 	
 	
 	
