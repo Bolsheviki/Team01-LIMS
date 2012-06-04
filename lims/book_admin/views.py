@@ -17,7 +17,7 @@ def base(request):
 
 
 def login(request):
-	return login_in_template(request, 'BookAdmin', 'book_admin/login.html', '/book-admin/', is_book_admin_logged_in)
+	return login_in_template(request, 'BookAdmin', 'book_admin/login.html', '/book-admin/', is_book_admin_logged_in, 'book-admin')
 
 	
 def settings(request):

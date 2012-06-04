@@ -2,8 +2,8 @@
 {% if request.user.is_authenticated %}
   <p align='right'>
   Welcome, {{ request.user.username }}. Thanks for logging in. 
-  <a href='/book-admin/settings'>Settings</a>
-  <a href='/book-admin/logout'>Logout</a>
+  <a href='/{{ app }}/settings'>Settings</a>
+  <a href='/{{ app }}/logout'>Logout</a>
   </p>
 {% else %}
   <p align='right'>Please log in.</p>
