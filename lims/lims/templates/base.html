@@ -2,20 +2,123 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="author" content="Team-01" />
-<meta name="description" content="a joking library system" />
-<meta name="keywords" content="Team-01, library, SE, django" />
-<meta name="robots" content="index, follow, noarchive" />
-<meta name="googlebot" content="noarchive" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="author" content="Team-01" />
+	<meta name="description" content="a joking library system" />
+	<meta name="keywords" content="Team-01, library, SE, django" />
+	<meta name="robots" content="index, follow, noarchive" />
+	<meta name="googlebot" content="noarchive" />
 
-<link rel="stylesheet" href="/static/css/main.css" type="text/css" />
-<title>{% block title %}欢迎使用图书馆系统--无限测试中{% endblock %}</title>
-{% block head %}{% endblock %}
+	<link rel="stylesheet" type="text/css" media="screen" href="/static/css/style.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/static/js/jquery-1.6.1.min.js"><\/script>')</script>
+	<script src="/static/js/scrollToTop.js"></script>
+	<title>{% block title %}欢迎使用图书馆信息管理系统{% endblock %}</title>
 </head>
 
-<body>
+<!-- header
+============================================================================= -->
+<body id="top">
+<div id="header-wrap"><header>
+		<nav>
+		{% block nav %}{% endblock %}
+	    </nav>
+		{% block head %}
+		<div class="subscribe">
+            <span>Subscribe:</span> <a href="#">Email</a> | <a href="#">RSS</a>
+        </div>
+		{% endblock %}
+	<!-- /header -->
+</header></div>
+<div class="refix"></div>
+
+<div class="title">
+	<h2>欢迎使用图书馆管理系统</h2>
+</div>
 {% block body %}
 {% endblock %}
+<!-- extra
+============================================================================== -->
+<div id="extra-wrap"><div id="extra" class="clearfix">
+
+    <div class="xcol">
+
+		    <h3>联系方式</h3>
+
+		    <p>
+		    <strong>电话: </strong>86-25-83593126<br/>
+		    <strong>传真: </strong>86-25-83300710<br/>
+			<strong>地址: </strong>南京大学仙林校区5A245<br/>
+			<strong>E-mail: </strong>nobody@nju.edu.cn
+		    </p>
+
+            <h3>关注我们</h3>
+
+	        <div class="footer-list social">
+			    <ul>
+				    <li class="email"><a href="index.html">Email</a></li>
+				    <li class="rss"><a href="index.html">RSS Feed</a></li>
+			    </ul>
+		    </div>
+	</div>
+
+    <div class="xcol">
+
+            <h3>友情链接</h3>
+
+	        <div class="footer-list">
+			    <ul>
+				    <li><a href="http://www.nju.edu.cn">南京大学</a></li>
+				    <li><a href="http://bbs.nju.edu.cn">小百合BBS</a></li>
+			    </ul>
+		    </div>
+    </div>
+
+    <div class="xcol">
+            <h3>图书资源</h3>
+
+	        <div class="footer-list">
+				<ul>
+                    <li><a href="http://lib.nju.edu.cn">南京大学图书馆</a></li>
+					<li><a href="http://www.jslib.org.cn">南京图书馆</a></li>
+					<li><a href="http://book.douban.com">豆瓣读书</a></li>
+				</ul>
+			</div>
+
+	</div>
+
+
+
+    <div class="xcol last">
+
+        <h3>关于本站</h3>
+
+        <p class="indent">
+        这是南京大学计算机科学与技术系09级软件工程课Team01的课程实验项目--图书馆信息管理系统。永远不会上线。
+        </p>
+
+
+    </div>
+
+</div></div>
+
+<!-- footer
+============================================================================== -->
+<footer class="clearfix">
+
+	<p class="footer-left">
+		&copy; 2011 Copyright Info &nbsp; &nbsp; &nbsp;
+		Design by <a href="http://www.styleshout.com/">styleshout</a>, Edit by <a href="http://kongfy.com">Kongfy</a>.
+	</p>
+
+	<p class="footer-right">
+	   	<a href="index.html">Home</a> |
+		<a href="index.html">Sitemap</a> |
+		<a href="index.html">RSS Feed</a> |
+        <a class="back-to-top" href="#top">Back to Top</a>
+    </p>
+
+<!-- /footer -->
+</footer>
 </body>
 </html>

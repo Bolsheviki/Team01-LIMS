@@ -1,23 +1,29 @@
 {% extends "base.html" %}
-{% block head %}
-<h1>This User Admin.</h1>
+{% block nav %}
 <ul>
-	<li><a href='/user-admin/search'>Search Users</a></li>
-	<li><a href='/user-admin/add'>Add Users</a></li>
-	<li><a href='/user-admin/remove'>Remove Users</a></li>
+	<li {% block nav1 %}{% endblock %}><a href="/user-admin/">首页</a><span></span></li>
+	<li {% block nav2 %}{% endblock %}><a href='/user-admin/search'>Search Users</a></li>
+	<li {% block nav3 %}{% endblock %}><a href='/user-admin/add'>Add Users</a></li>
+	<li {% block nav4 %}{% endblock %}><a href='/user-admin/remove'>Remove Users</a></li>
 </ul>
+{% endblock %}
+{% block head %}
 {% block login_info %}
+<div class="subscribe">
 {% if request.user.is_authenticated %}
-  <p align='right'>
   Welcome, {{ request.user.username }}. Thanks for logging in. 
   <a href='/user-admin/settings'>Settings</a>
   <a href='/user-admin/logout'>Logout</a>
-  </p>
 {% else %}
-  <p align='right'>Please log in.</p>
+  <p>Please log in.</p>
 {% endif %}
+</div>
 {% endblock %}
 {% endblock %}
-{% block body %}
 
+{% block body %}
+<div id="content-wrap-home">
+{% block content %}
+{% endblock %}
+</div>
 {% endblock %}
