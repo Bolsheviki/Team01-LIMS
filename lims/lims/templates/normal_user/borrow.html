@@ -7,13 +7,12 @@
 	<p>Found {{ tlist|length }} book{{ tlist|pluralize }}.</p>
 	<ul>
 		{% for record in tlist %}
-		<li>{{ record.isbn }}</li>
-		<li>{{ record.name }}</li>
-		<li>{{ record.time }}</li>
-		<li>{{ record.renewal }}</li>
+		<li><a href='/normal-user/book/{{ record.isbn }}/'>{{ record.name }}</a></li>
+		<li>Time : {{ record.time }}</li>
+		<li>Renewal : {{ record.renewal }}</li>
 			{% if not record.renewal %}
 				<form action='../renewal/' method='post'>
-				<input type='hidden' name='isbn' value='{{record.isbn}}'>
+				<input type='hidden' name='id' value='{{record.id}}'>
 				<input type='submit' value='renewal'>
 				</form>
 			{% endif %}
