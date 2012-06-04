@@ -31,46 +31,13 @@ def borrow(request):
             q = form.cleaned_data
             bookId = q['bookId']
             query = q['query']
-		
-            try:
-                new_user = UserProfile.objects.get( Q(user__username=query) )
-            except UserProfile.DoesNotExist:
-			    bookId = -1
-			    return render_to_response('counter_admin/borrow.html', locals())
-            
-            try:
-                new_book = BookInstance.objects.get(id=bookId)
-            except BookInstance.DoesNotExist:
-			    bookId = -2
-			    return render_to_response('counter_admin/borrow.html', locals())
-				
-            try:
-                new_user = UserProfile.objects.get( Q(debt='0')&Q(user__username=query) )
-            except UserProfile.DoesNotExist:
-			    bookId = -3
-			    return render_to_response('counter_admin/borrow.html', locals())
-				
-            try:
-                new_book = BookInstance.objects.get(Q(id=bookId)&Q(state='U') )
-            except BookInstance.DoesNotExist:
-			    bookId = -4
-			    return render_to_response('counter_admin/borrow.html', locals())
-			
-			
-            try:
-                new_book = BookInstance.objects.get(Q(id=bookId)&Q(removed=False) )
-            except BookInstance.DoesNotExist:
-			    bookId = -5
-			    return render_to_response('counter_admin/borrow.html', locals())
-
+					
             BookInstance.objects.filter(id=bookId).update(state='B')			
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
 				action = 'B',
-				time = '',
 			)
-			
             instance = Borrow.objects.create(record = record)
 			
     else:
@@ -86,35 +53,6 @@ def return_(request):
             q = form.cleaned_data
             bookId = q['bookId']
 
-			
-           # new_user = Borrow.objects.filter(record__booki=bookId)        
-			
-            # try:
-                # new_book = BookInstance.objects.get(id=bookId)
-            # except BookInstance.DoesNotExist:
-			    # bookId = -1
-			    # return render_to_response('counter_admin/return.html', locals())
-				
-            # try:
-                # new_book = BookInstance.objects.get(Q(id=bookId)&Q(state='B') )
-            # except BookInstance.DoesNotExist:
-			    # bookId = -2
-			    # return render_to_response('counter_admin/return.html', locals())
-					
-            # try:
-                # new_book = BookInstance.objects.get(Q(id=bookId)&Q(removed=False) )
-            # except BookInstance.DoesNotExist:
-			    # bookId = -3
-			    # return render_to_response('counter_admin/return.html', locals())
-				
-
-			
-            # try:
-                # new_user = Borrow.objects.get(record__booki__id=bookId).record.user
-            # except Borrow.DoesNotExist:
-			    # bookId = 0
-			    # return render_to_response('counter_admin/return.html', locals())
-			
             BookInstance.objects.filter(id=bookId).update(state='U')
             new_user = Borrow.objects.get(record__booki__id=bookId).record.user
             record = Record.objects.create(
@@ -137,18 +75,11 @@ def clear(request):
         if form.is_valid():
             q = form.cleaned_data
             query = q['query']
-            
-            # try:
-                # new_user = UserProfile.objects.get( Q(user__username=query) )
-            # except UserProfile.DoesNotExist:
-			    # has_error = True
-			    # return render_to_response('counter_admin/clear.html', locals())
-				
+            				
             UserProfile.objects.filter(user__username=query).update(debt=0) 
             clear_correct = True
     else:
 		form =  DebtClearForm()
-    #UserProfile.objects.filter(user=1).update(debt=0)
 	
     return render_to_response('counter_admin/clear.html', locals());
 	
