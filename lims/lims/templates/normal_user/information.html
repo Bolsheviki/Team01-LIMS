@@ -2,9 +2,33 @@
 {% block title %}Information{% endblock %}
 
 {% block body %}
-<p>name: {{ username }} </p>
-<p>email: {{ email }} </p>
-<p>level : {{ level }} </p>
-<p>debt : {{ debt }} </p>
+<li>name: {{ username }} </li>
+<li>email: {{ email }} </li>
+<li>level : {{ level }} </li>
+<li>debt : {{ debt }} </li>
 <a href='/normal-user/settings/'>settings</a>
+
+<p>Borrow Book List:</p>
+<p/>
+<p/>
+{% if tlist %}
+	<p>Found {{ tlist|length }} book{{ tlist|pluralize }}.</p>
+	<ul>
+		{% for record in tlist %}
+		<li><a href='/normal-user/book/{{ record.isbn }}/'>{{ record.name }}</a></li>
+		<li>Time : {{ record.time }}</li>
+		<li>Renewal : {{ record.renewal }}</li>
+			{% if not record.renewal %}
+				<form action='../renewal/' method='post'>
+				<input type='hidden' name='id' value='{{record.id}}'>
+				<input type='submit' value='renewal'>
+				</form>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	{% include 'pagenation.html' %}
+{% else %}
+	<p>No books matched your search criteria.</p>
+{% endif %}
+
 {% endblock %}
