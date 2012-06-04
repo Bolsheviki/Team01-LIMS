@@ -19,9 +19,5 @@ urlpatterns = patterns('normal_user.views',
 #    url(r'^borrow/$', 'borrowbook'),
     url(r'^renewal/$', 'renewal'),
     url(r'^book/(?P<isbn>\d+)/$', 'info_book'),
-<<<<<<< HEAD
-    url(r'^$', direct_to_template,{'template': 'normal_user/index.html',}),
-=======
     url(r'^$', direct_to_template, { 'template': 'normal_user/index.html', 'extra_context': {'app' : 'normal-user'}, }),
->>>>>>> b01c89cc9d57e542d156c796952a9e0267b028f5
 )
