@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+<<<<<<< HEAD
 {% block title %}Normal User.{% endblock %}
 {% block nav %}
 	<ul>
@@ -20,4 +21,12 @@
 {% block content %}
 {% endblock %}
 </div>
+=======
+{% block nav %}
+	<ul>
+		<li {% block nav1 %}{% endblock %}><a href="/normal-user/">首页</a><span></span></li>
+		<li {% block nav2 %}{% endblock %}><a href='/normal-user/search'>Search</a></li>
+		<li {% block nav3 %}{% endblock %}><a href='/normal-user/information'>Information</a></li>
+	</ul>
+>>>>>>> b01c89cc9d57e542d156c796952a9e0267b028f5
 {% endblock %}
