@@ -7,6 +7,7 @@ from django.views.generic import list_detail
 from lims.forms import SearchForm, LoginForm, SettingsForm
 from lims import util
 
+
 Per_Page = 1
 
 
@@ -32,7 +33,6 @@ def search_in_template(request, template_name, app):
     if not form.is_valid():
         return render_to_response(template_name, locals())
 
-    q = form.cleaned_data
     book_list = util.get_books(scope, query)
     basic_info = { 'form': form, 'scope': scope, 'query': query, 'app': app }
 

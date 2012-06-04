@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% block title %}Book Admin.{% endblock %}
 {% block nav %}
 	<ul>
 		<li {% block nav1 %}{% endblock %}><a href="/book-admin/">首页</a><span></span></li>
@@ -8,18 +7,4 @@
 		<li {% block nav4 %}{% endblock %}><a href='/book-admin/remove'>Remove</a></li>
 		<li {% block nav5 %}{% endblock %}><a href='/book-admin/audit'>Audit</a></li>
 	</ul>
-{% endblock %}
-{% block head %}
-    {% block login %}
-		<div class="subscribe">
-        {% include 'loggedin.html' %}
-		</div>
-    {% endblock %}
-{% endblock %}
-
-{% block body %}
-<div id="content-wrap-home">
-{% block content %}
-{% endblock %}
-</div>
 {% endblock %}
