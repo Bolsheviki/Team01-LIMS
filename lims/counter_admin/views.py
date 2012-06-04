@@ -37,7 +37,7 @@ def borrow(request):
             BookInstance.objects.filter(id=bookId).update(state='B')			
             record = Record.objects.create(
 				booki = new_book,
-				usper = new_user,
+				user = new_user,
 				action = 'B',
 			)
             instance = Borrow.objects.create(record = record)
