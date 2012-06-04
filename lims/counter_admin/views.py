@@ -20,7 +20,7 @@ def base(request):
 	
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login')
 def settings(request):
-    return settings_in_template(request, 'counter_admin/settings.html')
+    return settings_in_template(request, 'counter_admin/settings.html', 'counter-admin' )
 
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/')    
 def borrow(request):
