@@ -1,14 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Counter Admin.{% endblock %}
-{% block head %}
-	<h1>Counter Admin.</h1>
+{% block nav %}
 	<ul>
-		<li><a href='/counter-admin/borrow'>Borrow</a></li>
-		<li><a href='/counter-admin/return'>Return</a></li>
-		<li><a href='/counter-admin/clear'>Clear</a></li>
+		<li {% block nav1 %}{% endblock %}><a href="/counter-admin/">首页</a><span></span></li>
+		<li {% block nav2 %}{% endblock %}><a href='/counter-admin/borrow'>Borrow</a></li>
+		<li {% block nav3 %}{% endblock %}><a href='/counter-admin/return'>Return</a></li>
+		<li {% block nav4 %}{% endblock %}><a href='/counter-admin/clear'>Clear</a></li>
 	</ul>
+{% endblock %}
+{% block head %}
     {% block login %}
-         {% include 'loggedin.html' %}
+		<div class="subscribe">
+        {% include 'loggedin.html' %}
+		</div>
     {% endblock %}
-	
+{% endblock %}
+
+{% block body %}
+<div id="content-wrap-home">
+{% block content %}
+{% endblock %}
+</div>
 {% endblock %}
