@@ -7,16 +7,3 @@
 		<li {% block nav3 %}{% endblock %}><a href='/normal-user/information'>Information</a></li>
 	</ul>
 {% endblock %}
-{% block head %}
-    {% block login %}
-		<div class="subscribe">
-        {% include 'loggedin.html' %}
-		</div>
-    {% endblock %}
-{% endblock %}
-
-{% block body %}
-<div id="content-wrap-home">
-{% block content %}
-{% endblock %}
-</div>
