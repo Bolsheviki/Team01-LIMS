@@ -31,11 +31,13 @@ def borrow(request):
             q = form.cleaned_data
             bookId = q['bookId']
             query = q['query']
-					
+			
+            new_book = BookInstance.objects.get(id=bookId)
+            new_user = UserProfile.objects.get(user__username=query)
             BookInstance.objects.filter(id=bookId).update(state='B')			
             record = Record.objects.create(
 				booki = new_book,
-				user = new_user,
+				usper = new_user,
 				action = 'B',
 			)
             instance = Borrow.objects.create(record = record)
@@ -54,6 +56,7 @@ def return_(request):
             bookId = q['bookId']
 
             BookInstance.objects.filter(id=bookId).update(state='U')
+            new_book = BookInstance.objects.get(id=bookId)
             new_user = Borrow.objects.get(record__booki__id=bookId).record.user
             record = Record.objects.create(
 				booki = new_book,
@@ -75,7 +78,8 @@ def clear(request):
         if form.is_valid():
             q = form.cleaned_data
             query = q['query']
-            				
+            
+            debt = UserProfile.objects.get(user__username=query).debt
             UserProfile.objects.filter(user__username=query).update(debt=0) 
             clear_correct = True
     else:
