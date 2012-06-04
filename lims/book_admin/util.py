@@ -2,6 +2,7 @@
 from db.models import Book, BookInstance, Record
 from lims import util
 from datetime import datetime, timedelta, date
+from django.utils.timezone import utc
 import calendar
 from django.db.models import Q, Count
 from django.db import connection, transaction
@@ -37,7 +38,7 @@ def dictfetchall(cursor):
 
     
 def get_top_borrows_in_month():
-    d = datetime.now()
+    d = timezone.now()
     if d.month == 1:
         year = 1
         month = 12
@@ -62,7 +63,7 @@ def get_top_borrows_in_month():
     
 
 def get_borrows_each_month(isbn = 0):
-    d = datetime.now()
+    d = datetime.utcnow().replace(tzinfo=utc)
     year = d.year - 1
     times = []
     for month in range(d.month + 1, 13):
