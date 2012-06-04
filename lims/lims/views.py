@@ -34,7 +34,7 @@ def search_in_template(request, template_name, app):
 
     q = form.cleaned_data
     book_list = util.get_books(scope, query)
-    basic_info = { 'form': form, 'scope': scope, 'query': query, 'app': app, 'user': user }
+    basic_info = { 'form': form, 'scope': scope, 'query': query, 'app': app }
 
     return list_detail.object_list(
         request,
@@ -48,9 +48,8 @@ def search_in_template(request, template_name, app):
 
     
 def info_book_in_template(request, isbn, template_name):
-    user = request.user
     book = util.get_book_info(isbn)
-    return render_to_response(template_name, locals());
+    return render_to_response(template_name, locals(), context_instance=RequestContext(request));
 
 
 def login_in_template(request, group_name, template_name, redirect_url, login_check_method):

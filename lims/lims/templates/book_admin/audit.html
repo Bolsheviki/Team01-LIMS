@@ -1,4 +1,27 @@
 {% extends "book_admin/base.html" %}
 {% block title %}Audit{% endblock %}
 {% block body %}
+
+<p>
+    total books: {{ total_books }}, available now: {{ total_avaliable_now }}, borrowing now: {{ total_borrowing_now }}
+</p>
+<img src='http://chart.apis.google.com/chart?cht=p3&chd=t:{{total_avaliable_now}},{{ total_borrowing_now }}&chs=300x100&chl=avaliable|borrowing'/>
+<img src='http://chart.apis.google.com/chart?cht=lc&chs=500x150&chd=t:{% for s in borrow_statis %}{{ s.borrow_times }}{% if not forloop.last %},{% endif %}{% endfor %}&chxt=x,y&chxl=0:|{% for s in borrow_statis %}{{ s.month }}|{% endfor %}1:{% for d in divide %}|{{ d }}{% endfor %}'/>
+
+
+<p><b>Top Borrows in a month</b></p>
+<table border='1'>
+    <tr>
+        <th>seq</th>
+        <th>book</th>
+        <th>borrow times</th>
+    </tr>
+    {% for borrow in top_borrows %}
+        <tr>
+            <td>{{ borrow.seq }}</td>
+            <td><a href='/book-admin/book/{{ borrow.isbn }}'>{{ borrow.book }}</a></td>
+            <td>{{ borrow.borrow_times }}</td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}

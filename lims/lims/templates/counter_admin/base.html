@@ -7,8 +7,8 @@
 		<li><a href='/counter-admin/return'>Return</a></li>
 		<li><a href='/counter-admin/clear'>Clear</a></li>
 	</ul>
-	{% block login %}
-		<span>{{ user.username }}, Welcome to LIMS!</span>
-		<a href='/counter-admin/logout/'>Log out</a>
+    {% block login %}
+         {% include 'counter_admin/loggedin.html' %}
     {% endblock %}
+	
 {% endblock %}
