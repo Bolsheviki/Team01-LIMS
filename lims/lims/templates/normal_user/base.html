@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 {% block title %}Normal User.{% endblock %}
-{% block head %}
-	<h1>This Normal User.</h1>
+{% block nav %}
 	<ul>
-		<li><a href='/normal-user/search'>Search</a></li>
-		<li><a href='/normal-user/information'>Information</a></li>
-<!--	<li><a href='/normal-user/borrow'>Borrow</a></li>
-		<li><a href='/normal-user/allbook'>All Book</a></li>	-->
+		<li {% block nav1 %}{% endblock %}><a href="/normal-user/">First</a><span></span></li>
+		<li {% block nav2 %}{% endblock %}><a href='/normal-user/search'>Search</a></li>
+		<li {% block nav3 %}{% endblock %}><a href='/normal-user/information'>Information</a></li>
 	</ul>
+{% endblock %}
+{% block head %}
     {% block login %}
-         {% include 'loggedin.html' %}
+		<div class="subscribe">
+        {% include 'loggedin.html' %}
+		</div>
     {% endblock %}
+{% endblock %}
+
+{% block body %}
+<div id="content-wrap-home">
+{% block content %}
+{% endblock %}
+</div>
 {% endblock %}

@@ -2,4 +2,18 @@
 {% block title %}{{ book.title }}{% endblock %}
 {% block body %}
     {% include 'book.html' %}
+	<p>Borrow</p>
+	<table>
+        <tr>
+            <th>Book ID</th>
+            <th>Time</th>
+        </tr>
+        {% for record in record_list %}
+            <tr>
+                <td>{{ record.record.booki.id }}</td>
+				<td>{{ record.record.time }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+	{% include 'pagenation.html' %}
 {% endblock %}
