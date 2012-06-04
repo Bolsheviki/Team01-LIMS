@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
 from lims.views import login_in_template, search_in_template, logout_in_template,  settings_in_template
 from lims.util import is_counter_admin_logged_in
+from django.template import RequestContext
 from counter_admin.forms import DebtClearForm, BookBorrowForm, BookReturnForm
 from django.contrib.auth.models import User, Group
 from db.models import BookInstance
@@ -18,12 +19,13 @@ from django.db.models import Q
 def base(request):
     return render_to_response('counter_admin/base.html', { 'app': 'counter-admin' })
 	
-@user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login')
+
 def settings(request):
     return settings_in_template(request, 'counter_admin/settings.html', 'counter-admin' )
 
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/')    
 def borrow(request):
+    app = 'counter-admin'
     user = request.user
     if 'bookId' in request.GET:
         form = BookBorrowForm(request.GET)
@@ -41,13 +43,13 @@ def borrow(request):
 				action = 'B',
 			)
             instance = Borrow.objects.create(record = record)
-			
     else:
         form = BookBorrowForm()
-    return render_to_response('counter_admin/borrow.html', locals());
+    return render_to_response('counter_admin/borrow.html', locals(), context_instance=RequestContext(request) );
 
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/') 	
 def return_(request):
+    app = 'counter-admin'
     user = request.user
     if 'bookId' in request.GET:
         form = BookReturnForm(request.GET)
@@ -68,10 +70,11 @@ def return_(request):
 			
     else:
         form = BookReturnForm()
-    return render_to_response('counter_admin/return.html', locals());
+    return render_to_response('counter_admin/return.html', locals(), context_instance=RequestContext(request));
 	
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/') 
 def clear(request):
+    app = 'counter-admin'
     user = request.user
     if request.method == 'POST':
         form = DebtClearForm(request.POST)
@@ -85,7 +88,7 @@ def clear(request):
     else:
 		form =  DebtClearForm()
 	
-    return render_to_response('counter_admin/clear.html', locals());
+    return render_to_response('counter_admin/clear.html', locals(), context_instance=RequestContext(request));
 	
 def login(request):
 	return login_in_template(request, 'CounterAdmin', 'counter_admin/login.html', '/counter-admin/', is_counter_admin_logged_in, 'counter-admin')
