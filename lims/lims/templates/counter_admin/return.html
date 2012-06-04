@@ -1,6 +1,7 @@
 {% extends "counter_admin/base.html" %}
 {% block title %}Return{% endblock %}
-{% block body %}
+{% block nav3 %}id="current"{% endblock %}
+{% block content %}
 	{% if bookId > 0 %}
 		<p style='color:red'>You have returned a book whose id is {{ bookId }}</p>
 	{% endif %}
