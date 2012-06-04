@@ -8,7 +8,7 @@ from lims.views import search_in_template, info_book_in_template, \
 						settings_in_template
 from book_admin.forms import AddBookForm, RemoveBookForm
 from book_admin import util
-from lims.util import is_book_admin_logged_in
+from lims.util import is_book_admin_logged_in, get_borrows_each_month, get_top_borrows_in_month
 from db.models import BookInstance, Book, Borrow
 
 
@@ -21,7 +21,7 @@ def login(request):
 
 	
 def settings(request):
-	return settings_in_template(request, 'book_admin/settings.html')
+	return settings_in_template(request, 'book_admin/settings.html', 'book-admin')
 
 	
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
@@ -36,6 +36,7 @@ def search(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def remove(request):
+    app = 'book-admin'
     if 'bookId' in request.GET:
         form = RemoveBookForm(request.GET)
         if form.is_valid():
@@ -49,6 +50,7 @@ def remove(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def add(request):
+    app = 'book-admin'
     if 'isbn' in request.GET:
         form = AddBookForm(request.GET)
         if form.is_valid():
@@ -61,7 +63,8 @@ def add(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def audit(request):
-    top_borrows = util.get_top_borrows_in_month()
+    app = 'book-admin'
+    top_borrows = get_top_borrows_in_month()
     seq = 0
     for top in top_borrows:
         book = Book.objects.get(isbn=top['isbn'])
@@ -71,7 +74,7 @@ def audit(request):
     total_books = BookInstance.objects.filter(removed=False).count()
     total_borrowing_now = Borrow.objects.all().count()
     total_avaliable_now = total_books - total_borrowing_now
-    borrow_statis = util.get_borrows_each_month()
+    borrow_statis = get_borrows_each_month()
     max = 0.5
     for statis in borrow_statis:
         if max < statis['borrow_times']:
@@ -89,7 +92,7 @@ def audit(request):
 
 @user_passes_test(is_book_admin_logged_in, login_url = '/book-admin/login/')
 def info_book(request, isbn):
-    return info_book_in_template(request, isbn, 'book_admin/book.html')
+    return info_book_in_template(request, isbn, 'book_admin/book.html', 'book-admin')
 	
 	
 	
