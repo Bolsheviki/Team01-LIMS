@@ -1,0 +1,16 @@
+{% extends "counter_admin/base.html" %}
+{% block title %}Clear{% endblock %}
+{% block body %}
+
+	{% if clear_correct %}
+		<p style='color:red'>{{ query }}  {{ debt }} has cleared correctly </p>
+	{% endif %}
+	
+	<form action='' method='post'>
+		<span class='query'>
+			{{ form.query.errors }}
+			{{ form.query }}
+		</span>
+		<input type='submit' value='Clear'>
+	</form>
+{% endblock %}

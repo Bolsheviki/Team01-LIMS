@@ -1,0 +1,21 @@
+{% extends "counter_admin/base.html" %}
+{% block title %}Borrow{% endblock %}
+{% block body %}
+	{% if bookId > 0 %}
+		<p style='color:red'>{{ query }} have borrowed a book whose id is {{ bookId }}</p>
+	{% endif %}
+	
+<form action='' method='get'>
+	<p>User Name</p>
+	<span class='query'>
+        {{ form.query.errors }}
+        {{ form.query }}
+	</span>
+		<p>bookID</p>
+		<span class='bookId'>
+			{{ form.bookId.errors }}
+			{{ form.bookId }}
+		</span>
+    <input type='submit' value='Borrow'>
+</form>
+{% endblock %}

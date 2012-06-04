@@ -1,0 +1,15 @@
+{% extends "counter_admin/base.html" %}
+{% block title %}Return{% endblock %}
+{% block body %}
+	{% if bookId > 0 %}
+		<p style='color:red'>You have returned a book whose id is {{ bookId }}</p>
+	{% endif %}
+
+	<form action='' method='get'>
+		<span class='bookId'>
+			{{ form.bookId.errors }}
+			{{ form.bookId }}
+		</span>
+		<input type='submit' value='Return'>
+	</form>
+{% endblock %}
