@@ -72,7 +72,7 @@ def audit(request):
     total_borrowing_now = Borrow.objects.all().count()
     total_avaliable_now = total_books - total_borrowing_now
     borrow_statis = util.get_borrows_each_month()
-    max = 0
+    max = 0.5
     for statis in borrow_statis:
         if max < statis['borrow_times']:
             max = statis['borrow_times']
