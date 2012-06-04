@@ -49,6 +49,20 @@ def search_in_template(request, template_name, app):
     
 def info_book_in_template(request, isbn, template_name, app=''):
     book = util.get_book_info(isbn)
+    borrow_statis = util.get_borrows_each_month(isbn)
+    max = 0.5
+    for statis in borrow_statis:
+        if max < statis['borrow_times']:
+            max = statis['borrow_times']
+    step = int(round((max / 5 + 0.5)))
+    max = step * 5
+    for statis in borrow_statis:
+        statis['borrow_times'] = statis['borrow_times'] * 100.0 / max
+    divide = []
+    i = 0
+    while i <= max:
+        divide.append(i)
+        i += step
     return render_to_response(template_name, locals(), context_instance=RequestContext(request));
 
 

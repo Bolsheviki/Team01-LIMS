@@ -79,12 +79,13 @@ def audit(request):
     for statis in borrow_statis:
         if max < statis['borrow_times']:
             max = statis['borrow_times']
+    step = int(round((max / 5 + 0.5)))
+    max = step * 5
     for statis in borrow_statis:
         statis['borrow_times'] = statis['borrow_times'] * 100.0 / max
     divide = []
     i = 0
-    step = int((max + 0.5) / 5 + 0.5)
-    while i <= int(max + 0.5):
+    while i <= max:
         divide.append(i)
         i += step
     return render_to_response('book_admin/audit.html', locals(), context_instance=RequestContext(request));

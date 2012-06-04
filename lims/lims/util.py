@@ -99,7 +99,6 @@ def dictfetchall(cursor):
 def get_top_borrows_in_month():
 #    d = datetime.utcnow().replace(tzinfo=utc)
     d = timezone.now()
-    print d
     if d.month == 1:
         year = 1
         month = 12
