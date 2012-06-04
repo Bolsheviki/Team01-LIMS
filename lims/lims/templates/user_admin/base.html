@@ -9,15 +9,9 @@
 {% endblock %}
 {% block head %}
 {% block login_info %}
-<div class="subscribe">
-{% if request.user.is_authenticated %}
-  Welcome, {{ request.user.username }}. Thanks for logging in. 
-  <a href='/user-admin/settings'>Settings</a>
-  <a href='/user-admin/logout'>Logout</a>
-{% else %}
-  <p>Please log in.</p>
-{% endif %}
-</div>
+	<div class="subscribe">
+	{% include 'loggedin.html' %}
+	</div>
 {% endblock %}
 {% endblock %}
 

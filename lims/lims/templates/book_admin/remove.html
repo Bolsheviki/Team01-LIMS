@@ -1,6 +1,7 @@
 {% extends "book_admin/base.html" %}
 {% block title %}Remove{% endblock %}
-{% block body %}
+{% block nav4 %}id="current"{% endblock %}
+{% block content %}
 	{% if bookId > 0 %}
 		<p style='color:red'>You have removed a book whose id is {{ bookId }}</p>
 	{% endif %}
