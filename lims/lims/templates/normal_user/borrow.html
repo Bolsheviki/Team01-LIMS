@@ -1,7 +1,7 @@
 {% extends "normal_user/base.html" %}
 {% block title %}Borrow{% endblock %}
-
-{% block body %}
+{% block nav1 %}id="current"{% endblock %}
+{% block content %}
 
 {% if tlist %}
 	<p>Found {{ tlist|length }} book{{ tlist|pluralize }}.</p>

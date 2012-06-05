@@ -1,4 +1,4 @@
-{% extends "user_admin/base.html" %}
+﻿{% extends "user_admin/base.html" %}
 {% block title %}
 User Information
 {% endblock %}
@@ -7,25 +7,35 @@ User Information
 {% block content %}
 {% if user %}
 	{% if is_set %}
-		<p>User Information has been changed successfully!</p>
+		<p>用户信息修改成功！</p>
 	{% endif %}
-	
-	<form action='' method='post'>
-		<table>
-		<tr><th><label for="id_need_reset_password">Need Reset Password:</label></th><td>{{ form.need_reset_password }}</td><td>{{ form.need_reset_password.errors }}</td></tr>
-	<tr><th><label for="id_password_first">New Password:</label></th><td>{{ form.password_first }}</td><td>{{ form.password_first.errors }}</td></tr>
-	<tr><th><label for="id_password_confirm">Password Confirm:</label></th><td>{{ form.password_confirm }}</td><td>{{ form.password_confirm.errors }}</td></tr>
-		<tr><th><label for="id_email">Email:</label></th><td>{{ form.email }}</td><td>{{ form.email.errors }}</td></tr>
-		<tr><th><label for="id_first_name">First Name:</label></th><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}</td></tr>
-		<tr><th><label for="id_last_name">Last Name:</label></th><td>{{ form.last_name }}</td><td>{{ form.last_name.errors }}</td></tr>
+	<script language="javascript">
+		function remove_confirm()
+		{
+			if (confirm("确定要删除用户{{ user.username }}吗？"))
+			{
+				location.href = "/user-admin/rm-user/{{ user.username }}"
+			}
+		}
+	</script>
+	<table>
+	<form action='' method='post'>	
+		<tr><th><label for="id_need_reset_password">{{ form.need_reset_password.label }}:</label></th><td>{{ form.need_reset_password }}</td><td>{{ form.need_reset_password.errors }}</td></tr>
+		<tr><th><label for="id_password_first">{{ form.password_first.label }}:</label></th><td>{{ form.password_first }}</td><td>{{ form.password_first.errors }}</td></tr>
+		<tr><th><label for="id_password_confirm">{{ form.password_confirm.label }}:</label></th><td>{{ form.password_confirm }}</td><td>{{ form.password_confirm.errors }}</td></tr>
+		<tr><th><label for="id_email">{{ form.email.label }}:</label></th><td>{{ form.email }}</td><td>{{ form.email.errors }}</td></tr>
+		<tr><th><label for="id_first_name">{{ form.first_name.label }}:</label></th><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}</td></tr>
+		<tr><th><label for="id_last_name">{{ form.last_name.label }}:</label></th><td>{{ form.last_name }}</td><td>{{ form.last_name.errors }}</td></tr>
 		{% if is_normal_user %}
-			<tr><th><label for="id_level">Level:</label></th><td>{{ form.level }}</td><td>{{ form.level.errors }}</td></tr>
-			<tr><th><label for="id_debt">Debt:</label></th><td>{{ form.debt }}</td><td>{{ form.debt.errors }}</td></tr>
+			<tr><th><label for="id_level">{{ form.level.label }}:</label></th><td>{{ form.level }}</td><td>{{ form.level.errors }}</td></tr>
+			<tr><th><label for="id_debt">{{ form.debt.label }}:</label></th><td>{{ form.debt }}</td><td>{{ form.debt.errors }}</td></tr>
 		{% endif %}
-		</table>
-		<input type='submit' value='Submit'>
+		
+		<tr><td><input type='submit' value='修改用户信息'/></td>
 	</form>
+		<td><input type='submit' value='删除该用户' onclick='remove_confirm()'/></td></tr>
+	</table>
 {% else %}
-	<p>This user is not exist!</p>
+	<p>用户不存在！</p>
 {% endif %}
 {% endblock %}
