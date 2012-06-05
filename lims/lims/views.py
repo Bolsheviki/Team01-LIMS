@@ -47,7 +47,7 @@ def search_in_template(request, template_name, app):
     )
 
     
-def info_book_in_template(request, isbn, record_list, template_name, app=''):
+def info_book_in_template(request, isbn, record_list, template_name, app):
     book = util.get_book_info(isbn)
     borrow_statis = util.get_borrows_each_month(isbn)
     max = 0.5
@@ -83,7 +83,7 @@ def info_book_in_template(request, isbn, record_list, template_name, app=''):
     )
 
 
-def login_in_template(request, group_name, template_name, redirect_url, login_check_method, app=''):
+def login_in_template(request, group_name, template_name, redirect_url, login_check_method):
     login_check = login_check_method(request.user)
     if request.method == 'POST':
         username = request.POST.get('username', '')
@@ -111,7 +111,7 @@ def logout_in_template(request, redirect_url):
     return HttpResponseRedirect(redirect_url)
 
     
-def settings_in_template(request, template_name, app=''):
+def settings_in_template(request, template_name):
     if request.method == 'POST':
         form = SettingsForm(request.POST)
 

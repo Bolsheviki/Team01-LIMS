@@ -17,7 +17,7 @@ def base(request):
 
 
 def login(request):
-    return login_in_template(request, 'NormalUser', 'normal_user/login.html', '/normal-user/', is_normal_user_logged_in)
+    return login_in_template(request, 'NormalUser', 'normal_user/login.html', '/normal-user/', is_normal_user_logged_in, 'normal-user')
 
 
 def search(request):
