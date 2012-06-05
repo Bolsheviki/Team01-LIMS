@@ -991,3 +991,39 @@ ul.archive li .post-details span {
 	float: right;
 }
 
+.login_form {
+	margin: 0 auto;
+	width: 600px;
+}
+
+.center {
+	margin: 0 auto;
+}
+
+#id_username, #id_password, #id_password_first, #id_password_confirm, #id_email, #id_first_name, #id_last_name{
+	width: 95%;
+}
+
+#id_query{
+	width: 300px;
+}
+
+.clear{
+	clear: both;
+}
+
+.errorlist{
+	color: red;
+}
+
+.setting{
+	width: 600px;
+}
+
+form p{
+	margin: 0;
+}
+
+.textcenter {
+	text-align: center;
+}

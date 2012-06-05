@@ -1,10 +1,11 @@
-﻿{% if is_set %}
+{% if is_set %}
 	<p>用户信息设置成功！</p>
 {% endif %}
 
-<form action='' method='post'>
-	<table>
-		{{ form.as_table }}
-	</table>
-	<input type='submit' value='修改'>
+<form action='' method='post' class="setting center">
+	<div class="textcenter"><h3>个人信息</h3></div>
+	<div>
+	{{ form.as_p }}
+	</div>
+	<div class="no-border"><input type='submit' value='修改' class="button"/></div>
 </form>

@@ -1,5 +1,7 @@
 
-<form action='' method='get'>
+<form action='' method='get' class="center">
+	<div><h3>书目检索</h3></div>
+	<div class="no-border">
 	<span class='scope'>
         {{ form.scope.errors }}
         {{ form.scope }}
@@ -8,7 +10,8 @@
         {{ form.query.errors }}
         {{ form.query }}
 	</span>
-    <input type='submit' value='Search'>
+    <input type='submit' value='Search' class="button">
+	</div>
 </form>
 
 {% if not is_begin %}

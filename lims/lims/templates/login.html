@@ -1,7 +1,14 @@
-﻿<form action='' method='post'>
-	<table>
-		<tr><th><label for="id_username">用户名：</label></th><td><input type="text" name="username" id="id_username" /></td><td>{{ form.username.errors }}</td></tr>
-		<tr><th><label for="id_password">密码：</label></th><td><input type="password" name="password" id="id_password" /></td><td>{{ form.password.errors }}</td></tr>
-	</table>
-    <input type='submit' value='登录'>
+<div class="login_form">
+<form action='' method='post'>
+	<div><h3>登录</h3></div>
+	<div>
+	<label for="id_username">用户名：</label>
+	{{ form.username.errors }}
+	<input type="text" name="username" id="id_username" />
+	<label for="id_password">密码：</label>
+	{{ form.password.errors }}
+	<input type="password" name="password" id="id_password" />
+	</div>
+	<div class="no-border"><input class="button" type='submit' value='登录'></div>
 </form>
+</div>
