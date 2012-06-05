@@ -37,10 +37,10 @@
 			{% if not record.renewal %}
 				<form name = 'form1' action='../renewal/' style=" border:0px solid #ffffff" method='post'>
 				<input type='hidden' name='id' value='{{record.id}}'>
-				<a href='javascript:document.form1.submit();'>Renewal</a>
+				<a class="more" style="float: none;" href='javascript:document.form1.submit();'>Renewal</a>
 				</form>
 			{% else %}
-				Done
+				已续借
 			{% endif %}
 			</td>
 		</tr>
