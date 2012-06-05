@@ -116,8 +116,9 @@ def settings_in_template(request, template_name, app=''):
         form = SettingsForm(request.POST)
 
         if form.is_valid():
-            if request.POST.get('need_reset_password', False):
-                request.user.set_password(request.POST['password_first'])
+            password = request.POST['password_first']
+            if password != '':
+                request.user.set_password(password)
             request.user.email = request.POST['email']
             request.user.first_name = request.POST['first_name']
             request.user.last_name = request.POST['last_name']

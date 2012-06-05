@@ -48,19 +48,11 @@ class LoginForm(forms.Form):
         return password
 
 class SettingsForm(forms.Form):
-    need_reset_password = forms.BooleanField(label=u'是否需要修改密码', initial=False, required=False)
     password_first = forms.CharField(label=u'输入新密码', widget=forms.PasswordInput, required=False)
     password_confirm = forms.CharField(label=u'确认新密码', widget=forms.PasswordInput, required=False)
     email = forms.EmailField(label=u'Email地址', required=False)
     first_name = forms.CharField(label=u'姓', required=False)
     last_name = forms.CharField(label=u'名', required=False)
-
-    def clean_password_first(self):
-        pw_first = self.cleaned_data['password_first']
-        need_reset_pw = self.cleaned_data.get('need_reset_password', False)
-        if need_reset_pw and pw_first == '':
-            raise forms.ValidationError(u'密码不得为空！')
-        return pw_first
 
     def clean_password_confirm(self):
         pw_confirm = self.cleaned_data['password_confirm']
@@ -69,7 +61,6 @@ class SettingsForm(forms.Form):
         except:
             return pw_confirm
 
-        need_reset_pw = self.cleaned_data.get('need_reset_password', False)
-        if need_reset_pw and pw_first != pw_confirm:
+        if (pw_first != '' or pw_confirm != '') and pw_first != pw_confirm:
             raise forms.ValidationError(u'两次输入的密码不相同！')
         return pw_confirm
