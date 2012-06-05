@@ -15,7 +15,6 @@ from db.models import Borrow
 from django.db.models import Q
 
 
-
 def base(request):
     return render_to_response('counter_admin/base.html', { 'app': 'counter-admin' })
 	
@@ -28,6 +27,7 @@ def settings(request):
 def borrow(request):
     app = 'counter-admin'
     user = request.user
+    over_time = False
     if 'bookId' in request.GET:
         form = BookBorrowForm(request.GET)
         if form.is_valid():
@@ -37,12 +37,32 @@ def borrow(request):
 			
             new_book = BookInstance.objects.get(id=bookId)
             new_user = UserProfile.objects.get(user__username=query)
-            BookInstance.objects.filter(id=bookId).update(state='B')			
+            
+            borrow_books = Borrow.objects.filter(record__user=new_user)
+
+            			
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
 				action = 'B',
 			)
+            current_time = record.time
+            overtime_list = []
+            for aBook in borrow_books:
+                borrow_time = aBook.record.time
+                time_ = ( current_time - borrow_time ).days - 30
+                if aBook.record.booki.renewal==True:
+                    time_ = time_ - 30
+                if time_>0:
+                    over_time = True
+                    book_id = aBook.record.booki.id
+                    overtime_list.append( book_id )
+                    
+            if over_time == True:        
+                Record.objects.order_by('-time')[0].delete()
+                return render_to_response('counter_admin/borrow.html', locals(), context_instance=RequestContext(request) )
+                
+            BookInstance.objects.filter(id=bookId).update(state='B') 
             instance = Borrow.objects.create(record = record)
     else:
         form = BookBorrowForm()
@@ -62,6 +82,7 @@ def return_(request):
             BookInstance.objects.filter(id=bookId).update(state='U')
             new_book = BookInstance.objects.get(id=bookId)
             new_user = Borrow.objects.get(record__booki__id=bookId).record.user
+            borrow_time = Borrow.objects.get(record__booki__id=bookId).record.time
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
@@ -69,7 +90,15 @@ def return_(request):
 				time = "",
             )
             Borrow.objects.get(record__booki__id=bookId).delete()
-			
+		    
+            return_time = record.time
+            time_ = (return_time-borrow_time).days - 30
+            if new_book.renewal==True:
+                time_ = time_ - 30
+            if time_>0:
+                new_user.debt += time_
+                new_user.save()
+            
     else:
         form = BookReturnForm()
     return render_to_response('counter_admin/return.html', locals(), context_instance=RequestContext(request));

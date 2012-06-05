@@ -2,10 +2,16 @@
 {% block title %}Borrow{% endblock %}
 {% block nav2 %}id="current"{% endblock %}
 {% block content %}
-	{% if bookId > 0 %}
+	{% if bookId > 0 and time_ <= 0 %}
 		<p style='color:red'>{{ query }} have borrowed a book whose id is {{ bookId }}</p>
 	{% endif %}
-	
+
+    {% if bookId > 0 and time_ > 0 %}
+		{% for booklala in overtime_list  %}
+			<p style='color:red'>You need to return Book No. {{ booklala }} First </p>
+        {% endfor %}
+	{% endif %}
+        
 <form action='' method='get'>
 	<p>User Name</p>
 	<span class='query'>
