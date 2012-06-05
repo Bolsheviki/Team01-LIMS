@@ -81,10 +81,13 @@ def clear(request):
         if form.is_valid():
             q = form.cleaned_data
             query = q['query']
-            
-            debt = UserProfile.objects.get(user__username=query).debt
-            UserProfile.objects.filter(user__username=query).update(debt=0) 
-            clear_correct = True
+            if request.POST.get('form-submit') == 'Clear':
+                debt = UserProfile.objects.get(user__username=query).debt
+                UserProfile.objects.filter(user__username=query).update(debt=0) 
+                clear_correct = True
+            if request.POST.get('form-submit') == 'View':
+                view_correct = True
+                debt = UserProfile.objects.get(user__username=query).debt
     else:
 		form =  DebtClearForm()
 	

@@ -1,6 +1,7 @@
 {% extends "normal_user/base.html" %}
 {% block title %}Information{% endblock %}
-{% block body %}
+{% block nav3 %}id = 'current'{% endblock %}
+{% block content %}
 <table>
 <tr>
 	<td>name</td><td>{{ username }}</td>
@@ -15,7 +16,6 @@
 	<td>debt</td><td>{{ debt }}</td>
 </tr>
 </table>
-<a href='/normal-user/settings/'>settings</a>
 
 <p>Borrow Book List:</p>
 <p/>

@@ -4,7 +4,7 @@ from django.views.generic import list_detail
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from lims.views import login_in_template, logout_in_template, settings_in_template
-from user_admin.forms import SearchForm, UserInfoForm, BatchUserForm
+from user_admin.forms import SearchForm, UserInfoForm, BatchUserForm, AddUserForm
 from user_admin import util
 from db.models import UserProfile
 from lims.util import is_in_group, is_user_admin_logged_in
@@ -142,5 +142,33 @@ def add(request):
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
 def remove(request):
     return batch_user_handle(request, 'user_admin/remove.html', util.remove_users)
-    
-    
+
+@user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
+def rm_user(request, username):
+    app = 'user-admin'
+    try:
+        user = User.objects.get(username=username)
+        user.delete()
+        done = True
+    except User.DoesNotExist:
+        pass
+    return render_to_response('user_admin/rm_user.html', locals(), context_instance=RequestContext(request))
+
+@user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
+def add_one(request):
+    app = 'user-admin'
+    if request.method == 'POST':
+        form = AddUserForm(request.POST)
+        if form.is_valid():
+            group = util.get_group(request.POST['group'])
+            new_user = User.objects.create_user(username=request.POST['username'],
+                                            password=request.POST['password_first'], email=request.POST['email'])
+            new_user.first_name=request.POST['first_name']
+            new_user.last_name=request.POST['last_name']
+            new_user.groups.add(group)
+            new_user.save()
+            UserProfile.objects.create(user=new_user, level=request.POST['level'], debt=request.POST['debt'])
+    else:
+        form = AddUserForm()
+
+    return render_to_response('user_admin/add_one.html', locals(), context_instance=RequestContext(request))
