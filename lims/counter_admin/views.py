@@ -38,9 +38,8 @@ def borrow(request):
             new_book = BookInstance.objects.get(id=bookId)
             new_user = UserProfile.objects.get(user__username=query)
             
-            borrow_books = Borrow.objects.filter(record__user=new_user)
 
-            			
+           			
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
@@ -48,6 +47,8 @@ def borrow(request):
 			)
             current_time = record.time
             overtime_list = []
+            borrow_books = Borrow.objects.filter(record__user=new_user)
+            
             for aBook in borrow_books:
                 borrow_time = aBook.record.time
                 time_ = ( current_time - borrow_time ).days - 30
