@@ -399,7 +399,6 @@ blockquote {
   	background: url(/static/img/quote.png) no-repeat 0 22px;
   	font-size: 18px;
   	line-height: 28px;
-  	font-style: italic;
   	font-family: Georgia, 'Times New Roman', Times, Serif;
     overflow: hidden;
 }
@@ -1026,4 +1025,38 @@ form p{
 
 .textcenter {
 	text-align: center;
+}
+
+.booklist {
+	width: 80%;
+	margin: 50px auto;
+	padding: 30px;
+}
+
+.booklist table {
+	width: 100%;
+}
+
+.borrowlist {
+	width: 80%;
+	margin: 50px auto;
+	padding: 30px;
+}
+
+.borrowlist table {
+	width: 100%;
+}
+
+tfoot {
+	text-align: center;
+}
+
+.book {
+	width:90%;
+	margin: 50px auto;
+}
+
+.img-count {
+	width: 526px;
+	margin: 0 auto;
 }

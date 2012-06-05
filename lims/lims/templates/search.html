@@ -14,17 +14,27 @@
 	</div>
 </form>
 
+<div class="booklist">
 {% if not is_begin %}
     {% if book_list %}
-        <p>Found {{ book_list|length }} book{{ book_list|pluralize }}.</p>
-        <ul>
-            {% for book in book_list %}
-            <li><a href='/{{ app }}/book/{{ book.isbn }}/'>{{ book }}</a></li>
+        <h4>找到 {{ book_list|length }} 本书{{ book_list|pluralize }}.</h4>
+		<table>
+			<thead>
+			<tr><th width="20%">ISBN</th><th width="80%">书名</th></tr>
+			</thead>
+			<tbody>
+			{% for book in book_list %}
+			<tr><td>{{ book.isbn }}</td><td><a href='/{{ app }}/book/{{ book.isbn }}/'>{{ book }}</a></td></tr>
             {% endfor %}
-        </ul>
-        {% include 'pagenation.html' %}
+			</tbody>
+			{% if is_paginated %}
+			<tfoot>
+			<tr><td colspan="2">{% include 'pagenation.html' %}</td></tr>
+			</tfoot>
+			{% endif %}
+		</table>
     {% else %}
-        <p>No books matched your search criteria.</p>
+        <h4>No books matched your search criteria.</h4>
     {% endif %}
 {% endif %}
-
+</div>
