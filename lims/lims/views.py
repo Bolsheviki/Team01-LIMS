@@ -83,7 +83,7 @@ def info_book_in_template(request, isbn, record_list, template_name, app):
     )
 
 
-def login_in_template(request, group_name, template_name, redirect_url, login_check_method):
+def login_in_template(request, group_name, template_name, redirect_url, login_check_method, app):
     login_check = login_check_method(request.user)
     if request.method == 'POST':
         username = request.POST.get('username', '')
@@ -100,10 +100,10 @@ def login_in_template(request, group_name, template_name, redirect_url, login_ch
                 redirect = redirect_url
             return HttpResponseRedirect(redirect)
         else:
-            return render_to_response(template_name, {'form' : form, 'login_check':login_check }, context_instance=RequestContext(request))
+            return render_to_response(template_name, locals(), context_instance=RequestContext(request))
     else:
         form = LoginForm()
-        return render_to_response(template_name, { 'form' : form, 'login_check':login_check }, context_instance=RequestContext(request))
+        return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
 		
 def logout_in_template(request, redirect_url):
@@ -111,7 +111,7 @@ def logout_in_template(request, redirect_url):
     return HttpResponseRedirect(redirect_url)
 
     
-def settings_in_template(request, template_name):
+def settings_in_template(request, template_name, app):
     if request.method == 'POST':
         form = SettingsForm(request.POST)
 
@@ -134,3 +134,5 @@ def settings_in_template(request, template_name):
         form = SettingsForm(dict)
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+
+    
