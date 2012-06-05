@@ -1,10 +1,8 @@
-﻿
 {% if request.user.is_authenticated %}
-  <p align='right'>
-  欢迎，{{ request.user.username }}。 感谢您使用本系统。 
+  <p align='right'>欢迎，{{ request.user.username }}。 感谢您使用本系统。 
   <a href='/{{ app }}/settings'>用户信息设置</a>
   <a href='/{{ app }}/logout'>退出登录</a>
   </p>
 {% else %}
-  <p align='right'>请 <a href='/{{ app }}/login'>登录</a>.</p>
+  <p align='right'>请<a href='/{{ app }}/login'>登录</a>.</p>
 {% endif %}

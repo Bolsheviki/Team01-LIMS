@@ -6,12 +6,16 @@
 	{% if clear_correct %}
 		<p style='color:red'>{{ query }}  {{ debt }} has cleared correctly </p>
 	{% endif %}
+    {% if view_correct %}
+		<p style='color:red'>{{ query }}  need clear {{ debt }}</p>
+	{% endif %}
 	
 	<form action='' method='post'>
 		<span class='query'>
 			{{ form.query.errors }}
 			{{ form.query }}
 		</span>
-		<input type='submit' value='Clear'>
+        <input name='form-submit' type='submit' value='View'>
+		<input name='form-submit' type='submit' value='Clear'>
 	</form>
 {% endblock %}
