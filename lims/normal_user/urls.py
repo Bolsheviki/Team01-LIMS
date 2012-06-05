@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import direct_to_template
+from lims import util
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -19,5 +20,5 @@ urlpatterns = patterns('normal_user.views',
 #    url(r'^borrow/$', 'borrowbook'),
     url(r'^renewal/$', 'renewal'),
     url(r'^book/(?P<isbn>\d+)/$', 'info_book'),
-    url(r'^$', direct_to_template, { 'template': 'normal_user/index.html', 'extra_context': {'app' : 'normal-user'}, }),
+    url(r'^$', direct_to_template, { 'template': 'normal_user/index.html', 'extra_context': {'app' : 'normal-user', 'books': util.get_top3_books_in_month() }, }),
 )
