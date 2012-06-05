@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import user_passes_test
     
     
 def login(request):
-    return login_in_template(request, 'UserAdmin', 'user_admin/login.html', '/user-admin', is_user_admin_logged_in, 'user-admin')
+    return login_in_template(request, 'UserAdmin', 'user_admin/login.html', '/user-admin/', is_user_admin_logged_in, 'user-admin')
 
     
 def logout(request):
@@ -78,8 +78,9 @@ def info_user(request, username):
         if request.method == 'POST':
             form = UserInfoForm(request.POST)
             if form.is_valid():
-                if request.POST.get('need_reset_password', False):
-                    user.set_password(request.POST['password_first'])
+                password = request.POST['password_first']
+                if password != '':
+                    user.set_password(password)
                 user.email = request.POST['email']
                 user.first_name = request.POST['first_name']
                 user.last_name = request.POST['last_name']

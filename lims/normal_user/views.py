@@ -17,7 +17,7 @@ def base(request):
 
 
 def login(request):
-    return login_in_template(request, 'NormalUser', 'normal_user/login.html', '/normal-user/', is_normal_user_logged_in)
+    return login_in_template(request, 'NormalUser', 'normal_user/login.html', '/normal-user/', is_normal_user_logged_in, 'normal-user')
 
 
 def search(request):
@@ -34,7 +34,6 @@ def logout(request):
     return logout_in_template(request, '/normal-user/login/')
 
 
-@user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
 def info_book(request, isbn):
     borrows = Borrow.objects.filter(Q(record__booki__book__isbn=isbn)&Q(record__action__exact='B'))
     return info_book_in_template(request, isbn, borrows, 'normal_user/book.html', 'normal-user')

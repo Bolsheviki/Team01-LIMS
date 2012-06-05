@@ -70,7 +70,7 @@ def get_book_info(isbn):
 
 def is_in_group(user, group_name):
     return user.groups.filter(name = group_name).count() > 0
-
+    
 def is_normal_user_logged_in(user):
     return user.is_authenticated() and is_in_group(user, 'NormalUser')
 

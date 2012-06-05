@@ -9,7 +9,7 @@ def setRenewal(name, sid):
     try:
         br = Borrow.objects.get(record__user__user__username__exact=name, record__booki__id=id)
     except:
-       print 'a'
+        pass
     booki = br.record.booki
     booki.renewal = True
     booki.save()

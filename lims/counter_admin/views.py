@@ -23,6 +23,7 @@ def base(request):
 def settings(request):
     return settings_in_template(request, 'counter_admin/settings.html', 'counter-admin' )
 
+    
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/')    
 def borrow(request):
     app = 'counter-admin'
@@ -47,6 +48,7 @@ def borrow(request):
         form = BookBorrowForm()
     return render_to_response('counter_admin/borrow.html', locals(), context_instance=RequestContext(request) );
 
+    
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/') 	
 def return_(request):
     app = 'counter-admin'
@@ -72,6 +74,7 @@ def return_(request):
         form = BookReturnForm()
     return render_to_response('counter_admin/return.html', locals(), context_instance=RequestContext(request));
 	
+    
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/') 
 def clear(request):
     app = 'counter-admin'
@@ -93,9 +96,11 @@ def clear(request):
 	
     return render_to_response('counter_admin/clear.html', locals(), context_instance=RequestContext(request));
 	
+    
 def login(request):
 	return login_in_template(request, 'CounterAdmin', 'counter_admin/login.html', '/counter-admin/', is_counter_admin_logged_in, 'counter-admin')
 	
+    
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/')
 def logout(request):
     return logout_in_template(request, '/counter-admin/login/')	
@@ -104,3 +109,5 @@ def logout(request):
 @user_passes_test(is_counter_admin_logged_in, login_url = '/counter-admin/login/')
 def search(request):
     return search_in_template(request, 'counter_admin/search.html', 'counter-admin');
+
+    
