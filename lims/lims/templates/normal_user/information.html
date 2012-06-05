@@ -1,31 +1,49 @@
 {% extends "normal_user/base.html" %}
 {% block title %}Information{% endblock %}
-{% block nav3 %}id="current"{% endblock %}
-{% block content %}
-<li>name: {{ username }} </li>
-<li>email: {{ email }} </li>
-<li>level : {{ level }} </li>
-<li>debt : {{ debt }} </li>
+{% block body %}
+<table>
+<tr>
+	<td>name</td><td>{{ username }}</td>
+</tr>
+<tr>
+	<td>email</td><td>{{ email }}</td>
+</tr>
+<tr>
+	<td>level</td><td>{{ level }}</td>
+</tr>
+<tr>
+	<td>debt</td><td>{{ debt }}</td>
+</tr>
+</table>
 <a href='/normal-user/settings/'>settings</a>
 
 <p>Borrow Book List:</p>
 <p/>
 <p/>
 {% if tlist %}
-	<p>Found {{ tlist|length }} book{{ tlist|pluralize }}.</p>
-	<ul>
+	<table>
+        <tr>
+            <th>Book Name</th>
+            <th>Borrow Time</th>
+            <th>Renewal</th>
+        </tr>
 		{% for record in tlist %}
-		<li><a href='/normal-user/book/{{ record.isbn }}/'>{{ record.name }}</a></li>
-		<li>Time : {{ record.time }}</li>
-		<li>Renewal : {{ record.renewal }}</li>
+		<tr>
+			<td><a href='/normal-user/book/{{ record.isbn }}/'>{{ record.name }}</a></td>
+			<td>{{ record.time }}</td>
 			{% if not record.renewal %}
-				<form action='../renewal/' method='post'>
-				<input type='hidden' name='id' value='{{record.id}}'>
-				<input type='submit' value='renewal'>
-				</form>
+				<td>
+					<form name = 'form1' action='../renewal/' style=" border:0px solid #ffffff" method='post'>
+					<input type='hidden' name='id' value='{{record.id}}'>
+					<a href='javascript:document.form1.submit();'>Renewal</a>
+					</form>
+				</td>
+			{% else %}
+				<td>Done</td>
 			{% endif %}
+		</tr>
 		{% endfor %}
-	</ul>
+	</table>
 	{% include 'pagenation.html' %}
 {% else %}
 	<p>No books matched your search criteria.</p>
