@@ -160,3 +160,19 @@ def get_borrows_each_month(isbn = 0):
         res.append(res_in_month[0])
     cursor.close()
     return res
+
+
+def get_top3_books_in_month():
+    top_borrows = get_top_borrows_in_month()
+    list_length = min(len(top_borrows), 3)
+    result_list = []
+    for i in range(0, list_length):
+        isbn = top_borrows[i]['isbn']
+        book = get_book_info(isbn)
+        result_list.append({ 'summary': book['summary'], 'isbn': isbn, })
+    return result_list
+    
+    
+    
+    
+  
