@@ -67,7 +67,7 @@
 			    <p>
                 {{ books.1.summary|truncatewords:250 }} 
 				</p>
-				<p><a href="/{{ app }}/book/{{ books.1.isbn }}" class="more">查看详细</a></p>
+				<p><a href="/normal-user/book/{{ books.1.isbn }}" class="more">查看详细</a></p>
 			</div>
         </article>
 
@@ -79,7 +79,7 @@
 			    <p>
                 {{ books.2.summary|truncatewords:250 }} 
 				</p>
-				<p><a href="/{{ app }}/{% if books.2 %}book/{{ books.2.isbn }}{% endif %}" class="more">查看详细</a></p>
+				<p><a href="/normal-user/{% if books.2 %}book/{{ books.2.isbn }}{% endif %}" class="more">查看详细</a></p>
 
 			</div>
         </article>
