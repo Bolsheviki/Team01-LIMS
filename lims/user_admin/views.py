@@ -78,8 +78,9 @@ def info_user(request, username):
         if request.method == 'POST':
             form = UserInfoForm(request.POST)
             if form.is_valid():
-                if request.POST.get('need_reset_password', False):
-                    user.set_password(request.POST['password_first'])
+                password = request.POST['password_first']
+                if password != '':
+                    user.set_password(password)
                 user.email = request.POST['email']
                 user.first_name = request.POST['first_name']
                 user.last_name = request.POST['last_name']
