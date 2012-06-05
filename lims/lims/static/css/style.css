@@ -1004,7 +1004,15 @@ ul.archive li .post-details span {
 }
 
 #id_query{
-	width: 300px;
+	width: 330px;
+}
+
+#id_isbn {
+	width: 420px;
+}
+
+#id_bookId {
+	width: 420px;
 }
 
 .clear{
@@ -1045,6 +1053,18 @@ form p{
 
 .borrowlist table {
 	width: 100%;
+}
+
+.audit {
+	width: 95%;
+	text-align: center;
+	margin: 10px auto 50px auto;
+	padding: 30px;
+}
+
+.audit  table {
+	margin: 0 auto;
+	width: 80%;
 }
 
 tfoot {
