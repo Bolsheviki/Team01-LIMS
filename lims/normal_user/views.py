@@ -8,6 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from lims.views import settings_in_template, search_in_template, info_book_in_template, login_in_template, logout_in_template
 from lims.util import is_normal_user_logged_in
 from django.views.generic import list_detail
+from db.models import BookInstance, Book, Borrow, Record
+from django.db.models import Q
 
 
 def base(request):
@@ -34,20 +36,20 @@ def logout(request):
 
 @user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
 def info_book(request, isbn):
-    user = request.user
-    return info_book_in_template(request, isbn, [], 'normal_user/book.html')
+    borrows = Borrow.objects.filter(Q(record__booki__book__isbn=isbn)&Q(record__action__exact='B'))
+    return info_book_in_template(request, isbn, borrows, 'normal_user/book.html', 'normal-user')
 
 
 @user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
 def information(request):
-#user information
+    app = 'normal-user'
+
     userprofile = util.getUser(request.user.username)
     username = request.user.username
     email = request.user.email
     level = userprofile.level[0]
     debt = userprofile.debt
 
-#borrow book
     borrow_list = util.getBorrow_now(request.user.username)
     tlist = []
     for br in borrow_list:
@@ -75,7 +77,8 @@ def information(request):
         
         
     return render_to_response('normal_user/information.html',
-        {'username':username,
+        {'app':app,
+        'username':username,
         'email':email,
         'level':level,
         'debt':debt,
@@ -88,6 +91,7 @@ def information(request):
 
 @user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
 def borrowbook(request):
+    app = 'normal-user'
     borrow_list = util.getBorrow_now(request.user.username)
     tlist = []
     for br in borrow_list:
@@ -113,11 +117,12 @@ def borrowbook(request):
     except:
         relist = paginator.page(1)
         
-    return render_to_response('normal_user/borrow.html', {'tlist':relist, 'page_obj':relist, 'is_paginated':True}, context_instance=RequestContext(request))
+    return render_to_response('normal_user/borrow.html', {'app':app,'tlist':relist, 'page_obj':relist, 'is_paginated':True}, context_instance=RequestContext(request))
 
 
 @user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
 def allbook(request):
+    app = 'normal-user'
     borrow_list = util.getBorrow_now(request.user.username)
     pre_list = util.getBorrow_retn(request.user.username)
     tlist = []
@@ -150,12 +155,12 @@ def allbook(request):
     except:
         relist = paginator.page(1)
             
-    return render_to_response('normal_user/allbook.html', {'tlist':relist, 'page_obj':relist, 'is_paginated':True}, context_instance=RequestContext(request))
+    return render_to_response('normal_user/allbook.html', {'app':app, 'tlist':relist, 'page_obj':relist, 'is_paginated':True}, context_instance=RequestContext(request))
 
 
 @user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
 def renewal(request):
     sid = request.POST.get('id')
     util.setRenewal(request.user.username, sid)
-    return HttpResponseRedirect('/normal-user/borrow/')
+    return HttpResponseRedirect('/normal-user/information/')
 

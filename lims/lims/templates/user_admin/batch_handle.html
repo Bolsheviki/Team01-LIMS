@@ -1,7 +1,7 @@
-{% if is_finished %}
-	<p>Batch users handling has been finished!</p>
+﻿{% if is_finished %}
+	<p>批量操作完成！</p>
 	{% if has_error %}
-		<p>But some error has happened during this time.</p>
+		<p>但期间发生了一些错误。</p>
 	{% endif %}
 {% endif %}
 <form action='' method='post'>
@@ -11,5 +11,5 @@
 	<input type='submit' value='Submit'>
 </form>
 {% if todo_list %}
-	<p>The number of user{{ todo_list|pluralize }} to handle is totally {{ todo_list|length }}, which will range from {{ todo_list|first }} to {{ todo_list|last }}.</p>
+	<p>进行批量操作的用户总数为{{ todo_list|length }}，用户名范围是：{{ todo_list|first }} ~ {{ todo_list|last }}。</p>
 {% endif %}
