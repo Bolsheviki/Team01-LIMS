@@ -75,7 +75,6 @@ def information(request):
     except:
         relist = paginator.page(1)
         
-        
     return render_to_response('normal_user/information.html',
         {'app':app,
         'username':username,
@@ -89,6 +88,7 @@ def information(request):
         context_instance=RequestContext(request)
     )
 
+    
 @user_passes_test(is_normal_user_logged_in, login_url = '/normal-user/login/')
 def borrowbook(request):
     app = 'normal-user'
