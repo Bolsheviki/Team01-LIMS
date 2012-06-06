@@ -1,4 +1,4 @@
-from django import forms
+﻿from django import forms
 from db import models
 from lims.forms import SettingsForm
 import string
