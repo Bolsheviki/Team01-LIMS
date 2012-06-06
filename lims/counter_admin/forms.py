@@ -19,6 +19,7 @@ class DebtClearForm(forms.Form):
             raise forms.ValidationError('The User is not exist')
         return query
    
+   
 class BookBorrowForm(forms.Form):
     query = forms.CharField()
     bookId = forms.CharField()
@@ -26,14 +27,13 @@ class BookBorrowForm(forms.Form):
     def clean_query(self):
         query = self.cleaned_data['query']
         try:
-	        new_user = UserProfile.objects.get( user__username=query )
+	        new_user = UserProfile.objects.get(user__username=query)
         except UserProfile.DoesNotExist:
             raise forms.ValidationError('The User is not existed')
 		
         debt = new_user.debt
         if debt > 0:
             raise forms.ValidationError('Debt should be cleared!')
-			
         try:
             count = Borrow.objects.filter(record__user__user__username=query).count()
         except Borrow.DoesNotExist:
@@ -45,7 +45,6 @@ class BookBorrowForm(forms.Form):
 		    raise forms.ValidationError('You cannot borrow more')
         if new_user.level == 'S' and count > 9:		
 		    raise forms.ValidationError('You cannot borrow more')
-				
         return query
 		
     def clean_bookId(self):
@@ -67,3 +66,5 @@ class BookReturnForm(forms.Form):
         except Borrow.DoesNotExist:
 		    raise forms.ValidationError('The Book is not in Borrow')
         return bookId
+        
+        

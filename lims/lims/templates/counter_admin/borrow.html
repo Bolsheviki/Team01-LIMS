@@ -2,13 +2,13 @@
 {% block title %}Borrow{% endblock %}
 {% block nav2 %}id="current"{% endblock %}
 {% block content %}
-	{% if bookId > 0 and time_ <= 0 %}
-		<p style='color:red'>{{ query }} have borrowed a book whose id is {{ bookId }}</p>
+	{% if bookId > 0 and not overtime_list %}
+		<p style='color:red'>{{ query }}刚刚借了一本编号为{{ bookId }}的书籍</p>
 	{% endif %}
 
-    {% if bookId > 0 and time_ > 0 %}
-		{% for booklala in overtime_list  %}
-			<p style='color:red'>You need to return Book No. {{ booklala }} First </p>
+    {% if bookId > 0 and overtime_list %}
+		{% for booki in overtime_list  %}
+			<p style='color:red'>请{{ query }}首先归还<a href='/normal-user/book/{{booki.book.isbn}}'>《{{ booki.book.title }}》</a></p>
         {% endfor %}
 	{% endif %}
         

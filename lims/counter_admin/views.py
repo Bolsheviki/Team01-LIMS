@@ -7,11 +7,7 @@ from lims.util import is_counter_admin_logged_in
 from django.template import RequestContext
 from counter_admin.forms import DebtClearForm, BookBorrowForm, BookReturnForm
 from django.contrib.auth.models import User, Group
-from db.models import BookInstance
-from db.models import Book
-from db.models import UserProfile
-from db.models import Record
-from db.models import Borrow
+from db.models import BookInstance, Book, UserProfile, Record, Borrow
 from django.db.models import Q
 
 
@@ -27,7 +23,6 @@ def settings(request):
 def borrow(request):
     app = 'counter-admin'
     user = request.user
-    over_time = False
     if 'bookId' in request.GET:
         form = BookBorrowForm(request.GET)
         if form.is_valid():
@@ -48,22 +43,22 @@ def borrow(request):
             
             for aBook in borrow_books:
                 borrow_time = aBook.record.time
-                time_ = ( current_time - borrow_time ).days - 30
-                if aBook.record.booki.renewal==True:
-                    time_ = time_ - 30
-                if time_ > 0:
-                    over_time = True
-                    book_id = aBook.record.booki.id
-                    overtime_list.append( book_id )
+                overtime_days = ( current_time - borrow_time ).days - 30
+                if aBook.record.booki.renewal == True:
+                    overtime_days = overtime_days - 30
+                if overtime_days > 0:
+                    booki = aBook.record.booki
+                    overtime_list.append(booki)
                     
-            if over_time == True:        
+            if overtime_list:
                 Record.objects.order_by('-time')[0].delete()
-                return render_to_response('counter_admin/borrow.html', locals(), context_instance=RequestContext(request) )
-                
+                return render_to_response('counter_admin/borrow.html', locals(), context_instance=RequestContext(request))
+            
             BookInstance.objects.filter(id=bookId).update(state='B') 
-            instance = Borrow.objects.create(record = record)
+            Borrow.objects.create(record = record)
     else:
         form = BookBorrowForm()
+        bookId = -1
     return render_to_response('counter_admin/borrow.html', locals(), context_instance=RequestContext(request) );
 
     
@@ -89,14 +84,16 @@ def return_(request):
             Borrow.objects.get(record__booki__id=bookId).delete()
 		    
             return_time = record.time
-            time_ = (return_time-borrow_time).days - 30
-            if new_book.renewal==True:
-                time_ = time_ - 30
-            if time_ > 0:
-                new_user.debt += time_
+            overtime_days = (return_time-borrow_time).days - 30
+            if new_book.renewal == True:
+                overtime_days = overtime_days - 30
+            if overtime_days > 0:
+                debt = overtime_days
+                new_user.debt += debt
                 new_user.save()
     else:
         form = BookReturnForm()
+        bookId = -1
     return render_to_response('counter_admin/return.html', locals(), context_instance=RequestContext(request));
 	
     

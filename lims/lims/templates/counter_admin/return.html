@@ -3,11 +3,11 @@
 {% block nav3 %}id="current"{% endblock %}
 {% block content %}
 	{% if bookId > 0 %}
-		<p style='color:red'>You have returned a book whose id is {{ bookId }}</p>
+		<p style='color:red'>编号为{{ bookId }}的书籍已经被归还</p>
 	{% endif %}
-    
-	{% if time_ > 0 %}
-		<p style='color:red'>Your debt increases {{ time_  }}</p>
+
+	{% if overtime_days > 0 %}
+		<p style='color:red'>借了该书的{{ new_user.user.name }}因为超期归还将被罚款{{ debt }}元</p>
 	{% endif %}
 
 	<form action='' method='get'>

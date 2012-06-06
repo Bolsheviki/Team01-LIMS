@@ -1,4 +1,3 @@
-# -*- coding: cp936 -*-
 from django import forms
 from db import models
 from lims.forms import SettingsForm
@@ -6,9 +5,9 @@ import string
 from django.contrib.auth.models import User
 
 USER_ADMIN_GROUP_CHOICES = (
-    ('N', u'ÆÕÍ¨ÓÃ»§'),
-    ('B', u'Êé¼®¹ÜÀíÔ±'),
-    ('C', u'¹ñÌ¨¹ÜÀíÔ±'),
+    ('N', u'æ™®é€šç”¨æˆ·'),
+    ('B', u'ä¹¦ç±ç®¡ç†å‘˜'),
+    ('C', u'æŸœå°ç®¡ç†å‘˜'),
 )
 
 class SearchForm(forms.Form):
@@ -16,41 +15,41 @@ class SearchForm(forms.Form):
     scope = forms.ChoiceField(widget=forms.Select, choices=USER_ADMIN_GROUP_CHOICES)
 
 class UserInfoForm(SettingsForm):
-    level = forms.ChoiceField(label=u'ÓÃ»§µÈ¼¶', required=False, widget=forms.Select, choices=models.LEVEL_CHOICES)
-    debt = forms.IntegerField(label=u'Ç·¿î', required=False)
+    level = forms.ChoiceField(label=u'ç”¨æˆ·ç­‰çº§', required=False, widget=forms.Select, choices=models.LEVEL_CHOICES)
+    debt = forms.IntegerField(label=u'æ¬ æ¬¾', required=False)
 
     def clean_debt(self):
         debt = self.cleaned_data['debt']
         if int(debt) < 0:
-            raise forms.ValidationError(u'Ç·¿îÊı×Ö²»Ó¦Îª¸º£¡')
+            raise forms.ValidationError(u'æ¬ æ¬¾æ•°å­—ä¸åº”ä¸ºè´Ÿï¼')
         return debt
 
 class BatchUserForm(forms.Form):
-    batch_username = forms.CharField(label=u'ÓÃ»§ÃûÃèÊö×Ö·û´®')
-    from_index = forms.IntegerField(label=u'ÆğÊ¼Êı×Ö')
-    to_index = forms.IntegerField(label=u'ÖÕÖ¹Êı×Ö')
-    wildcard_length = forms.IntegerField(label=u'Í¨Åä·û³¤¶È')
-    group = forms.ChoiceField(label=u'ÓÃ»§×é', widget=forms.Select, choices=USER_ADMIN_GROUP_CHOICES)
-    level = forms.ChoiceField(label=u'ÓÃ»§µÈ¼¶', widget=forms.Select, choices=models.LEVEL_CHOICES)
-    just_list_usernames = forms.BooleanField(label=u'Ö»ÊÇÁĞ³öÓÃ»§Ãû£¨Ôİ²»Ö´ĞĞ£©', required=False, initial=True)
+    batch_username = forms.CharField(label=u'ç”¨æˆ·åæè¿°å­—ç¬¦ä¸²')
+    from_index = forms.IntegerField(label=u'èµ·å§‹æ•°å­—')
+    to_index = forms.IntegerField(label=u'ç»ˆæ­¢æ•°å­—')
+    wildcard_length = forms.IntegerField(label=u'é€šé…ç¬¦é•¿åº¦')
+    group = forms.ChoiceField(label=u'ç”¨æˆ·ç»„', widget=forms.Select, choices=USER_ADMIN_GROUP_CHOICES)
+    level = forms.ChoiceField(label=u'ç”¨æˆ·ç­‰çº§', widget=forms.Select, choices=models.LEVEL_CHOICES)
+    just_list_usernames = forms.BooleanField(label=u'åªæ˜¯åˆ—å‡ºç”¨æˆ·åï¼ˆæš‚ä¸æ‰§è¡Œï¼‰', required=False, initial=True)
 
     def clean_batch_username(self):
         batch_username = self.cleaned_data['batch_username']
         if string.find(batch_username, r'(*)') == -1:
-            raise forms.ValidationError(u'Î´ÕÒµ½Í¨Åä·û(*)!')
+            raise forms.ValidationError(u'æœªæ‰¾åˆ°é€šé…ç¬¦(*)!')
         return batch_username
 
     def clean_from_index(self):
         from_index = self.cleaned_data['from_index']
         if from_index < 0:
-            raise forms.ValidationError(u'ÆğÊ¼Êı×Ö²»Ó¦Îª¸º£¡')
+            raise forms.ValidationError(u'èµ·å§‹æ•°å­—ä¸åº”ä¸ºè´Ÿï¼')
 
         return from_index
 
     def clean_to_index(self):
         to_index = self.cleaned_data['to_index']
         if to_index < 0:
-            raise forms.ValidationError(u'ÖÕÖ¹Êı×Ö²»Ó¦Îª¸º£¡')
+            raise forms.ValidationError(u'ç»ˆæ­¢æ•°å­—ä¸åº”ä¸ºè´Ÿï¼')
 
         try:
             from_index = self.cleaned_data['from_index']
@@ -58,7 +57,7 @@ class BatchUserForm(forms.Form):
             return to_index
 
         if from_index > to_index:
-            raise forms.ValidationError(u'ÆğÊ¼Êı×Ö²»Ó¦Ğ¡ÓÚÖÕÖ¹Êı×Ö£¡')
+            raise forms.ValidationError(u'èµ·å§‹æ•°å­—ä¸åº”å°äºç»ˆæ­¢æ•°å­—ï¼')
 
         return to_index
     
@@ -71,31 +70,31 @@ class BatchUserForm(forms.Form):
             return wildcard_length
 
         if len(str(to_index)) > int(wildcard_length):
-            raise forms.ValidationError(u'Í¨Åä·û³¤¶È²»×ã£¡')
+            raise forms.ValidationError(u'é€šé…ç¬¦é•¿åº¦ä¸è¶³ï¼')
         return wildcard_length
 
 class AddUserForm(forms.Form):
-    username = forms.CharField(label=u'ÓÃ»§Ãû')
-    password_first = forms.CharField(label=u'ÊäÈëÃÜÂë', widget=forms.PasswordInput)
-    password_confirm = forms.CharField(label=u'È·ÈÏÃÜÂë', widget=forms.PasswordInput)
-    email = forms.EmailField(label=u'EmailµØÖ·', required=False)
-    first_name = forms.CharField(label=u'ĞÕ', required=False)
-    last_name = forms.CharField(label=u'Ãû', required=False)
-    group = forms.ChoiceField(label=u'ÓÃ»§×é', widget=forms.Select, choices=USER_ADMIN_GROUP_CHOICES)
-    level = forms.ChoiceField(label=u'ÓÃ»§µÈ¼¶', required=False, widget=forms.Select, choices=models.LEVEL_CHOICES)
-    debt = forms.IntegerField(label=u'Ç·¿î', initial='0')
+    username = forms.CharField(label=u'ç”¨æˆ·å')
+    password_first = forms.CharField(label=u'è¾“å…¥å¯†ç ', widget=forms.PasswordInput)
+    password_confirm = forms.CharField(label=u'ç¡®è®¤å¯†ç ', widget=forms.PasswordInput)
+    email = forms.EmailField(label=u'Emailåœ°å€', required=False)
+    first_name = forms.CharField(label=u'å§“', required=False)
+    last_name = forms.CharField(label=u'å', required=False)
+    group = forms.ChoiceField(label=u'ç”¨æˆ·ç»„', widget=forms.Select, choices=USER_ADMIN_GROUP_CHOICES)
+    level = forms.ChoiceField(label=u'ç”¨æˆ·ç­‰çº§', required=False, widget=forms.Select, choices=models.LEVEL_CHOICES)
+    debt = forms.IntegerField(label=u'æ¬ æ¬¾', initial='0')
 
     def clean_username(self):
         username = self.cleaned_data['username']
         if User.objects.filter(username=username).count() > 0:
-            raise forms.ValidationError(u'ÓÃ»§ÃûÒÑ´æÔÚ£¡')
+            raise forms.ValidationError(u'ç”¨æˆ·åå·²å­˜åœ¨ï¼')
         return username
 
     def clean_password_first(self):
         pw_first = self.cleaned_data['password_first']
         need_reset_pw = self.cleaned_data.get('need_reset_password', False)
         if need_reset_pw and pw_first == '':
-            raise forms.ValidationError(u'ÃÜÂë²»Ó¦Îª¿Õ£¡')
+            raise forms.ValidationError(u'å¯†ç ä¸åº”ä¸ºç©ºï¼')
         return pw_first
 
     def clean_password_confirm(self):
@@ -106,11 +105,11 @@ class AddUserForm(forms.Form):
             return pw_confirm
 
         if pw_first != pw_confirm:
-            raise forms.ValidationError(u'Á½´ÎÃÜÂëÊäÈë²»Í¬£¡')
+            raise forms.ValidationError(u'ä¸¤æ¬¡å¯†ç è¾“å…¥ä¸åŒï¼')
         return pw_confirm
     
     def clean_debt(self):
         debt = self.cleaned_data['debt']
         if int(debt) < 0:
-            raise forms.ValidationError(u'Ç·¿îÊıÖµ²»Ó¦Îª¸º£¡')
+            raise forms.ValidationError(u'æ¬ æ¬¾æ•°å€¼ä¸åº”ä¸ºè´Ÿï¼')
         return debt
