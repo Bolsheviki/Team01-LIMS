@@ -37,7 +37,6 @@ def borrow(request):
 			
             new_book = BookInstance.objects.get(id=bookId)
             new_user = UserProfile.objects.get(user__username=query)
-            
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
@@ -86,7 +85,6 @@ def return_(request):
 				booki = new_book,
 				user = new_user,
 				action = 'R',
-				time = "",
             )
             Borrow.objects.get(record__booki__id=bookId).delete()
 		    
@@ -97,7 +95,6 @@ def return_(request):
             if time_ > 0:
                 new_user.debt += time_
                 new_user.save()
-            
     else:
         form = BookReturnForm()
     return render_to_response('counter_admin/return.html', locals(), context_instance=RequestContext(request));
