@@ -1,4 +1,4 @@
-from django import forms
+﻿from django import forms
 from lims import util
 from db.models import BookInstance
 from db.models import Book
@@ -16,7 +16,7 @@ class DebtClearForm(forms.Form):
         try:
 	        new_user = UserProfile.objects.get( Q(user__username=query) )
         except UserProfile.DoesNotExist:
-            raise forms.ValidationError('The User is not exist')
+            raise forms.ValidationError('该用户不存在')
         return query
    
    
@@ -29,22 +29,22 @@ class BookBorrowForm(forms.Form):
         try:
 	        new_user = UserProfile.objects.get(user__username=query)
         except UserProfile.DoesNotExist:
-            raise forms.ValidationError('The User is not existed')
+            raise forms.ValidationError('该用户不存在')
 		
         debt = new_user.debt
         if debt > 0:
-            raise forms.ValidationError('Debt should be cleared!')
+            raise forms.ValidationError('请该用户首先把欠款清除!')
         try:
             count = Borrow.objects.filter(record__user__user__username=query).count()
         except Borrow.DoesNotExist:
 		    count = 0
 		
         if new_user.level == 'U' and count > 5:		
-		    raise forms.ValidationError('You cannot borrow more')
+		    raise forms.ValidationError('该用户已达借书限额，不能借更多的书')
         if new_user.level == 'G' and count > 7:		
-		    raise forms.ValidationError('You cannot borrow more')
+		    raise forms.ValidationError('该用户已达借书限额，不能借更多的书')
         if new_user.level == 'S' and count > 9:		
-		    raise forms.ValidationError('You cannot borrow more')
+		    raise forms.ValidationError('该用户已达借书限额，不能借更多的书')
         return query
 		
     def clean_bookId(self):
@@ -52,11 +52,10 @@ class BookBorrowForm(forms.Form):
         try:
             new_book = BookInstance.objects.get(Q(id=bookId)&Q(state='U'))
         except BookInstance.DoesNotExist:
-		    raise forms.ValidationError('The Book cannot be borrowed')
+		    raise forms.ValidationError('这本书无法出借')
         return bookId
 		
 	
-
 class BookReturnForm(forms.Form):
     bookId = forms.CharField()
     def clean_bookId(self):
@@ -64,7 +63,7 @@ class BookReturnForm(forms.Form):
         try:
             new_user = Borrow.objects.get(record__booki__id=bookId)
         except Borrow.DoesNotExist:
-		    raise forms.ValidationError('The Book is not in Borrow')
+		    raise forms.ValidationError('这本书没有被借过')
         return bookId
         
         

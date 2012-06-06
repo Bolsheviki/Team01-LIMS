@@ -7,7 +7,7 @@
 	{% endif %}
 
 	{% if overtime_days > 0 %}
-		<p style='color:red'>借了该书的{{ new_user.user.name }}因为超期归还将被罚款{{ debt }}元</p>
+		<p style='color:red'>借了该书的{{ new_user.user.username }}因为超期归还将被罚款{{ debt }}元</p>
 	{% endif %}
 
 	<form action='' method='get' class="center">
