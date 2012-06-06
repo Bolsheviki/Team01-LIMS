@@ -106,7 +106,7 @@ def get_top_borrows_in_month():
     month_ago = d - timedelta(days=days)
     cursor = connection.cursor()
     cursor.execute('''
-        select db_book.isbn, count(db_record.id) borrow_times
+        select db_book.isbn isbn, count(db_record.id) borrow_times
         from db_book, db_record, db_bookinstance
         where db_book.id = db_bookinstance.book_id and 
                 db_record.booki_id = db_bookinstance.id and 
@@ -116,7 +116,6 @@ def get_top_borrows_in_month():
     ''', [ month_ago ])
     res = dictfetchall(cursor)
     cursor.close()
-    print res
     return res
     
 
@@ -168,10 +167,7 @@ def get_top3_books_in_month():
     list_length = min(len(top_borrows), 3)
     result_list = []
     for i in range(0, list_length):
-#        isbn = top_borrows[i]['isbn']
-        isbn = top_borrows[i].get('isbn', '')
-        if not isbn:
-            isbn = top_borrows[i].get('db_book.isbn', '')
+        isbn = top_borrows[i]['isbn']
         book = get_book_info(isbn)
         result_list.append({ 'summary': book['summary'], 'isbn': isbn, })
     return result_list

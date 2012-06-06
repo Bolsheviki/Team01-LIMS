@@ -38,8 +38,6 @@ def borrow(request):
             new_book = BookInstance.objects.get(id=bookId)
             new_user = UserProfile.objects.get(user__username=query)
             
-
-           			
             record = Record.objects.create(
 				booki = new_book,
 				user = new_user,
@@ -54,7 +52,7 @@ def borrow(request):
                 time_ = ( current_time - borrow_time ).days - 30
                 if aBook.record.booki.renewal==True:
                     time_ = time_ - 30
-                if time_>0:
+                if time_ > 0:
                     over_time = True
                     book_id = aBook.record.booki.id
                     overtime_list.append( book_id )
@@ -96,7 +94,7 @@ def return_(request):
             time_ = (return_time-borrow_time).days - 30
             if new_book.renewal==True:
                 time_ = time_ - 30
-            if time_>0:
+            if time_ > 0:
                 new_user.debt += time_
                 new_user.save()
             
