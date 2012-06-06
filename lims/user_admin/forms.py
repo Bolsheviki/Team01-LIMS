@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 from django import forms
 from db import models
 from lims.forms import SettingsForm

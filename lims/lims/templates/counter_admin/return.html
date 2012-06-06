@@ -10,11 +10,15 @@
 		<p style='color:red'>借了该书的{{ new_user.user.name }}因为超期归还将被罚款{{ debt }}元</p>
 	{% endif %}
 
-	<form action='' method='get'>
+	<form action='' method='get' class="center">
+		<div><h4>请输入要归还书籍的编号：</h4></div>
+		<div class="no-border">
 		<span class='bookId'>
 			{{ form.bookId.errors }}
 			{{ form.bookId }}
 		</span>
-		<input type='submit' value='Return'>
+		<input type='submit' value='归还' class="button">
+		</div>
 	</form>
+	<div style="padding-top:100px;"></div>
 {% endblock %}

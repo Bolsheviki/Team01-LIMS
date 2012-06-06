@@ -12,17 +12,23 @@
         {% endfor %}
 	{% endif %}
         
-<form action='' method='get'>
-	<p>User Name</p>
+<form action='' method='get' class="center borrow">
+	<div><h4>请输入借书用户名和书籍ID</h4></div>
+	<div>
+	<p>用户名:</p>
 	<span class='query'>
         {{ form.query.errors }}
         {{ form.query }}
 	</span>
-		<p>bookID</p>
+		<p>书籍ID:</p>
 		<span class='bookId'>
 			{{ form.bookId.errors }}
 			{{ form.bookId }}
 		</span>
-    <input type='submit' value='Borrow'>
+	</div>
+	<div class="no-border">
+    <input type='submit' value='借出' class="button">
+	</div>
 </form>
+<div style="padding-top:30px;"></div>
 {% endblock %}

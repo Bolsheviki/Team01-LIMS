@@ -10,12 +10,16 @@
 		<p style='color:red'>{{ query }}  need clear {{ debt }}</p>
 	{% endif %}
 	
-	<form action='' method='post'>
+	<form action='' method='post' class="center counter">
+		<div><h4>请输入要清除欠款的用户ID:</h4></div>
+		<div class="no-border">
 		<span class='query'>
 			{{ form.query.errors }}
 			{{ form.query }}
 		</span>
-        <input name='form-submit' type='submit' value='View'>
-		<input name='form-submit' type='submit' value='Clear'>
+        <input name='form-submit' type='submit' value='查看' class="button">
+		<input name='form-submit' type='submit' value='清除' class="button">
+		</div>
 	</form>
+	<div style="padding-top:100px;"></div>
 {% endblock %}

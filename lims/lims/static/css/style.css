@@ -1007,6 +1007,10 @@ ul.archive li .post-details span {
 	width: 330px;
 }
 
+.counter #id_query{
+	width: 360px;
+}
+
 #id_isbn {
 	width: 420px;
 }
@@ -1014,6 +1018,8 @@ ul.archive li .post-details span {
 #id_bookId {
 	width: 420px;
 }
+
+
 
 .clear{
 	clear: both;
@@ -1053,6 +1059,10 @@ form p{
 
 .borrowlist table {
 	width: 100%;
+}
+
+.borrow #id_bookId, .borrow #id_query {
+	width: 95%;
 }
 
 .audit {
