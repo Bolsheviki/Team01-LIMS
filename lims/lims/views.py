@@ -8,7 +8,7 @@ from lims.forms import SearchForm, LoginForm, SettingsForm
 from lims import util
 
 
-Per_Page = 1
+Per_Page = 10
 
 
 def search_in_template(request, template_name, app):

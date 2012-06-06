@@ -12,6 +12,9 @@ from db.models import BookInstance, Book, Borrow, Record
 from django.db.models import Q
 
 
+Per_Page = 10
+
+
 def base(request):
     return render_to_response('normal_user/base.html', { 'app': 'normal-user' })
 
@@ -67,7 +70,7 @@ def information(request):
         p = int(p)
 
     relist = []
-    paginator = Paginator(tlist , 1)
+    paginator = Paginator(tlist , Per_Page)
 
     try:
         relist = paginator.page(p)
@@ -109,7 +112,7 @@ def borrowbook(request):
         p = int(p)
 
     relist = []
-    paginator = Paginator(tlist , 1)
+    paginator = Paginator(tlist , Per_Page)
 
     try:
         relist = paginator.page(p)
@@ -147,7 +150,7 @@ def allbook(request):
         p = int(p)
 
     relist = []
-    paginator = Paginator(tlist , 1)
+    paginator = Paginator(tlist , Per_Page)
         
     try:
         relist = paginator.page(p)

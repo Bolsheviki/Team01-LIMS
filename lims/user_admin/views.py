@@ -20,7 +20,7 @@ def logout(request):
     return logout_in_template(request, '/user-admin/login')
 
     
-Per_Page = 1
+Per_Page = 10
 
 
 @user_passes_test(is_user_admin_logged_in, login_url = '/user-admin/login')
