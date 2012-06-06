@@ -90,7 +90,7 @@ def return_(request):
             if overtime_days > 0:
                 debt = overtime_days
                 new_user.debt += debt
-                new_user.save()
+                new_user.save() # here 'save' is update
     else:
         form = BookReturnForm()
         bookId = -1
@@ -114,7 +114,7 @@ def clear(request):
                 view_correct = True
                 debt = UserProfile.objects.get(user__username=query).debt
     else:
-		form =  DebtClearForm()
+		form = DebtClearForm()
 	
     return render_to_response('counter_admin/clear.html', locals(), context_instance=RequestContext(request));
 	
