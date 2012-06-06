@@ -1,5 +1,5 @@
-{% extends "user_admin/base.html" %}
-{% block title %}Search Users{% endblock %}
+﻿{% extends "user_admin/base.html" %}
+{% block title %}查找用户{% endblock %}
 {% block nav2 %}id="current"{% endblock %}
 {% block content %}
 <form action='' method='get'>
@@ -11,14 +11,14 @@
         {{ form.query.errors }}
         {{ form.query }}
 	</span>
-    <input type='submit' value='Search'>
+    <input type='submit' value='查找'>
 </form>
 
 {% if show_result %}
 	{% if user_list %}
-		<p>Found {{ user_list|length }} user{{ user_list|pluralize }}.</p>
+		<p>共找到{{ user_list|length }}个用户。</p>
 		<table>
-			<th>Username</th><th>Email</th>
+			<th>用户名</th><th>Email地址</th>
 			{% for user in user_list %}
 			<tr>
 				<td><a href='/user-admin/user/{{ user.username }}'>{{ user.username }}</a></td>
@@ -31,7 +31,7 @@
 			<div class="pagination">
 				<span class="step-links">
 					{% if page_obj.has_previous %}
-						<a href="?scope={{ scope }}&query={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+						<a href="?scope={{ scope }}&query={{ query }}&page={{ page_obj.previous_page_number }}">上一页</a>
 					{% endif %}
 
 					<span class="current">
@@ -39,14 +39,14 @@
 					</span>
 
 					{% if page_obj.has_next %}
-						<a href="?scope={{ scope }}&query={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
+						<a href="?scope={{ scope }}&query={{ query }}&page={{ page_obj.next_page_number }}">下一页</a>
 					{% endif %}
 				</span>
 			</div>
 		{% endif %}
 		
 	{% else %}
-		<p>No users matched your search criteria.</p>
+		<p>没有匹配的用户。</p>
 	{% endif %}
 {% endif %}
 {% endblock %}

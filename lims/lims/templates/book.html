@@ -1,47 +1,49 @@
+<div class="book">
 {% if book %}
-    <h2>{{ book.title }}</h2>
-    <p><b>isbn:</b> {{ isbn }}</p>
+    <h4>{{ book.title }}</h4>
+    <p><b>ISBN:</b> {{ isbn }}</p>
 
     {% if 'image' in book.keys %}
-        <img src='{{ book.image }}'/>
+        <div style="float:right;"><img src='{{ book.image }}'/></div>
     {% endif %}
     
     {% if 'aka' in book.keys %}
-        <p><b>foreign name:</b> {{ book.aka }}</p>
+        <p><b>外文名：</b> {{ book.aka }}</p>
     {% endif %}
     
     {% if 'author' in book.keys %}
-        <p><b>authors:</b> {{ book.author }}</p>
+        <p><b>作者：</b> {{ book.author }}</p>
     {% endif %}
 
     {% if 'translator' in book.keys %}
-        <p><b>translators:</b> {{ book.translator }}</p>
+        <p><b>译者：</b> {{ book.translator }}</p>
     {% endif %}
 
     {% if 'publisher' in book.keys %}
-        <p><b>publisher:</b> {{ book.publisher }}</p>
+        <p><b>出版社：</b> {{ book.publisher }}</p>
     {% endif %}
 
     {% if 'remained' in book.keys %}
-        <p><b>remained to be borrowed:</b> {{ book.remained }}</p>
+        <p><b>剩余可借：</b> {{ book.remained }}</p>
     {% endif %}
     
     {% if 'pages' in book.keys %}
-        <p><b>pages:</b> {{ book.pages }}</p>
+        <p><b>页数：</b> {{ book.pages }}</p>
     {% endif %}
     
     {% if 'price' in book.keys %}
-        <p><b>price:</b> {{ book.price }}</p>
-    {% endif %}
-    
-    {% if 'summary' in book.keys %}
-        <p><b>summary:</b> {{ book.summary }}</p>
+        <p><b>价格：</b> {{ book.price }}</p>
     {% endif %}
 
     {% if 'author_intro' in book.keys %}
-        <p><b>author-intro:</b> {{ book.author_intro }}</p>
+        <p><b>作者介绍：</b> {{ book.author_intro }}</p>
     {% endif %}
+	
+	{% if 'summary' in book.keys %}
+        <blockquote><p><b>内容简介:</b> {{ book.summary }}</p></blockquote>
+    {% endif %}
+	<div class="img-count"><img src='http://chart.apis.google.com/chart?cht=lc&chs=500x150&chd=t:{% for s in borrow_statis %}{{ s.borrow_times }}{% if not forloop.last %},{% endif %}{% endfor %}&chxt=x,y&chxl=0:|{% for s in borrow_statis %}{{ s.month }}|{% endfor %}1:{% for d in divide %}|{{ d }}{% endfor %}'/></div>
 {% else %}
-    <h2 style='color: red'>No such book whose isbn is {{ isbn }}</h2>
+    <h4 style='color: red'>No such book whose isbn is {{ isbn }}</h4>
 {% endif %}
-<img src='http://chart.apis.google.com/chart?cht=lc&chs=500x150&chd=t:{% for s in borrow_statis %}{{ s.borrow_times }}{% if not forloop.last %},{% endif %}{% endfor %}&chxt=x,y&chxl=0:|{% for s in borrow_statis %}{{ s.month }}|{% endfor %}1:{% for d in divide %}|{{ d }}{% endfor %}'/>
+</div>

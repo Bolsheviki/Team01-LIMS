@@ -1,15 +1,17 @@
 {% extends "book_admin/base.html" %}
 {% block title %}Add{% endblock %}
-{% block body %}
+{% block nav3 %}id="current"{% endblock %}
+{% block content %}
 	{% if bookId > 0 %}
 		<p style='color:red'>You have add a book whose id is {{ bookId }}</p>
 	{% endif %}
-	<form action='' method='get'>
-		<span class='isbn'>
+	<form action='' method='get' class="center">
+		<div><h3>添加书籍</h3></div>
+		<div class="no-border"><span class='isbn'>
 			{{ form.isbn.errors }}
 			{{ form.isbn }}
 		</span>
-		<input type='submit' value='Add'>
+		<input class="button" type='submit' value='添加'></div>
 	</form>
-
+	<div style="padding-top: 100px;"></div>
 {% endblock %}

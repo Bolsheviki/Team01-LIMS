@@ -1,10 +1,57 @@
 {% extends "normal_user/base.html" %}
 {% block title %}Information{% endblock %}
+{% block nav3 %}id = 'current'{% endblock %}
+{% block content %}
+<table width="400px" class="center">
+<tr><th colspan="2">个人信息</th></tr>
+<tr>
+	<td width="40%">用户名：</td><td width="60%">{{ username }}</td>
+</tr>
+<tr>
+	<td>email：</td><td>{{ email }}</td>
+</tr>
+<tr>
+	<td>用户等级：</td><td>{% if level == 'U' %}本科生{% elif level == 'G'%}研究生{% else %}教职工{% endif %}</td>
+</tr>
+<tr>
+	<td>欠款：</td><td>{{ debt }}</td>
+</tr>
+</table>
 
-{% block body %}
-<p>name: {{ username }} </p>
-<p>email: {{ email }} </p>
-<p>level : {{ level }} </p>
-<p>debt : {{ debt }} </p>
-<a href='/normal-user/settings/'>settings</a>
+<div class="borrowlist">
+<h4>借书记录:</h4>
+<p/>
+<p/>
+{% if tlist %}
+	<table>
+        <tr>
+            <th width="50%">书名</th>
+            <th width="30%">借出时间</th>
+            <th width="20%">续借</th>
+        </tr>
+		{% for record in tlist %}
+		<tr>
+			<td><a href='/normal-user/book/{{ record.isbn }}/'>{{ record.name }}</a></td>
+			<td>{{ record.time }}</td>
+			<td>
+			{% if not record.renewal %}
+				<form name = 'form1' action='../renewal/' style=" border:0px solid #ffffff" method='post'>
+				<input type='hidden' name='id' value='{{record.id}}'>
+				<a class="more" style="float: none;" href='javascript:document.form1.submit();'>Renewal</a>
+				</form>
+			{% else %}
+				已续借
+			{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+		{% if is_paginated %}
+		<tr><td colspan="3">{% include 'pagenation.html' %}</td></tr>
+		{% endif %}
+	</table>
+{% else %}
+	<p>No books matched your search criteria.</p>
+{% endif %}
+</div>
+
 {% endblock %}

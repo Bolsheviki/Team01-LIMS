@@ -1,3 +1,4 @@
+# -*- coding: cp936 -*-
 from django import forms
 from lims import util
 from django.contrib.auth.models import User
@@ -15,8 +16,8 @@ class SearchForm(forms.Form):
 
 class LoginForm(forms.Form):
     group_name = forms.CharField(widget=forms.HiddenInput)
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label=u'用户名')
+    password = forms.CharField(label=u'密码', widget=forms.PasswordInput)
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -28,10 +29,10 @@ class LoginForm(forms.Form):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            raise forms.ValidationError('User not exist!')
+            raise forms.ValidationError(u'用户不存在!')
 
         if not util.is_in_group(user, group_name):
-            raise forms.ValidationError('User not belong to group %s!' % (group_name))
+            raise forms.ValidationError(u'该用户不是%s的成员!' % (group_name))
         return username
     
     def clean_password(self):
@@ -43,23 +44,15 @@ class LoginForm(forms.Form):
         
         user = auth.authenticate(username = username, password = password)
         if user is None or not user.is_active:
-            raise forms.ValidationError('Password not matched!')
+            raise forms.ValidationError(u'密码不正确！')
         return password
 
 class SettingsForm(forms.Form):
-    need_reset_password = forms.BooleanField(initial=False, required=False)
-    password_first = forms.CharField(widget=forms.PasswordInput, required=False)
-    password_confirm = forms.CharField(widget=forms.PasswordInput, required=False)
-    email = forms.EmailField(required=False)
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
-
-    def clean_password_first(self):
-        pw_first = self.cleaned_data['password_first']
-        need_reset_pw = self.cleaned_data.get('need_reset_password', False)
-        if need_reset_pw and pw_first == '':
-            raise forms.ValidationError('Password should not be empty!')
-        return pw_first
+    password_first = forms.CharField(label=u'输入新密码', widget=forms.PasswordInput, required=False)
+    password_confirm = forms.CharField(label=u'确认新密码', widget=forms.PasswordInput, required=False)
+    email = forms.EmailField(label=u'Email地址', required=False)
+    first_name = forms.CharField(label=u'姓', required=False)
+    last_name = forms.CharField(label=u'名', required=False)
 
     def clean_password_confirm(self):
         pw_confirm = self.cleaned_data['password_confirm']
@@ -68,7 +61,6 @@ class SettingsForm(forms.Form):
         except:
             return pw_confirm
 
-        need_reset_pw = self.cleaned_data.get('need_reset_password', False)
-        if need_reset_pw and pw_first != pw_confirm:
-            raise forms.ValidationError('Two inputs of password are not the same!')
+        if (pw_first != '' or pw_confirm != '') and pw_first != pw_confirm:
+            raise forms.ValidationError(u'两次输入的密码不相同！')
         return pw_confirm

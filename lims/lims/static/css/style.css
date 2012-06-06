@@ -399,7 +399,6 @@ blockquote {
   	background: url(/static/img/quote.png) no-repeat 0 22px;
   	font-size: 18px;
   	line-height: 28px;
-  	font-style: italic;
   	font-family: Georgia, 'Times New Roman', Times, Serif;
     overflow: hidden;
 }
@@ -991,3 +990,100 @@ ul.archive li .post-details span {
 	float: right;
 }
 
+.login_form {
+	margin: 0 auto;
+	width: 600px;
+}
+
+.center {
+	margin: 0 auto;
+}
+
+#id_username, #id_password, #id_password_first, #id_password_confirm, #id_email, #id_first_name, #id_last_name{
+	width: 95%;
+}
+
+#id_query{
+	width: 330px;
+}
+
+#id_isbn {
+	width: 420px;
+}
+
+#id_bookId {
+	width: 420px;
+}
+
+.clear{
+	clear: both;
+}
+
+.errorlist{
+	color: red;
+}
+
+.setting{
+	width: 600px;
+}
+
+form p{
+	margin: 0;
+}
+
+.textcenter {
+	text-align: center;
+}
+
+.booklist {
+	width: 80%;
+	margin: 50px auto;
+	padding: 30px;
+}
+
+.booklist table {
+	width: 100%;
+}
+
+.borrowlist {
+	width: 80%;
+	margin: 50px auto;
+	padding: 30px;
+}
+
+.borrowlist table {
+	width: 100%;
+}
+
+.audit {
+	width: 95%;
+	text-align: center;
+	margin: 10px auto 50px auto;
+	padding: 30px;
+}
+
+.audit  table {
+	margin: 0 auto;
+	width: 80%;
+}
+
+tfoot {
+	text-align: center;
+}
+
+.book {
+	width:90%;
+	margin: 50px auto;
+}
+
+.img-count {
+	width: 526px;
+	margin: 0 auto;
+}
+
+td form {
+	width: 30px;
+	height: 30px;
+	margin: 0 0 0 20px;
+	padding: 0;
+}

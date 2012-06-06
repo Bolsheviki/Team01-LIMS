@@ -60,11 +60,8 @@ def get_books(scope, query):
     
 def get_book_info(isbn):
     book_info = info_book(isbn)
-    books = BookInstance.objects.filter(Q(book__isbn=isbn)&Q(removed=False))
-    borrows = Borrow.objects.filter(
-                Q(record__booki__book__isbn=isbn)&
-                Q(record__booki__removed=False))
-    book_info['remained'] = books.count() - borrows.count()
+    remained = BookInstance.objects.filter(Q(book__isbn=isbn)&Q(state='U'))
+    book_info['remained'] = remained.count()
     if 'author-intro' in book_info.keys():
         book_info['author_intro'] = book_info['author-intro']
         del book_info['author-intro']
@@ -73,7 +70,7 @@ def get_book_info(isbn):
 
 def is_in_group(user, group_name):
     return user.groups.filter(name = group_name).count() > 0
-
+    
 def is_normal_user_logged_in(user):
     return user.is_authenticated() and is_in_group(user, 'NormalUser')
 
@@ -109,7 +106,7 @@ def get_top_borrows_in_month():
     month_ago = d - timedelta(days=days)
     cursor = connection.cursor()
     cursor.execute('''
-        select db_book.isbn, count(db_record.id) borrow_times
+        select db_book.isbn isbn, count(db_record.id) borrow_times
         from db_book, db_record, db_bookinstance
         where db_book.id = db_bookinstance.book_id and 
                 db_record.booki_id = db_bookinstance.id and 
@@ -145,7 +142,6 @@ def get_borrows_each_month(isbn = 0):
                         db_record.booki_id = db_bookinstance.id and 
                         db_record.action = 'B' and 
                         db_record.time >= %s and db_record.time < %s
-                group by db_book.isbn
             ''', [ times[i], times[i + 1] ])
         else:
             cursor.execute('''
@@ -164,3 +160,19 @@ def get_borrows_each_month(isbn = 0):
         res.append(res_in_month[0])
     cursor.close()
     return res
+
+
+def get_top3_books_in_month():
+    top_borrows = get_top_borrows_in_month()
+    list_length = min(len(top_borrows), 3)
+    result_list = []
+    for i in range(0, list_length):
+        isbn = top_borrows[i]['isbn']
+        book = get_book_info(isbn)
+        result_list.append({ 'summary': book['summary'], 'isbn': isbn, })
+    return result_list
+    
+    
+    
+    
+  

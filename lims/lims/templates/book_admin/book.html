@@ -1,5 +1,27 @@
 {% extends "book_admin/base.html" %}
 {% block title %}{{ book.title }}{% endblock %}
-{% block body %}
+{% block nav1 %}id="current"{% endblock %}
+{% block content %}
     {% include 'book.html' %}
+	<div class="borrowlist">
+    <table>
+        <tr>
+            <th>书籍编号</th>
+            <th>动作</th>
+            <th>用户名</th>
+            <th>时间</th>
+        </tr>
+        {% for record in record_list %}
+            <tr>
+                <td>{{ record.booki.id }}</td>
+                <td>{% if record.action == 'B' %}借出{% elif record.action == 'R' %}归还{% endif %}</td>
+                <td>{{ record.user.user.username }}</td>
+                <td>{{ record.time }}</td>
+            </tr>
+        {% endfor %}
+		{% if is_paginated %}
+		<tr><td colspan="4">{% include 'pagenation.html' %}</td></tr>
+		{% endif %}
+    </table>
+	</div>
 {% endblock %}

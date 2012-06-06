@@ -1,14 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Normal User.{% endblock %}
-{% block head %}
-	<h1>This Normal User.</h1>
+{% block nav %}
 	<ul>
-		<li><a href='/normal-user/search'>Search</a></li>
-		<li><a href='/normal-user/information'>Information</a></li>
-		<li><a href='/normal-user/borrow'>Borrow</a></li>
-		<li><a href='/normal-user/allbook'>All Book</a></li>
+		<li {% block nav1 %}{% endblock %}><a href="/normal-user/">首页</a><span></span></li>
+		<li {% block nav2 %}{% endblock %}><a href='/normal-user/search'>书目检索</a></li>
+		<li {% block nav3 %}{% endblock %}><a href='/normal-user/information'>我的图书馆</a></li>
 	</ul>
-    {% block login %}
-         {% include 'loggedin.html' %}
-    {% endblock %}
 {% endblock %}

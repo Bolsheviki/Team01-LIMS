@@ -1,8 +1,8 @@
 {% if is_paginated %}
-<div class="pagination">
+<div class="pagination" style="float: right;">
 	<span class="step-links">
 		{% if page_obj.has_previous %}
-			<a href="?scope={{ scope }}&query={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+			<a class="more" style="float:none" href="?{% if scope %}scope={{ scope }}&query={{ query }}&{% endif %}page={{ page_obj.previous_page_number }}">上一页</a>
 		{% endif %}
 
 		<span class="current">
@@ -10,7 +10,7 @@
 		</span>
 
 		{% if page_obj.has_next %}
-			<a href="?scope={{ scope }}&query={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
+			<a class="more" style="float:none" href="?{% if scope %}scope={{ scope }}&query={{ query }}&{% endif %}page={{ page_obj.next_page_number }}">下一页</a>
 		{% endif %}
 	</span>
 </div>

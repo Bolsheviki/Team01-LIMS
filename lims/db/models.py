@@ -12,14 +12,14 @@ class Book(models.Model):
 #    retrieval = models.CharField(unique=True, blank=True, max_length=30)
 
     def __unicode__(self):
-        return self.title
+        return '%s' % self.title
 
+        
 LEVEL_CHOICES = (
     (u'U', u'undergraduate'),
     (u'G', u'graduate'),
     (u'S', u'staff'),
 )
-
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique = True)
     level = models.CharField(null=True, max_length=2,
@@ -30,33 +30,32 @@ class UserProfile(models.Model):
         return '%s %s %s' % (self.user, self.level, self.debt)
 
 
+STATE_CHOICES = (
+    (u'B', u'Borrowed'),
+    (u'U', u'UnBorrowed'),
+    (u'R', u'Removed'),
+)    
 class BookInstance(models.Model):
-    STATE_CHOICES = (
-        (u'B', u'Borrowed'),
-        (u'U', u'UnBorrowed'),
-        (u'D', u'Discard'),
-    )
     book = models.ForeignKey(Book)
-    state = models.CharField(max_length=10, choices=STATE_CHOICES, default='U')
-    removed = models.BooleanField(default=False)
+    state = models.CharField(max_length=2, choices=STATE_CHOICES, default='U')
     renewal = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return '%s(%d)%s' % (self.book.title, self.id, '--removed' if self.removed else '')
+        return '%s(%d)%s' % (self.book.title, self.id, self.state)
 
 
+ACTION_CHOICES = (
+    (u'B', u'Borrow'),
+    (u'R', u'Return'),
+)
 class Record(models.Model):
-    ACTION_CHOICES = (
-        (u'B', u'Borrow'),
-        (u'R', u'Return'),
-    )
     booki = models.ForeignKey(BookInstance)
     user = models.ForeignKey(UserProfile)
     action = models.CharField(max_length=2, choices=ACTION_CHOICES)
     time = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return '%s %s %s' % (self.user.user.username, self.booki, self.time)
+        return '%s %s %s %s' % (self.user.user.username, self.action, self.booki, self.time)
 
 
 class Borrow(models.Model):

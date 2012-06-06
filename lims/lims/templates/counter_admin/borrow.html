@@ -1,0 +1,28 @@
+{% extends "counter_admin/base.html" %}
+{% block title %}Borrow{% endblock %}
+{% block nav2 %}id="current"{% endblock %}
+{% block content %}
+	{% if bookId > 0 and not overtime_list %}
+		<p style='color:red'>{{ query }}刚刚借了一本编号为{{ bookId }}的书籍</p>
+	{% endif %}
+
+    {% if bookId > 0 and overtime_list %}
+		{% for booki in overtime_list  %}
+			<p style='color:red'>请{{ query }}首先归还<a href='/normal-user/book/{{booki.book.isbn}}'>《{{ booki.book.title }}》</a></p>
+        {% endfor %}
+	{% endif %}
+        
+<form action='' method='get'>
+	<p>User Name</p>
+	<span class='query'>
+        {{ form.query.errors }}
+        {{ form.query }}
+	</span>
+		<p>bookID</p>
+		<span class='bookId'>
+			{{ form.bookId.errors }}
+			{{ form.bookId }}
+		</span>
+    <input type='submit' value='Borrow'>
+</form>
+{% endblock %}

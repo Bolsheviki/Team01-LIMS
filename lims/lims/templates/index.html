@@ -8,7 +8,7 @@
 
     <div class="text-block">
         <h2><a href="#">公告栏</a></h2>
-        <p>Jungleland is a free website template by <a href="http://www.styleshout.com/">styleshout.com</a>. This work is
+        <!--<p>Jungleland is a free website template by <a href="http://www.styleshout.com/">styleshout.com</a>. This work is
 		released and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 		Creative Commons Attribution 3.0 License</a>, which means that you are free to
 		use and modify it for any personal or commercial purpose. All I ask is that you give me credit by including a link back to
@@ -18,6 +18,17 @@
         <p>
         You can find more of my free template designs at <a href="http://www.styleshout.com/">my website</a>.
 		For premium commercial designs, you can check out <a href="http://themeforest.net?ref=ealigam" title="Site Templates">Themeforest</a>.
+        </p>-->
+        <p> 为庆祝南京大学建校110周年，计算机科学与技术系软件工程课程项目组Team01开发了这个图书馆管理系统LIMS，欢迎广大群众使用。详情见<a href='https://github.com/Bolsheviki/Team01-LIMS'>github.com/Bolsheviki/Team01-LIMS</a>
+        </p>
+        <p>
+        您有可能属于该系统所服务的4类用户中的一类：
+        <ul>
+            <li><a href='/normal-user/'>普通用户</a></li>
+            <li><a href='/counter-admin/'>柜台管理员</a></li>
+            <li><a href='/book-admin/'>书籍管理员</a></li>
+            <li><a href='/user-admin/'>用户管理员</a></li>
+        </ul>
         </p>
     </div>
 
@@ -31,23 +42,18 @@
     <!-- main -->
     <section id="main">
 
-        <h3>新书上架</h3>
+        <h3>近期最热</h3>
 
         <article class="col">
 
             <a href="index.html" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-1.jpg" /></a>
 
             <div class="content">
-
 			    <p>
-				Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-				Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-				posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
-			   	odio, ac blandit ante orci ut diam. Cras fringilla magna. Phasellus suscipit, leo a pharetra
-				condimentum, lorem tellus eleifend magna, eget fringilla velit magna id neque.
+                {{ books.0.summary|truncatechars:250 }} 
 				</p>
 
-				<p><a href="#" class="more">查看详细</a></p>
+				<p><a href="/normal-user/book/{{ books.0.isbn }}" class="more">查看详细</a></p>
 
 			</div>
 
@@ -58,17 +64,10 @@
             <a href="index.html" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-2.jpg" /></a>
 
             <div class="content">
-
 			    <p>
-				Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-				Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-				posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
-			   	odio, ac blandit ante orci ut diam. Cras fringilla magna. Phasellus suscipit, leo a pharetra
-				condimentum, lorem tellus eleifend magna, eget fringilla velit magna id neque.
+                {{ books.1.summary|truncatewords:250 }} 
 				</p>
-
-				<p><a href="#" class="more">查看详细</a></p>
-
+				<p><a href="/normal-user/book/{{ books.1.isbn }}" class="more">查看详细</a></p>
 			</div>
         </article>
 
@@ -77,16 +76,10 @@
             <a href="index.html" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-3.jpg" /></a>
 
             <div class="content">
-
 			    <p>
-				Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-				Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-				posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
-			   	odio, ac blandit ante orci ut diam. Cras fringilla magna. Phasellus suscipit, leo a pharetra
-				condimentum, lorem tellus eleifend magna, eget fringilla velit magna id neque.
+                {{ books.2.summary|truncatewords:250 }} 
 				</p>
-
-				<p><a href="#" class="more">查看详细</a></p>
+				<p><a href="/normal-user/{% if books.2 %}book/{{ books.2.isbn }}{% endif %}" class="more">查看详细</a></p>
 
 			</div>
         </article>

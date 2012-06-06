@@ -1,0 +1,20 @@
+{% extends "counter_admin/base.html" %}
+{% block title %}Return{% endblock %}
+{% block nav3 %}id="current"{% endblock %}
+{% block content %}
+	{% if bookId > 0 %}
+		<p style='color:red'>编号为{{ bookId }}的书籍已经被归还</p>
+	{% endif %}
+
+	{% if overtime_days > 0 %}
+		<p style='color:red'>借了该书的{{ new_user.user.name }}因为超期归还将被罚款{{ debt }}元</p>
+	{% endif %}
+
+	<form action='' method='get'>
+		<span class='bookId'>
+			{{ form.bookId.errors }}
+			{{ form.bookId }}
+		</span>
+		<input type='submit' value='Return'>
+	</form>
+{% endblock %}

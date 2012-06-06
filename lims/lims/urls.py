@@ -15,9 +15,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
-#    url(r'^$', include('normal_user.urls')),
+    url(r'^$', include('normal_user.urls')),
     url(r'^normal-user/', include('normal_user.urls')),
-#    url(r'^counter-admin/', include('counter_admin.urls')),
+    url(r'^counter-admin/', include('counter_admin.urls')),
     url(r'^book-admin/', include('book_admin.urls')),
     url(r'^user-admin/', include('user_admin.urls')),
                     

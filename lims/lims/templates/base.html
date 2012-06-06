@@ -23,11 +23,9 @@
 		<nav>
 		{% block nav %}{% endblock %}
 	    </nav>
-		{% block head %}
 		<div class="subscribe">
-            <span>Subscribe:</span> <a href="#">Email</a> | <a href="#">RSS</a>
-        </div>
-		{% endblock %}
+        {% include 'loggedin.html' %}
+		</div>
 	<!-- /header -->
 </header></div>
 <div class="refix"></div>
@@ -36,6 +34,10 @@
 	<h2>欢迎使用图书馆管理系统</h2>
 </div>
 {% block body %}
+<div id="content-wrap-home">
+{% block content %}
+{% endblock %}
+</div>
 {% endblock %}
 <!-- extra
 ============================================================================== -->
@@ -56,8 +58,8 @@
 
 	        <div class="footer-list social">
 			    <ul>
-				    <li class="email"><a href="index.html">Email</a></li>
-				    <li class="rss"><a href="index.html">RSS Feed</a></li>
+				    <li class="email"><a href="/{{ app }}/#">Email</a></li>
+				    <li class="rss"><a href="/{{ app }}/#">RSS Feed</a></li>
 			    </ul>
 		    </div>
 	</div>
@@ -112,9 +114,6 @@
 	</p>
 
 	<p class="footer-right">
-	   	<a href="index.html">Home</a> |
-		<a href="index.html">Sitemap</a> |
-		<a href="index.html">RSS Feed</a> |
         <a class="back-to-top" href="#top">Back to Top</a>
     </p>
 

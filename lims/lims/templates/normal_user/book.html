@@ -1,5 +1,23 @@
 {% extends "normal_user/base.html" %}
 {% block title %}{{ book.title }}{% endblock %}
-{% block body %}
+{% block nav1 %}id="current"{% endblock %}
+{% block content %}
     {% include 'book.html' %}
+	<div class="book">
+	<table class="center" width="60%">
+        <tr>
+            <th width="30%">书籍编号</th>
+            <th width="70%">借出时间</th>
+        </tr>
+        {% for record in record_list %}
+            <tr>
+                <td>{{ record.record.booki.id }}</td>
+				<td>{{ record.record.time }}</td>
+            </tr>
+        {% endfor %}
+		{% if is_paginated %}
+		<tr><td colspan="2">{% include 'pagenation.html' %}</td></tr>
+		{% endif %}
+    </table>
+	</div>
 {% endblock %}

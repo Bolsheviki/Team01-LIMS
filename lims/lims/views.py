@@ -7,6 +7,7 @@ from django.views.generic import list_detail
 from lims.forms import SearchForm, LoginForm, SettingsForm
 from lims import util
 
+
 Per_Page = 1
 
 
@@ -32,7 +33,6 @@ def search_in_template(request, template_name, app):
     if not form.is_valid():
         return render_to_response(template_name, locals())
 
-    q = form.cleaned_data
     book_list = util.get_books(scope, query)
     basic_info = { 'form': form, 'scope': scope, 'query': query, 'app': app }
 
@@ -47,7 +47,7 @@ def search_in_template(request, template_name, app):
     )
 
     
-def info_book_in_template(request, isbn, template_name, app=''):
+def info_book_in_template(request, isbn, record_list, template_name, app):
     book = util.get_book_info(isbn)
     borrow_statis = util.get_borrows_each_month(isbn)
     max = 0.5
@@ -63,10 +63,27 @@ def info_book_in_template(request, isbn, template_name, app=''):
     while i <= max:
         divide.append(i)
         i += step
-    return render_to_response(template_name, locals(), context_instance=RequestContext(request));
+        
+    p = request.GET.get('page', '1')
+    if not p.isdigit():
+        p = 1
+    else:
+        p = int(p)
+        
+    basic_info = { 'divide': divide, 'app': app, 'borrow_statis': borrow_statis, \
+                    'book': book, 'isbn': isbn }
+    return list_detail.object_list(
+        request,
+        paginate_by = Per_Page,
+        page = p,
+        queryset = record_list,
+        template_name = template_name,
+        template_object_name = 'record',
+        extra_context = basic_info,
+    )
 
 
-def login_in_template(request, group_name, template_name, redirect_url, login_check_method, app=''):
+def login_in_template(request, group_name, template_name, redirect_url, login_check_method, app):
     login_check = login_check_method(request.user)
     if request.method == 'POST':
         username = request.POST.get('username', '')
@@ -83,10 +100,10 @@ def login_in_template(request, group_name, template_name, redirect_url, login_ch
                 redirect = redirect_url
             return HttpResponseRedirect(redirect)
         else:
-            return render_to_response(template_name, {'form' : form, 'login_check':login_check }, context_instance=RequestContext(request))
+            return render_to_response(template_name, locals(), context_instance=RequestContext(request))
     else:
         form = LoginForm()
-        return render_to_response(template_name, { 'form' : form, 'login_check':login_check }, context_instance=RequestContext(request))
+        return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
 		
 def logout_in_template(request, redirect_url):
@@ -94,13 +111,14 @@ def logout_in_template(request, redirect_url):
     return HttpResponseRedirect(redirect_url)
 
     
-def settings_in_template(request, template_name, app=''):
+def settings_in_template(request, template_name, app):
     if request.method == 'POST':
         form = SettingsForm(request.POST)
 
         if form.is_valid():
-            if request.POST.get('need_reset_password', False):
-                request.user.set_password(request.POST['password_first'])
+            password = request.POST['password_first']
+            if password != '':
+                request.user.set_password(password)
             request.user.email = request.POST['email']
             request.user.first_name = request.POST['first_name']
             request.user.last_name = request.POST['last_name']
@@ -116,3 +134,5 @@ def settings_in_template(request, template_name, app=''):
         form = SettingsForm(dict)
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+
+    
