@@ -2,7 +2,9 @@
 {% block title %}查找用户{% endblock %}
 {% block nav2 %}id="current"{% endblock %}
 {% block content %}
-<form action='' method='get'>
+<form action='' method='get' class="center usersearch">
+	<div><h4>查找用户：</h4></div>
+	<div class="no-border">
 	<span class='scope'>
         {{ form.scope.errors }}
         {{ form.scope }}
@@ -11,42 +13,31 @@
         {{ form.query.errors }}
         {{ form.query }}
 	</span>
-    <input type='submit' value='查找'>
+    <input type='submit' value='查找' class="button">
+	</div>
 </form>
 
+<div class="userlist">
 {% if show_result %}
 	{% if user_list %}
-		<p>共找到{{ user_list|length }}个用户。</p>
+		<h4>共找到{{ user_list|length }}个用户。</h4>
 		<table>
-			<th>用户名</th><th>Email地址</th>
+			<tr><th width="35%">用户名</th><th width="75%">Email地址</th></tr>
 			{% for user in user_list %}
 			<tr>
 				<td><a href='/user-admin/user/{{ user.username }}'>{{ user.username }}</a></td>
 				<td>{{ user.email }}</td>
 			</tr>
 			{% endfor %}
-		</table>
-		
+			{% if is_paginated %}
+			{% endif %}
+		</table>	
 		{% if is_paginated %}
-			<div class="pagination">
-				<span class="step-links">
-					{% if page_obj.has_previous %}
-						<a href="?scope={{ scope }}&query={{ query }}&page={{ page_obj.previous_page_number }}">上一页</a>
-					{% endif %}
-
-					<span class="current">
-						Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-					</span>
-
-					{% if page_obj.has_next %}
-						<a href="?scope={{ scope }}&query={{ query }}&page={{ page_obj.next_page_number }}">下一页</a>
-					{% endif %}
-				</span>
-			</div>
+		<tr><td colspan="2">{% include 'pagenation.html' %}</td></tr>
 		{% endif %}
-		
 	{% else %}
 		<p>没有匹配的用户。</p>
 	{% endif %}
 {% endif %}
+</div>
 {% endblock %}

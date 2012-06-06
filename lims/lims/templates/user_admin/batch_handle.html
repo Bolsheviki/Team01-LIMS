@@ -1,15 +1,17 @@
-﻿{% if is_finished %}
+{% if is_finished %}
 	<p>批量操作完成！</p>
 	{% if has_error %}
 		<p>但期间发生了一些错误。</p>
 	{% endif %}
 {% endif %}
-<form action='' method='post'>
-	<table>
-		{{ form.as_table }}
-	</table>
-	<input type='submit' value='Submit'>
+<form action='' method='post' class="center">
+	<div><h4>批量处理：</h4></div>
+	<div>
+	{{ form.as_p }}
+	</div>
+	<div class="no-border"><input type='submit' value='提交' class="button"></div>
 </form>
 {% if todo_list %}
 	<p>进行批量操作的用户总数为{{ todo_list|length }}，用户名范围是：{{ todo_list|first }} ~ {{ todo_list|last }}。</p>
 {% endif %}
+<div style="padding-top:100px"></div>

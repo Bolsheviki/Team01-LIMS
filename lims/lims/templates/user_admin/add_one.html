@@ -8,11 +8,14 @@
 		<p>成功添加用户{{ new_user.username }}！</p>
 	{% endif %}
 
-	<form action='' method='post'>
-		<table>
-			{{ form.as_table }}
-		</table>
-		<input type='submit' value='添加'>
+	<form action='' method='post' class="center">
+		<div><h4>添加用户:</h4></div>
+		<div>
+			{{ form.as_p }}
+		</div>
+		<div class="no-border">
+		<input type='submit' value='添加' class="button">
+		</div>
 	</form>
-
+	<div style="padding-top:100px;"></div>
 {% endblock %}

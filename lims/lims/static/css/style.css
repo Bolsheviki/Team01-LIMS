@@ -999,7 +999,7 @@ ul.archive li .post-details span {
 	margin: 0 auto;
 }
 
-#id_username, #id_password, #id_password_first, #id_password_confirm, #id_email, #id_first_name, #id_last_name{
+#id_username, #id_password, #id_password_first, #id_password_confirm, #id_email, #id_first_name, #id_last_name, #id_batch_username, #id_from_index, #id_to_index, #id_wildcard_length{
 	width: 95%;
 }
 
@@ -1011,6 +1011,10 @@ ul.archive li .post-details span {
 	width: 360px;
 }
 
+.usersearch #id_query {
+	width: 310px;
+}
+
 #id_isbn {
 	width: 420px;
 }
@@ -1018,8 +1022,6 @@ ul.archive li .post-details span {
 #id_bookId {
 	width: 420px;
 }
-
-
 
 .clear{
 	clear: both;
@@ -1048,6 +1050,16 @@ form p{
 }
 
 .booklist table {
+	width: 100%;
+}
+
+.userlist {
+	width: 80%;
+	margin: 50px auto;
+	padding: 30px;
+}
+
+.userlist table {
 	width: 100%;
 }
 
