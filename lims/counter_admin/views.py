@@ -1,3 +1,5 @@
+﻿# -*- coding:utf-8 -*-
+
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -106,11 +108,11 @@ def clear(request):
         if form.is_valid():
             q = form.cleaned_data
             query = q['query']
-            if request.POST.get('form-submit') == 'Clear':
+            if request.POST.get('form-submit') == u'清除':
                 debt = UserProfile.objects.get(user__username=query).debt
                 UserProfile.objects.filter(user__username=query).update(debt=0) 
                 clear_correct = True
-            if request.POST.get('form-submit') == 'View':
+            if request.POST.get('form-submit') == u'查看':
                 view_correct = True
                 debt = UserProfile.objects.get(user__username=query).debt
     else:
