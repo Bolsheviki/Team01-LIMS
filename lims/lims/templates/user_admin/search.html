@@ -20,7 +20,7 @@
 <div class="userlist">
 {% if show_result %}
 	{% if user_list %}
-		<h4>共找到{{ user_list|length }}个用户。</h4>
+		<h4>共找到{{ paginator.count }}个用户。</h4>
 		<table>
 			<tr><th width="35%">用户名</th><th width="75%">Email地址</th></tr>
 			{% for user in user_list %}
