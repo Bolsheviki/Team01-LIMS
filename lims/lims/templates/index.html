@@ -35,14 +35,14 @@
 
         <article class="col">
 
-            <a href="/{{ app }}/book/{{ books.0.isbn }}" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-1.jpg" /></a>
+            <a href="{% if books.0 %}/normal-user/book/{{ books.0.isbn }}{% else %}/{{ app }}/{% endif %}" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-1.jpg" /></a>
 
             <div class="content">
 			    <p>
                 {{ books.0.summary|truncatechars:250 }} 
 				</p>
 
-				<p><a href="/normal-user/book/{{ books.0.isbn }}" class="more">查看详细</a></p>
+				<p><a href="{% if books.0 %}/normal-user/book/{{ books.0.isbn }}{% else %}/{{ app }}/{% endif %}" class="more">查看详细</a></p>
 
 			</div>
 
@@ -50,25 +50,25 @@
 
         <article class="col even">
 
-            <a href="/{{ app }}/book/{{ books.1.isbn }}" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-2.jpg" /></a>
+            <a href="{% if books.1 %}/normal-user/book/{{ books.1.isbn }}{% else %}/{{ app }}/{% endif %}" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-2.jpg" /></a>
 
             <div class="content">
 			    <p>
                 {{ books.1.summary|truncatewords:250 }} 
 				</p>
-				<p><a href="/normal-user/book/{{ books.1.isbn }}" class="more">查看详细</a></p>
+				<p><a href="{% if books.1 %}/normal-user/book/{{ books.1.isbn }}{% else %}/{{ app }}/{% endif %}" class="more">查看详细</a></p>
 			</div>
         </article>
 
         <article class="col even">
 
-            <a href="/{{ app }}/book/{{ books.2.isbn }}" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-3.jpg" /></a>
+            <a href="{% if books.2 %}/normal-user/book/{{ books.2.isbn }}{% else %}/{{ app }}/{% endif %}" title=""><img width="240" height="100" alt="img" class="thumbnail" src="/static/img/thumb-3.jpg" /></a>
 
             <div class="content">
 			    <p>
                 {{ books.2.summary|truncatewords:250 }} 
 				</p>
-				<p><a href="/normal-user/{% if books.2 %}book/{{ books.2.isbn }}{% endif %}" class="more">查看详细</a></p>
+				<p><a href="{% if books.2 %}/normal-user/book/{{ books.2.isbn }}{% else %}/{{ app }}/{% endif %}" class="more">查看详细</a></p>
 
 			</div>
         </article>

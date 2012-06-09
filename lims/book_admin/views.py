@@ -8,12 +8,15 @@ from lims.views import search_in_template, info_book_in_template, \
 						settings_in_template
 from book_admin.forms import AddBookForm, RemoveBookForm
 from book_admin import util
-from lims.util import is_book_admin_logged_in, get_borrows_each_month, get_top_borrows_in_month
+from lims.util import is_book_admin_logged_in, get_borrows_each_month, \
+                        get_top_borrows_in_month, get_top3_books_in_month
 from db.models import BookInstance, Book, Borrow, Record
 
 
-def base(request):
-    return render_to_response('book_admin/base.html', { 'app': 'book-admin' })
+def index(request):
+    books = get_top3_books_in_month()
+    app = 'book-admin'
+    return render_to_response('book_admin/index.html', locals(), context_instance=RequestContext(request))
 
 
 def login(request):

@@ -7,9 +7,15 @@ from lims.views import login_in_template, logout_in_template, settings_in_templa
 from user_admin.forms import SearchForm, UserInfoForm, BatchUserForm, AddUserForm
 from user_admin import util
 from db.models import UserProfile
-from lims.util import is_in_group, is_user_admin_logged_in
+from lims.util import is_in_group, is_user_admin_logged_in, get_top3_books_in_month
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import user_passes_test
+    
+    
+def index(request):
+    books = get_top3_books_in_month()
+    app = 'user-admin'
+    return render_to_response('user_admin/index.html', locals(), context_instance=RequestContext(request))
     
     
 def login(request):

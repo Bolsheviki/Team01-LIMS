@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
 from lims.views import login_in_template, search_in_template, logout_in_template,  settings_in_template
-from lims.util import is_counter_admin_logged_in
+from lims.util import is_counter_admin_logged_in, get_top3_books_in_month
 from django.template import RequestContext
 from counter_admin.forms import DebtClearForm, BookBorrowForm, BookReturnForm
 from django.contrib.auth.models import User, Group
@@ -13,8 +13,10 @@ from db.models import BookInstance, Book, UserProfile, Record, Borrow
 from django.db.models import Q
 
 
-def base(request):
-    return render_to_response('counter_admin/base.html', { 'app': 'counter-admin' })
+def index(request):
+    books = get_top3_books_in_month()
+    app = 'counter-admin'
+    return render_to_response('counter_admin/index.html', locals(), context_instance=RequestContext(request))
 	
 
 def settings(request):

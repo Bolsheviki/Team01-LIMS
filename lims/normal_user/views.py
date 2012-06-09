@@ -5,8 +5,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
 from normal_user import util
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from lims.views import settings_in_template, search_in_template, info_book_in_template, login_in_template, logout_in_template
-from lims.util import is_normal_user_logged_in
+from lims.views import settings_in_template, search_in_template, \
+                        info_book_in_template, login_in_template, logout_in_template
+from lims.util import is_normal_user_logged_in, get_top3_books_in_month
 from django.views.generic import list_detail
 from db.models import BookInstance, Book, Borrow, Record
 from django.db.models import Q
@@ -15,9 +16,11 @@ from django.db.models import Q
 Per_Page = 10
 
 
-def base(request):
-    return render_to_response('normal_user/base.html', { 'app': 'normal-user' })
-
+def index(request):
+    books = get_top3_books_in_month()
+    app = 'normal-user'
+    return render_to_response('normal_user/index.html', locals(), context_instance=RequestContext(request))
+	
 
 def login(request):
     return login_in_template(request, 'NormalUser', 'normal_user/login.html', '/normal-user/', is_normal_user_logged_in, 'normal-user')

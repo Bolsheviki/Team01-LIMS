@@ -17,7 +17,7 @@ def get_attrvalue(node, attrname):
     return node.getAttribute(attrname) if node else ''
 
 def get_nodevalue(node, index = 0):
-    return node.childNodes[index].nodeValue if node else ''
+    return node.childNodes[index].nodeValue if node and node.childNodes else ''
 
 def get_xmlnode(node,name):
     return node.getElementsByTagName(name) if node else []
@@ -129,7 +129,7 @@ def get_borrows_each_month(isbn = 0):
     year = d.year
     for month in range(1, d.month + 1):
         times.append(datetime(year, month, 1))
-    times.append(d)
+    times.append(datetime(d.year + 1, d.month, 1))
     cursor = connection.cursor()
     res = []
     max = 0
