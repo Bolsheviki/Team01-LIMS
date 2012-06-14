@@ -77,9 +77,7 @@ def info_user(request, username):
     app = 'user-admin'
     try:
         user = User.objects.get(username=username)
-        is_normal_user = is_in_group(user, 'NormalUser')
-        if is_normal_user:
-            profile = user.get_profile()
+        profile = user.get_profile()
 
         if request.method == 'POST':
             form = UserInfoForm(request.POST)
@@ -91,19 +89,17 @@ def info_user(request, username):
                 user.first_name = request.POST['first_name']
                 user.last_name = request.POST['last_name']
                     
-                if is_normal_user:
-                    profile.level = request.POST['level']
-                    profile.debt = int(request.POST['debt'])
-                    profile.save()
+                profile.level = request.POST['level']
+                profile.debt = int(request.POST['debt'])
+                profile.save()
                 user.save()
                 is_set = True
         else:
             user_dict = { 'email':user.email, 'first_name':user.first_name, 'last_name':user.last_name }
             user_dict['password_first'] = ''
             user_dict['password_last'] = ''
-            if is_normal_user:
-                user_dict['level'] = profile.level
-                user_dict['debt'] = profile.debt 
+            user_dict['level'] = profile.level
+            user_dict['debt'] = profile.debt 
             form = UserInfoForm(user_dict)
 
         return render_to_response('user_admin/info_user.html', locals(), context_instance=RequestContext(request))

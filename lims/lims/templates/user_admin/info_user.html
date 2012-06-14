@@ -23,19 +23,18 @@ User Information
 		<div>
 		<label for="id_password_first">{{ form.password_first.label }}:</label>{{ form.password_first }}{{ form.password_first.errors }}
 		<label for="id_password_confirm">{{ form.password_confirm.label }}:</label>{{ form.password_confirm }}{{ form.password_confirm.errors }}
-		<tr><th><label for="id_email">{{ form.email.label }}:</label>{{ form.email }}{{ form.email.errors }}
-		<tr><th><label for="id_first_name">{{ form.first_name.label }}:</label></th><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}
-		<tr><th><label for="id_last_name">{{ form.last_name.label }}:</label>{{ form.last_name }}{{ form.last_name.errors }}
-		{% if is_normal_user %}
-			<label for="id_level">{{ form.level.label }}:</label>{{ form.level }}{{ form.level.errors }}
-			<label for="id_debt">{{ form.debt.label }}:</label>{{ form.debt }}{{ form.debt.errors }}
-		{% endif %}
+		<label for="id_email">{{ form.email.label }}:</label>{{ form.email }}{{ form.email.errors }}
+		<label for="id_first_name">{{ form.first_name.label }}:</label>{{ form.first_name }}{{ form.first_name.errors }}
+		<label for="id_last_name">{{ form.last_name.label }}:</label>{{ form.last_name }}{{ form.last_name.errors }}
+		<label for="id_level">{{ form.level.label }}:</label>{{ form.level }}{{ form.level.errors }}
+		<label for="id_debt">{{ form.debt.label }}:</label>{{ form.debt }}{{ form.debt.errors }}
 		</div>
 		<div class="no-border">
 		<input type='submit' value='修改用户信息' class="button"/>
-		<input type='submit' value='删除该用户' class="button" onclick='remove_confirm()'/>
+		<input type='button' value='删除该用户' onclick='remove_confirm()'/>
 		</div>
 	</form>
+
 {% else %}
 	<h4>用户不存在！</h4>
 {% endif %}
