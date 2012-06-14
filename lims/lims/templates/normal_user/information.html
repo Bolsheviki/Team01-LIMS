@@ -35,9 +35,9 @@
 			<td>{{ record.time }}</td>
 			<td>
 			{% if not record.renewal %}
-				<form name = 'form1' action='../renewal/' style=" border:0px solid #ffffff" method='post'>
+				<form name = 'form{{record.id}}' action='../renewal/' style=" border:0px solid #ffffff" method='post'>
 				<input type='hidden' name='id' value='{{record.id}}'>
-				<a class="more" style="float: none;" href='javascript:document.form1.submit();'>Renewal</a>
+				<a class="more" style="float: none;" href='javascript:document.form{{record.id}}.submit();'>Renewal</a>
 				</form>
 			{% else %}
 				已续借

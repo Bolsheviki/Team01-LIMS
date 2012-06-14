@@ -11,7 +11,7 @@
 		<li>Time : {{ record.time }}</li>
 		<li>Renewal : {{ record.renewal }}</li>
 			{% if not record.renewal %}
-				<form action='../renewal/' method='post'>
+				<form action='../renewal/' name = '{{record.isbn}}' method='post'>
 				<input type='hidden' name='id' value='{{record.id}}'>
 				<input type='submit' value='renewal'>
 				</form>
